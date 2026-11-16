@@ -1,0 +1,894 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "updated": "2026-11-16",
+    "note": "Default content. The Studio publishes overrides to Supabase site_content id='published'; missing keys fall back to this file."
+  },
+  "brand": {
+    "name": "Dreamz Planners",
+    "shortName": "Dreamz",
+    "tagline": "Turning Moments into Unforgettable Memories",
+    "logo": {
+      "horizontal": "assets/brand/logo-horizontal.svg",
+      "horizontalDark": "assets/brand/logo-horizontal-dark.svg",
+      "stacked": "assets/brand/logo-stacked.svg",
+      "mark": "assets/brand/logo-mark.svg",
+      "mark3d": "assets/brand/logo-3d.webp"
+    }
+  },
+  "theme": {
+    "colors": {
+      "ink": "#0E0A14",
+      "plum": "#2A1238",
+      "aubergine": "#45194F",
+      "rani": "#C2185B",
+      "gold": "#D4A853",
+      "goldDeep": "#9C7430",
+      "champagne": "#F1DFB6",
+      "ivory": "#FAF5EC"
+    },
+    "fonts": {
+      "display": "Cormorant Garamond",
+      "label": "Marcellus",
+      "body": "Manrope",
+      "script": "Pinyon Script"
+    },
+    "effects": {
+      "grain": true,
+      "vignette": true,
+      "particles": true,
+      "cursor": true,
+      "smoothScroll": true
+    }
+  },
+  "seo": {
+    "title": "Dreamz Planners — South Asian Wedding & Event Planning in Atlanta",
+    "description": "Dreamz Planners plans and coordinates Indian, Pakistani, Ismaili and Muslim weddings and events in Atlanta, Georgia — Mehndi, Sangeet, Baraat, Pheras, Nikah and Walima. From setup to send off, we've got it covered.",
+    "siteUrl": "",
+    "ogImage": "assets/brand/og-image.jpg",
+    "keywords": [
+      "Atlanta wedding planner",
+      "South Asian wedding planner Atlanta",
+      "Indian wedding planner Georgia",
+      "Pakistani wedding planner Atlanta",
+      "Ismaili wedding",
+      "Nikah planner",
+      "day-of coordinator Atlanta"
+    ]
+  },
+  "contact": {
+    "phones": [
+      {
+        "label": "Main line",
+        "number": "404-488-7643",
+        "tel": "+14044887643"
+      },
+      {
+        "label": "Second line",
+        "number": "404-543-3444",
+        "tel": "+14045433444"
+      }
+    ],
+    "whatsapp": {
+      "number": "14044887643",
+      "defaultMessage": "Hi Dreamz Planners! I'd love to talk about my celebration."
+    },
+    "instagram": {
+      "handle": "dreamz_planners",
+      "url": "https://www.instagram.com/dreamz_planners/"
+    },
+    "email": "",
+    "address": "",
+    "city": "Atlanta",
+    "region": "GA",
+    "country": "US",
+    "areaServed": "Atlanta, Georgia and surrounding areas"
+  },
+  "promo": {
+    "enabled": true,
+    "text": [
+      "Planning a wedding in Atlanta? Check your date",
+      "Mehndi · Sangeet · Baraat · Pheras · Nikah · Walima",
+      "From setup to send off, we've got it covered",
+      "Call 404-488-7643"
+    ],
+    "speed": 40,
+    "colors": {
+      "bg": "#D4A853",
+      "fg": "#0E0A14",
+      "accent": "#C2185B"
+    },
+    "link": "#begin"
+  },
+  "announcement": {
+    "enabled": false,
+    "id": "launch-2026",
+    "title": "Tell us your date",
+    "body": "Share your date and we'll set up a call to talk through your celebration.",
+    "cta": {
+      "label": "Check my date",
+      "href": "#begin"
+    },
+    "start": "",
+    "end": "",
+    "delaySeconds": 6
+  },
+  "sections": [
+    {
+      "id": "preloader",
+      "label": "Preloader",
+      "visible": true
+    },
+    {
+      "id": "hero",
+      "label": "1 · The Dream",
+      "visible": true
+    },
+    {
+      "id": "promise",
+      "label": "2 · The Promise",
+      "visible": true
+    },
+    {
+      "id": "behind",
+      "label": "3 · Behind the curtain",
+      "visible": true
+    },
+    {
+      "id": "celebrations",
+      "label": "4 · The celebrations",
+      "visible": true
+    },
+    {
+      "id": "weddings",
+      "label": "5 · Real weddings",
+      "visible": true
+    },
+    {
+      "id": "services",
+      "label": "6 · Services",
+      "visible": true
+    },
+    {
+      "id": "estimator",
+      "label": "6b · Celebration builder",
+      "visible": true
+    },
+    {
+      "id": "process",
+      "label": "7 · The process",
+      "visible": true
+    },
+    {
+      "id": "vendors",
+      "label": "8 · The vendor circle",
+      "visible": true
+    },
+    {
+      "id": "founders",
+      "label": "9 · Meet the founders",
+      "visible": true
+    },
+    {
+      "id": "reviews",
+      "label": "10 · Kind words",
+      "visible": true
+    },
+    {
+      "id": "faq",
+      "label": "11 · FAQ",
+      "visible": true
+    },
+    {
+      "id": "begin",
+      "label": "12 · Begin",
+      "visible": true
+    }
+  ],
+  "nav": [
+    {
+      "label": "Celebrations",
+      "href": "#celebrations"
+    },
+    {
+      "label": "Weddings",
+      "href": "#weddings"
+    },
+    {
+      "label": "Services",
+      "href": "#services"
+    },
+    {
+      "label": "Process",
+      "href": "#process"
+    },
+    {
+      "label": "FAQ",
+      "href": "#faq"
+    }
+  ],
+  "mediaCredits": {},
+  "hero": {
+    "eyebrow": "Atlanta · South Asian weddings & celebrations",
+    "headline": "Turning moments into *unforgettable* memories",
+    "sub": "Wedding planning and day-of coordination for Indian, Pakistani, Ismaili and Muslim celebrations — from the first setup to the final dance.",
+    "video": "hero-01",
+    "ctaPrimary": {
+      "label": "Plan my event",
+      "action": "wizard"
+    },
+    "ctaSecondary": {
+      "label": "Watch the film",
+      "action": "film"
+    },
+    "film": [
+      "hero-01",
+      "hero-02",
+      "baraat-01",
+      "pheras-01",
+      "sangeet-02",
+      "walima-01",
+      "hero-03"
+    ],
+    "filmCaption": "A few frames from our celebrations. Full films live on Instagram.",
+    "scrollCue": "Scroll — the night unfolds"
+  },
+  "promise": {
+    "eyebrow": "The promise",
+    "text": "From the *first setup* to the *final dance*, we're there every step of the way. Because your dream day deserves *flawless execution*.",
+    "aside": "Months of planning. Countless details. One unforgettable moment."
+  },
+  "behind": {
+    "eyebrow": "Behind the curtain",
+    "title": "You're watching the team that makes *'I do'* happen without the chaos.",
+    "quote": "From setup to send off, we've got it covered.",
+    "body": "Clipboards out before the first guest arrives. Every charger placed, every cue timed, every vendor briefed — so the only thing you have to do is be there.",
+    "video": "bts-feature",
+    "side": [
+      "still-team-chargers",
+      "still-team-cake"
+    ]
+  },
+  "celebrations": {
+    "eyebrow": "The celebrations",
+    "title": "Every chapter of the *wedding week*",
+    "intro": "Each event has its own rhythm, its own people and its own timeline. We plan them as one story.",
+    "items": [
+      {
+        "id": "mehndi",
+        "name": "Mehndi & henna",
+        "subtitle": "Bridal henna & the details",
+        "description": "Henna artists, jewellery, the getting-ready hour — the small details we keep on schedule so nobody rushes.",
+        "video": "mehndi-01",
+        "image": "still-fm-henna"
+      },
+      {
+        "id": "sangeet",
+        "name": "Sangeet",
+        "subtitle": "Performances & the dance floor",
+        "description": "The beats were loud, the smiles were brighter, and the dance floor never stopped.",
+        "video": "sangeet-02",
+        "image": "still-sangeet-dance"
+      },
+      {
+        "id": "baraat",
+        "name": "Baraat",
+        "subtitle": "The grand arrival",
+        "description": "Dhol, the groom's entrance and a timed handover to the ceremony team.",
+        "video": "baraat-01",
+        "image": "still-baraat"
+      },
+      {
+        "id": "pheras-nikah",
+        "name": "Pheras & Nikah",
+        "subtitle": "The sacred hour",
+        "description": "Mandap or nikah stage, officiant cues, family seating and quiet moments protected.",
+        "video": "pheras-01",
+        "image": "still-sacred-fire"
+      },
+      {
+        "id": "walima-reception",
+        "name": "Walima & Reception",
+        "subtitle": "Entrances, dinner & send off",
+        "description": "Grand entrances, service timing, speeches and a send off to remember.",
+        "video": "reception-01",
+        "image": "still-ma-stage-sparks"
+      }
+    ],
+    "endTitle": "One week. *One team.*",
+    "endBody": "Every event of the wedding week, planned as one story."
+  },
+  "weddings": {
+    "eyebrow": "Real weddings",
+    "title": "Their dream, *made real*",
+    "intro": "A day filled with love, joy, and unforgettable memories. We turned their dream into reality.",
+    "trailHint": "Move across the frame",
+    "trailWord": "love, joy & memories",
+    "stories": [
+      {
+        "id": "faraz-mahnoor",
+        "couple": "Faraz & Mahnoor",
+        "event": "Wedding",
+        "summary": "Henna-stained hands, a red bridal look, portraits among the trees — then a reception that felt like home.",
+        "cover": "still-fm-bride",
+        "video": "reception-01",
+        "gallery": [
+          "still-fm-bride",
+          "still-fm-bench",
+          "still-fm-stage",
+          "still-fm-henna",
+          "still-fm-jewellery",
+          "still-fm-veil-hands",
+          "still-fm-curtain",
+          "still-fm-cake"
+        ],
+        "credits": [
+          {
+            "role": "Photo",
+            "handle": "mnkpics"
+          }
+        ],
+        "instagram": "",
+        "layout": "deck"
+      },
+      {
+        "id": "muhsin-arneeb",
+        "couple": "Muhsin & Arneeb",
+        "event": "Walima",
+        "summary": "A first look in the city, a cathedral-length train and a ballroom Walima lit with sparklers.",
+        "cover": "still-ma-train",
+        "video": "walima-01",
+        "gallery": [
+          "still-ma-train",
+          "still-ma-firstlook",
+          "still-ma-veil",
+          "still-ma-stage-sparks",
+          "still-ma-stage-seated",
+          "still-ma-bridesmaids",
+          "still-ma-ballroom-bride",
+          "still-ma-hug",
+          "still-ma-portrait",
+          "still-ma-silhouette",
+          "tile-ma-window"
+        ],
+        "credits": [
+          {
+            "role": "Photo",
+            "handle": "mnkpics"
+          }
+        ],
+        "instagram": "",
+        "layout": "deck"
+      },
+      {
+        "id": "hina-behram",
+        "couple": "Hina & Behram",
+        "event": "Wedding",
+        "summary": "An evening at Premier Event Halls, photographed and filmed by Hakim's Studio.",
+        "cover": "tile-hb-venue",
+        "video": "",
+        "gallery": [
+          "tile-hb-venue"
+        ],
+        "credits": [
+          {
+            "role": "Photo & film",
+            "handle": "hakimsstudio"
+          },
+          {
+            "role": "Venue",
+            "handle": "premiereventhalls"
+          }
+        ],
+        "instagram": "",
+        "layout": "compact"
+      }
+    ]
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "How we *carry* your day",
+    "intro": "Every celebration is different, so every plan is too. Pick the level of support that fits — we'll shape it around you.",
+    "showPrices": false,
+    "items": [
+      {
+        "id": "full",
+        "name": "Full planning",
+        "summary": "From the first idea to the last guest leaving. We build the plan, the budget map, the vendor team and the timeline for every event of the week.",
+        "includes": [
+          "Concept & event flow for every function",
+          "Vendor sourcing, booking & contracts",
+          "Budget tracking",
+          "Guest & family logistics",
+          "Rehearsal and full day-of team"
+        ],
+        "media": "still-mandap",
+        "price": ""
+      },
+      {
+        "id": "partial",
+        "name": "Partial planning",
+        "summary": "You've started — we take it from here. We fill the gaps, steady the timeline and run the days.",
+        "includes": [
+          "Review of what's booked",
+          "Remaining vendor recommendations",
+          "Detailed timelines",
+          "Final walkthrough",
+          "Day-of coordination"
+        ],
+        "media": "still-pergola",
+        "price": ""
+      },
+      {
+        "id": "day-of",
+        "name": "Day-of coordination",
+        "summary": "You planned it. We make sure it happens exactly that way — without you lifting a clipboard.",
+        "includes": [
+          "Vendor confirmations in the final weeks",
+          "Run-of-show and cue sheet",
+          "Setup supervision",
+          "Entrances, ceremony & reception cues",
+          "Send off and teardown"
+        ],
+        "media": "still-team-chargers",
+        "price": ""
+      },
+      {
+        "id": "vendors",
+        "name": "Vendor management",
+        "summary": "One point of contact for decor, photo, DJ, catering, cake, makeup, henna, venue and dhol — so nobody calls the bride on the day.",
+        "includes": [
+          "Introductions from our vendor circle",
+          "Arrival schedules",
+          "Load-in and setup windows",
+          "On-the-day vendor lead"
+        ],
+        "media": "still-team-cake",
+        "price": ""
+      },
+      {
+        "id": "design",
+        "name": "Decor & design direction",
+        "summary": "Stages, mandaps, florals and lighting that feel like you — directed with our decor partners.",
+        "includes": [
+          "Mood and palette",
+          "Stage, mandap & entrance concepts",
+          "Table and floral direction",
+          "Lighting and photo moments"
+        ],
+        "media": "still-gold-ballroom",
+        "price": ""
+      }
+    ]
+  },
+  "estimator": {
+    "eyebrow": "Celebration builder",
+    "title": "Build your *celebration*",
+    "intro": "Pick your events and guest count. We'll suggest the level of support and a planning timeline. No prices here — every quote is personal.",
+    "events": [
+      {
+        "id": "mehndi",
+        "label": "Mehndi"
+      },
+      {
+        "id": "sangeet",
+        "label": "Sangeet"
+      },
+      {
+        "id": "baraat",
+        "label": "Baraat"
+      },
+      {
+        "id": "pheras",
+        "label": "Pheras"
+      },
+      {
+        "id": "nikah",
+        "label": "Nikah"
+      },
+      {
+        "id": "walima",
+        "label": "Walima"
+      },
+      {
+        "id": "reception",
+        "label": "Reception"
+      },
+      {
+        "id": "engagement",
+        "label": "Engagement"
+      },
+      {
+        "id": "other",
+        "label": "Other event"
+      }
+    ],
+    "guests": {
+      "min": 25,
+      "max": 1000,
+      "step": 25,
+      "default": 250
+    },
+    "levels": [
+      {
+        "id": "day-of",
+        "service": "day-of",
+        "name": "Day-of coordination",
+        "maxEvents": 1,
+        "maxGuests": 200,
+        "leadMonths": 3,
+        "note": "One event and a planned day — we take over the final weeks and run it."
+      },
+      {
+        "id": "partial",
+        "service": "partial",
+        "name": "Partial planning",
+        "maxEvents": 3,
+        "maxGuests": 400,
+        "leadMonths": 6,
+        "note": "A few events that need to flow together — we fill the gaps and run every day."
+      },
+      {
+        "id": "full",
+        "service": "full",
+        "name": "Full planning",
+        "maxEvents": 99,
+        "maxGuests": 100000,
+        "leadMonths": 12,
+        "note": "A full wedding week — one team designs, books and runs all of it."
+      }
+    ],
+    "milestones": [
+      {
+        "at": 1.0,
+        "label": "Hello",
+        "body": "First call and date check"
+      },
+      {
+        "at": 0.85,
+        "label": "Vision",
+        "body": "Event flow, look and priorities"
+      },
+      {
+        "at": 0.65,
+        "label": "Vendors",
+        "body": "Book the team"
+      },
+      {
+        "at": 0.25,
+        "label": "Details",
+        "body": "Timelines, seating, entrances"
+      },
+      {
+        "at": 0.03,
+        "label": "Rehearsal",
+        "body": "Walkthrough and cue sheet"
+      },
+      {
+        "at": 0,
+        "label": "The day",
+        "body": "We run it — you live it"
+      }
+    ],
+    "cta": "Send this to us",
+    "disclaimer": "A starting suggestion, not a quote. We'll tailor it on a call.",
+    "copy": {
+      "eventsLabel": "Events",
+      "guestsLabel": "Guests",
+      "emptyEyebrow": "Your suggestion",
+      "emptyTitle": "Pick your *events*",
+      "emptyBody": "Choose the celebrations you're planning and an approximate guest count.",
+      "resultEyebrow": "We'd suggest",
+      "timelineLabel": "Planning timeline · start about {months} months out",
+      "dayLabel": "The day",
+      "weeksBefore": "{n} wk before",
+      "monthsBefore": "{n} mo before"
+    }
+  },
+  "process": {
+    "eyebrow": "The process",
+    "title": "Five steps to *the day*",
+    "steps": [
+      {
+        "id": "hello",
+        "title": "Hello",
+        "body": "A call to hear your story, your dates and your family's wishes."
+      },
+      {
+        "id": "vision",
+        "title": "Vision",
+        "body": "We shape the look and the flow of every event of the week."
+      },
+      {
+        "id": "vendors",
+        "title": "Vendors",
+        "body": "We bring in the right team and keep everyone on one timeline."
+      },
+      {
+        "id": "rehearsal",
+        "title": "Rehearsal",
+        "body": "Walkthroughs, cue sheets and entrances practised until they're easy."
+      },
+      {
+        "id": "the-day",
+        "title": "The Day",
+        "body": "From setup to send off, we run it. You just live it."
+      }
+    ]
+  },
+  "vendors": {
+    "eyebrow": "The vendor circle",
+    "title": "The people we *celebrate* with",
+    "intro": "Collaborators we've worked alongside. Tap a name to visit their page.",
+    "items": [
+      {
+        "category": "Decor",
+        "handles": [
+          "royaldekors"
+        ]
+      },
+      {
+        "category": "Photo & film",
+        "handles": [
+          "mnkpics",
+          "conluismiguel",
+          "hakimsstudio"
+        ]
+      },
+      {
+        "category": "DJ",
+        "handles": [
+          "urboi.djvj",
+          "rosserproductions",
+          "djjaz_atl"
+        ]
+      },
+      {
+        "category": "Catering",
+        "handles": [
+          "waliahospitality",
+          "asmascuisine"
+        ]
+      },
+      {
+        "category": "Cake",
+        "handles": [
+          "inspirations_unlimited"
+        ]
+      },
+      {
+        "category": "Makeup",
+        "handles": [
+          "makeupbyshantanu",
+          "_savannamakeup",
+          "rabiajbeauty"
+        ]
+      },
+      {
+        "category": "Henna",
+        "handles": [
+          "atlantahennaartist_rozziisalim",
+          "saloniveerani"
+        ]
+      },
+      {
+        "category": "Venue",
+        "handles": [
+          "premiereventhalls"
+        ]
+      },
+      {
+        "category": "Dhol",
+        "handles": [
+          "supremedholis"
+        ]
+      },
+      {
+        "category": "Service",
+        "handles": [
+          "simplygreatevents"
+        ]
+      }
+    ]
+  },
+  "founders": {
+    "eyebrow": "Meet the founders",
+    "title": "Anisa & *Hamida*",
+    "intro": "The two faces you'll see from the first call to the last dance.",
+    "photo": "still-team-founders",
+    "people": [
+      {
+        "name": "Anisa Malim",
+        "role": "Lead coordinator & co-founder",
+        "instagram": "anisamalim",
+        "phone": "",
+        "photo": ""
+      },
+      {
+        "name": "Hamida Lakhani",
+        "role": "Lead coordinator & co-founder",
+        "instagram": "hamidalakhani",
+        "phone": "",
+        "photo": ""
+      }
+    ],
+    "photoCaption": "Anisa & Hamida on a wedding day"
+  },
+  "reviews": {
+    "eyebrow": "Kind words",
+    "title": "From our *couples*",
+    "items": []
+  },
+  "faq": {
+    "eyebrow": "Questions",
+    "title": "Good to *know*",
+    "items": [
+      {
+        "q": "What kinds of celebrations do you plan?",
+        "a": "Weddings and events for South Asian families in Atlanta — Indian, Pakistani, Ismaili and Muslim celebrations, including Mehndi, Sangeet, Baraat, Pheras, Nikah, Walima and receptions."
+      },
+      {
+        "q": "Where do you work?",
+        "a": "We're based in Atlanta, Georgia. If your celebration is elsewhere, ask us — we'll tell you honestly what's possible."
+      },
+      {
+        "q": "Do you only do full planning?",
+        "a": "No. We offer full planning, partial planning, day-of coordination, vendor management and decor & design direction. The celebration builder above suggests a starting point."
+      },
+      {
+        "q": "How much does it cost?",
+        "a": "Every celebration is different, so we quote after a short call about your events, guest count and the support you need."
+      },
+      {
+        "q": "Can we use our own vendors?",
+        "a": "Of course. We coordinate with the vendors you've chosen, and we can introduce trusted partners from our vendor circle where you need them."
+      },
+      {
+        "q": "How early should we reach out?",
+        "a": "As early as you can — popular weekends go first. Check your date below and send us a note; we'll call you back."
+      },
+      {
+        "q": "What happens after I send an inquiry?",
+        "a": "We read every inquiry personally and reach out by phone or WhatsApp to set up a first call."
+      }
+    ]
+  },
+  "begin": {
+    "eyebrow": "Begin",
+    "title": "Let's plan your *dream day*",
+    "body": "Tell us a little about your celebration. It takes about a minute — we'll take it from there.",
+    "dateCheckTitle": "Is your date open?",
+    "dateCheckIntro": "Pick a date to see how our calendar looks.",
+    "directTitle": "Rather talk now?"
+  },
+  "dateCheck": {
+    "labels": {
+      "open": "Open — let's talk",
+      "limited": "Limited — a few spots left",
+      "booked": "Booked — ask about nearby dates",
+      "unknown": "Looks open — we'll confirm on a call",
+      "past": "That date has passed"
+    },
+    "copy": {
+      "prompt": "Tap a date to check it.",
+      "ask": "Ask about this date",
+      "legendOpen": "Open",
+      "legendLimited": "Limited",
+      "legendBooked": "Booked"
+    }
+  },
+  "availability": [],
+  "wizard": {
+    "title": "Plan my event",
+    "steps": [
+      "Event",
+      "Date & guests",
+      "Services",
+      "Budget",
+      "Contact",
+      "Review"
+    ],
+    "eventTypes": [
+      "Full wedding week",
+      "Mehndi",
+      "Sangeet",
+      "Baraat",
+      "Pheras",
+      "Nikah",
+      "Walima",
+      "Reception",
+      "Engagement",
+      "Other celebration"
+    ],
+    "services": [
+      "Full planning",
+      "Partial planning",
+      "Day-of coordination",
+      "Vendor management",
+      "Decor & design direction",
+      "Not sure yet"
+    ],
+    "budgets": [
+      "Still deciding",
+      "Under $25k",
+      "$25k – $50k",
+      "$50k – $100k",
+      "$100k+",
+      "Prefer to discuss"
+    ],
+    "contactMethods": [
+      "Phone call",
+      "WhatsApp",
+      "Email"
+    ],
+    "guests": {
+      "min": 10,
+      "max": 1500,
+      "default": 250
+    },
+    "successTitle": "Thank you — it's *with us*",
+    "successBody": "We read every inquiry personally and will reach out soon. Want to say hello now? Send your summary on WhatsApp or give us a call.",
+    "whatsappIntro": "Hi Dreamz Planners! I just sent an inquiry on your website:",
+    "consent": "We'll only use these details to reply about your celebration.",
+    "copy": {
+      "eventQ": "What are we celebrating?",
+      "eventHint": "Pick all that apply.",
+      "dateQ": "When, and how many guests?",
+      "dateLabel": "Event date",
+      "guestsLabel": "Guest count (approx.)",
+      "flexibleLabel": "Dates not set yet / flexible",
+      "servicesQ": "How can we help?",
+      "servicesHint": "Choose any — or \"Not sure yet\".",
+      "budgetQ": "Do you have a budget range in mind?",
+      "budgetHint": "Optional — it helps us suggest the right support.",
+      "contactQ": "How do we reach you?",
+      "nameLabel": "Your name *",
+      "phoneLabel": "Phone / WhatsApp *",
+      "emailLabel": "Email",
+      "methodLabel": "Best way to reach you",
+      "messageLabel": "Anything else? (venue, vision, questions)",
+      "reviewQ": "Does this look right?",
+      "sending": "Sending…",
+      "sendWhatsapp": "Send on WhatsApp",
+      "restart": "Start a new inquiry",
+      "errEvent": "Pick at least one celebration.",
+      "errDate": "Please pick a future date.",
+      "errGuests": "Guest count should be a number.",
+      "errName": "Please tell us your name.",
+      "errContact": "Add a phone number or an email so we can reply.",
+      "errPhone": "That phone number looks incomplete.",
+      "errEmail": "That email address looks incomplete.",
+      "errSubmit": "Something went wrong — please call or WhatsApp us instead.",
+      "localNote": "Saved on this device — we'll send it as soon as the connection is back. To be safe, send it on WhatsApp too."
+    }
+  },
+  "footer": {
+    "note": "Wedding planning & day-of coordination for South Asian celebrations in Atlanta, Georgia.",
+    "copyright": "© Dreamz Planners",
+    "links": [
+      {
+        "label": "Privacy",
+        "href": "privacy.html"
+      }
+    ]
+  },
+  "labels": {
+    "planCta": "Plan my event",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "plan": "Plan",
+    "close": "Close",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Send inquiry",
+    "skip": "Skip to content",
+    "viewGallery": "Open gallery",
+    "credit": "Credit",
+    "callUs": "Call us:",
+    "news": "News",
+    "photos": "photos",
+    "nextClip": "Next clip",
+    "contactOptions": "Contact options"
+  }
+}

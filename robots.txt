@@ -1,0 +1,7 @@
+# Dreamz Planners
+# Replace https://ayazkshaikh-maker.github.io/dreamz-planners/ with the live site URL once hosting is set up.
+User-agent: *
+Allow: /
+Disallow: /studio/
+
+Sitemap: https://ayazkshaikh-maker.github.io/dreamz-planners/sitemap.xml

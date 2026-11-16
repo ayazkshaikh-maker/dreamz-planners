@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Page not found — Dreamz Planners</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0E0A14">
+  <script>
+    // GitHub Pages serves this page for any missing path, at any depth. Point relative URLs at the site root:
+    // on *.github.io the first path segment is the repository (e.g. /dreamz-planners/).
+    (function () {
+      var seg = location.pathname.split('/').filter(Boolean)[0];
+      var base = /\.github\.io$/.test(location.hostname) && seg ? '/' + seg + '/' : '/';
+      document.write('<base href="' + base + '">');
+    })();
+  </script>
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Manrope:wght@400;600;700&family=Marcellus&family=Pinyon+Script&display=swap">
+  <style>
+    :root { --ink: #0E0A14; --plum: #2A1238; --aubergine: #45194F; --gold: #D4A853; --gold-deep: #9C7430; --champagne: #F1DFB6; --ivory: #FAF5EC; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; text-align: center; padding: 40px 20px;
+      background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(69,25,79,.55), transparent 70%), var(--ink); color: var(--ivory);
+      font-family: Manrope, system-ui, sans-serif; overflow-x: hidden; }
+    main { max-width: 640px; }
+    img { width: 120px; height: auto; margin: 0 auto 28px; display: block; }
+    .eyebrow { font-family: Marcellus, Georgia, serif; letter-spacing: .32em; text-transform: uppercase; font-size: .74rem; color: var(--gold); margin: 0 0 18px; }
+    h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; font-size: clamp(2.8rem, 9vw, 5.6rem); line-height: .95; margin: 0; }
+    h1 em { color: var(--gold); font-weight: 400; }
+    .script { font-family: 'Pinyon Script', cursive; color: var(--gold); font-size: clamp(5rem, 22vw, 10rem); line-height: .8; opacity: .9; margin: 0 0 6px; }
+    p.lede { color: rgba(250,245,236,.75); margin: 20px auto 30px; max-width: 30rem; line-height: 1.6; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    a.btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: .92rem;
+      background: linear-gradient(120deg, #F6E3B0, var(--gold) 40%, var(--gold-deep) 70%, #E7C77E); color: var(--ink); }
+    a.btn--ghost { background: transparent; color: var(--ivory); border: 1px solid rgba(250,245,236,.35); }
+    a.btn--ghost:hover { border-color: var(--gold); color: var(--gold); }
+    a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="assets/brand/logo-mark-3d.webp" alt="" onerror="this.remove()">
+    <p class="script" aria-hidden="true">404</p>
+    <p class="eyebrow">Lost between chapters</p>
+    <h1>This page wandered <em>off the dance floor</em></h1>
+    <p class="lede">The page you're looking for isn't here. Let's get you back to the celebration — or call us and we'll help directly.</p>
+    <div class="row">
+      <a class="btn" href="./">Back to the home page</a>
+      <a class="btn btn--ghost" href="tel:+14044887643">Call 404-488-7643</a>
+      <a class="btn btn--ghost" href="https://wa.me/14044887643">WhatsApp</a>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1101 @@
+{
+ "version": 1,
+ "generated": "2026-11-16",
+ "notes": "Loops are silent (no audio track), H.264 mp4 with +faststart; webm (VP9) only where it came out smaller. Posters = first frame. 'source' fields record reel + seconds for re-cutting.",
+ "loops": [
+  {
+   "id": "hero-01",
+   "type": "loop",
+   "src": "assets/media/loops/hero-01.mp4",
+   "webm": "assets/media/loops/hero-01.webm",
+   "poster": "assets/media/posters/hero-01.webp",
+   "w": 1600,
+   "h": 900,
+   "duration": 7.21,
+   "tags": [
+    "hero",
+    "couple",
+    "venue"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Bride and groom at a chateau fountain, an aerial view of the grounds and the bride twirling her red lehenga",
+   "source": "DZqtvNisFwo.mp4 13.5-20.8s"
+  },
+  {
+   "id": "hero-02",
+   "type": "loop",
+   "src": "assets/media/loops/hero-02.mp4",
+   "webm": "assets/media/loops/hero-02.webm",
+   "poster": "assets/media/posters/hero-02.webp",
+   "w": 1600,
+   "h": 900,
+   "duration": 7.41,
+   "tags": [
+    "hero",
+    "decor",
+    "pheras"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Floral mandap in a sunlit glass hall, the family procession down the aisle and the bride on a sweeping staircase",
+   "source": "DZqtvNisFwo.mp4 28.4-35.9s"
+  },
+  {
+   "id": "hero-03",
+   "type": "loop",
+   "src": "assets/media/loops/hero-03.mp4",
+   "poster": "assets/media/posters/hero-03.webp",
+   "w": 1600,
+   "h": 900,
+   "duration": 8.51,
+   "tags": [
+    "hero",
+    "sangeet",
+    "couple"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Couple in festive outfits under a garden pergola by a waterfall, the bride twirling her lehenga",
+   "source": "DZWPmS6sEyY.mp4 0.7-9.3s"
+  },
+  {
+   "id": "bts-feature",
+   "type": "loop",
+   "src": "assets/media/loops/bts-feature.mp4",
+   "poster": "assets/media/posters/bts-feature.webp",
+   "w": 720,
+   "h": 1000,
+   "duration": 12.7,
+   "tags": [
+    "team-bts",
+    "bts-feature"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "The Dreamz Planners team placing gold chargers on tables, then briefing on the dance floor before guests arrive",
+   "source": "DbV69Hngsnq.mp4 28.4-41.2s"
+  },
+  {
+   "id": "team-bts-01",
+   "type": "loop",
+   "src": "assets/media/loops/team-bts-01.mp4",
+   "poster": "assets/media/posters/team-bts-01.webp",
+   "w": 720,
+   "h": 1000,
+   "duration": 8.4,
+   "tags": [
+    "team-bts"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Dreamz Planners coordinators reviewing the run sheet on clipboards in the ballroom",
+   "source": "DbV69Hngsnq.mp4 3.0-11.5s"
+  },
+  {
+   "id": "team-bts-02",
+   "type": "loop",
+   "src": "assets/media/loops/team-bts-02.mp4",
+   "webm": "assets/media/loops/team-bts-02.webm",
+   "poster": "assets/media/posters/team-bts-02.webp",
+   "w": 720,
+   "h": 1000,
+   "duration": 8.9,
+   "tags": [
+    "team-bts",
+    "decor",
+    "food"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "A coordinator arranging the wedding cake and florals on the cake table",
+   "source": "DbV69Hngsnq.mp4 71.5-80.5s"
+  },
+  {
+   "id": "mehndi-01",
+   "type": "loop",
+   "src": "assets/media/loops/mehndi-01.mp4",
+   "webm": "assets/media/loops/mehndi-01.webm",
+   "poster": "assets/media/posters/mehndi-01.webp",
+   "w": 720,
+   "h": 1280,
+   "duration": 5.5,
+   "tags": [
+    "mehndi",
+    "couple",
+    "detail"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Henna-covered hands, bangles and the bride lifting her red dupatta",
+   "source": "DXIt7Rdjc1y.mp4 10.1-15.7s"
+  },
+  {
+   "id": "sangeet-01",
+   "type": "loop",
+   "src": "assets/media/loops/sangeet-01.mp4",
+   "poster": "assets/media/posters/sangeet-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 7.41,
+   "tags": [
+    "sangeet",
+    "dancefloor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Couple and family performing on the sangeet floor with cold-spark fountains",
+   "source": "DZWPmS6sEyY.mp4 12.9-20.4s"
+  },
+  {
+   "id": "sangeet-02",
+   "type": "loop",
+   "src": "assets/media/loops/sangeet-02.mp4",
+   "poster": "assets/media/posters/sangeet-02.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 7.91,
+   "tags": [
+    "sangeet",
+    "decor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Group dance performances in front of a pink arch and green drape sangeet stage",
+   "source": "DZWPmS6sEyY.mp4 26.9-34.9s"
+  },
+  {
+   "id": "baraat-01",
+   "type": "loop",
+   "src": "assets/media/loops/baraat-01.mp4",
+   "poster": "assets/media/posters/baraat-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 6.61,
+   "tags": [
+    "baraat",
+    "dancefloor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Baraat guests in pink turbans dancing around the groom in a bright hall",
+   "source": "DZqtvNisFwo.mp4 21.7-28.4s"
+  },
+  {
+   "id": "pheras-01",
+   "type": "loop",
+   "src": "assets/media/loops/pheras-01.mp4",
+   "poster": "assets/media/posters/pheras-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 7.21,
+   "tags": [
+    "pheras",
+    "decor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Wedding rituals at a gold and white floral mandap, hands offering to the sacred fire",
+   "source": "DZqtvNisFwo.mp4 38.6-45.9s"
+  },
+  {
+   "id": "walima-01",
+   "type": "loop",
+   "src": "assets/media/loops/walima-01.mp4",
+   "poster": "assets/media/posters/walima-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 6.81,
+   "tags": [
+    "walima",
+    "reception",
+    "couple"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Couple on an ivory carved walima stage with cold-spark fountains behind them",
+   "source": "C8DQW8ZPKIR.mp4 125.2-132.1s"
+  },
+  {
+   "id": "walima-02",
+   "type": "loop",
+   "src": "assets/media/loops/walima-02.mp4",
+   "poster": "assets/media/posters/walima-02.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 7.71,
+   "tags": [
+    "walima",
+    "reception",
+    "decor"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride seated on the walima stage, her embroidered veil spread across the floor",
+   "source": "C8DQW8ZPKIR.mp4 140.3-148.1s"
+  },
+  {
+   "id": "reception-01",
+   "type": "loop",
+   "src": "assets/media/loops/reception-01.mp4",
+   "poster": "assets/media/posters/reception-01.webp",
+   "w": 720,
+   "h": 1280,
+   "duration": 5.4,
+   "tags": [
+    "reception",
+    "walima",
+    "decor"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Couple seated under red rose arches, then a wide view of the reception hall",
+   "source": "DXIt7Rdjc1y.mp4 34.7-40.2s"
+  },
+  {
+   "id": "decor-01",
+   "type": "loop",
+   "src": "assets/media/loops/decor-01.mp4",
+   "poster": "assets/media/posters/decor-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 7.51,
+   "tags": [
+    "decor",
+    "walima",
+    "venue"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Ballroom set for the walima: round tables, florals, a white aisle and a carved stage",
+   "source": "C8DQW8ZPKIR.mp4 159.4-167.0s"
+  },
+  {
+   "id": "couple-01",
+   "type": "loop",
+   "src": "assets/media/loops/couple-01.mp4",
+   "poster": "assets/media/posters/couple-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 8.31,
+   "tags": [
+    "couple",
+    "walima"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Couple's first look on a tree-lined city walkway, the bride's long blush veil trailing behind",
+   "source": "C8DQW8ZPKIR.mp4 64.9-73.3s"
+  },
+  {
+   "id": "couple-03",
+   "type": "loop",
+   "src": "assets/media/loops/couple-03.mp4",
+   "poster": "assets/media/posters/couple-03.webp",
+   "w": 720,
+   "h": 1280,
+   "duration": 6.4,
+   "tags": [
+    "couple"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Couple portraits among tall pines, the groom in a red turban and the bride in red bridal",
+   "source": "DXIt7Rdjc1y.mp4 18.9-25.4s"
+  },
+  {
+   "id": "dancefloor-01",
+   "type": "loop",
+   "src": "assets/media/loops/dancefloor-01.mp4",
+   "poster": "assets/media/posters/dancefloor-01.webp",
+   "w": 1280,
+   "h": 720,
+   "duration": 7.31,
+   "tags": [
+    "dancefloor",
+    "sangeet"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Packed dance floor of guests dancing under pink and green uplighting",
+   "source": "DZWPmS6sEyY.mp4 34.9-42.3s"
+  },
+  {
+   "id": "food-01",
+   "type": "loop",
+   "src": "assets/media/loops/food-01.mp4",
+   "webm": "assets/media/loops/food-01.webm",
+   "poster": "assets/media/posters/food-01.webp",
+   "w": 720,
+   "h": 1280,
+   "duration": 7.4,
+   "tags": [
+    "food",
+    "decor",
+    "reception"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "Dreamz Planners / @mnkpics",
+   "alt": "Two-tier white wedding cake with red roses beside the floral stage",
+   "source": "DW9yR3gACW_.mp4 5.2-12.7s"
+  },
+  {
+   "id": "food-02",
+   "type": "loop",
+   "src": "assets/media/loops/food-02.mp4",
+   "webm": "assets/media/loops/food-02.webm",
+   "poster": "assets/media/posters/food-02.webp",
+   "w": 720,
+   "h": 1280,
+   "duration": 5.8,
+   "tags": [
+    "food",
+    "reception"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "Dreamz Planners / @mnkpics",
+   "alt": "Reception buffet chafing dishes under warm lamps",
+   "source": "DW9yR3gACW_.mp4 45.7-51.6s"
+  }
+ ],
+ "stills": [
+  {
+   "id": "still-baraat",
+   "type": "still",
+   "src": "assets/media/stills/still-baraat.webp",
+   "thumb": "assets/media/thumbs/still-baraat.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "baraat",
+    "dancefloor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Groom raised high by dancing guests during the baraat",
+   "source": "DZqtvNisFwo.mp4 ~24.3s"
+  },
+  {
+   "id": "still-chateau-twirl",
+   "type": "still",
+   "src": "assets/media/stills/still-chateau-twirl.webp",
+   "thumb": "assets/media/thumbs/still-chateau-twirl.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "couple",
+    "venue"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Bride twirling her red lehenga in front of a white chateau as the groom watches",
+   "source": "DZqtvNisFwo.mp4 ~17.4s"
+  },
+  {
+   "id": "still-dancefloor",
+   "type": "still",
+   "src": "assets/media/stills/still-dancefloor.webp",
+   "thumb": "assets/media/thumbs/still-dancefloor.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "dancefloor",
+    "sangeet"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Crowded dance floor of guests with hands in the air",
+   "source": "DZWPmS6sEyY.mp4 ~51.0s"
+  },
+  {
+   "id": "still-embrace",
+   "type": "still",
+   "src": "assets/media/stills/still-embrace.webp",
+   "thumb": "assets/media/thumbs/still-embrace.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "sangeet",
+    "couple"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Smiling woman with henna and bangles embracing her partner in the garden",
+   "source": "DZWPmS6sEyY.mp4 ~2.6s"
+  },
+  {
+   "id": "still-fm-bench",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-bench.webp",
+   "thumb": "assets/media/thumbs/still-fm-bench.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "couple"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Couple on a bench among tall trees, the bride's red lehenga spread out",
+   "source": "DXIt7Rdjc1y.mp4 ~24.8s"
+  },
+  {
+   "id": "still-fm-bride",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-bride.webp",
+   "thumb": "assets/media/thumbs/still-fm-bride.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "portrait"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Bride in red and gold bridal standing in a sunlit garden",
+   "source": "DXIt7Rdjc1y.mp4 ~26.9s"
+  },
+  {
+   "id": "still-fm-cake",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-cake.webp",
+   "thumb": "assets/media/thumbs/still-fm-cake.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "food",
+    "decor"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "Dreamz Planners / @mnkpics",
+   "alt": "White two-tier wedding cake with deep red roses and a candle",
+   "source": "DW9yR3gACW_.mp4 ~9.2s"
+  },
+  {
+   "id": "still-fm-curtain",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-curtain.webp",
+   "thumb": "assets/media/thumbs/still-fm-curtain.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "getting-ready",
+    "portrait"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Bride in a red embroidered dupatta looking out from behind a curtain",
+   "source": "DXIt7Rdjc1y.mp4 ~7.0s"
+  },
+  {
+   "id": "still-fm-henna",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-henna.webp",
+   "thumb": "assets/media/thumbs/still-fm-henna.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "mehndi",
+    "detail"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Bride's henna hands holding the groom's hand with gold bangles",
+   "source": "DXIt7Rdjc1y.mp4 ~10.8s"
+  },
+  {
+   "id": "still-fm-jewellery",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-jewellery.webp",
+   "thumb": "assets/media/thumbs/still-fm-jewellery.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "getting-ready",
+    "detail"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Bride in red bridal putting on her earrings, henna on her hands",
+   "source": "DXIt7Rdjc1y.mp4 ~4.5s"
+  },
+  {
+   "id": "still-fm-stage",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-stage.webp",
+   "thumb": "assets/media/thumbs/still-fm-stage.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "reception",
+    "couple",
+    "decor"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Couple seated on an ivory and gold sofa on the reception stage",
+   "source": "DXIt7Rdjc1y.mp4 ~36.3s"
+  },
+  {
+   "id": "still-fm-veil-hands",
+   "type": "still",
+   "src": "assets/media/stills/still-fm-veil-hands.webp",
+   "thumb": "assets/media/thumbs/still-fm-veil-hands.webp",
+   "w": 720,
+   "h": 1280,
+   "tags": [
+    "mehndi",
+    "detail"
+   ],
+   "story": "faraz-mahnoor",
+   "credit": "@mnkpics",
+   "alt": "Henna hands lifting a red dupatta with a gold border",
+   "source": "DXIt7Rdjc1y.mp4 ~13.5s"
+  },
+  {
+   "id": "still-gold-ballroom",
+   "type": "still",
+   "src": "assets/media/stills/still-gold-ballroom.webp",
+   "thumb": "assets/media/thumbs/still-gold-ballroom.webp",
+   "w": 720,
+   "h": 480,
+   "tags": [
+    "decor",
+    "venue"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Gold ballroom with chandeliers and tall white floral centrepieces",
+   "source": "DAHK65EyDiX.mp4 ~1.3s"
+  },
+  {
+   "id": "still-groom-sherwani",
+   "type": "still",
+   "src": "assets/media/stills/still-groom-sherwani.webp",
+   "thumb": "assets/media/thumbs/still-groom-sherwani.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "detail",
+    "getting-ready"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Groom fastening an ivory embroidered sherwani with layered pearl necklaces",
+   "source": "DZqtvNisFwo.mp4 ~5.0s"
+  },
+  {
+   "id": "still-henna-hands",
+   "type": "still",
+   "src": "assets/media/stills/still-henna-hands.webp",
+   "thumb": "assets/media/thumbs/still-henna-hands.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "detail",
+    "mehndi"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Close-up of henna-covered hands with red and gold bangles",
+   "source": "DZqtvNisFwo.mp4 ~0.6s"
+  },
+  {
+   "id": "still-kaleere",
+   "type": "still",
+   "src": "assets/media/stills/still-kaleere.webp",
+   "thumb": "assets/media/thumbs/still-kaleere.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "detail"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Gold kaleere hanging from the bride's bangles against a dark background",
+   "source": "DZqtvNisFwo.mp4 ~4.0s"
+  },
+  {
+   "id": "still-ma-ballroom-bride",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-ballroom-bride.webp",
+   "thumb": "assets/media/thumbs/still-ma-ballroom-bride.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "venue"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride standing in the decorated walima ballroom",
+   "source": "C8DQW8ZPKIR.mp4 ~117.8s"
+  },
+  {
+   "id": "still-ma-ballroom",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-ballroom.webp",
+   "thumb": "assets/media/thumbs/still-ma-ballroom.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "decor",
+    "venue",
+    "walima"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Ballroom set with florals, tables and a white aisle to the stage",
+   "source": "C8DQW8ZPKIR.mp4 ~160.2s"
+  },
+  {
+   "id": "still-ma-bride",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-bride.webp",
+   "thumb": "assets/media/thumbs/still-ma-bride.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "portrait"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride smiling in a silver embroidered outfit and veil, trees behind",
+   "source": "C8DQW8ZPKIR.mp4 ~59.7s"
+  },
+  {
+   "id": "still-ma-bridesmaids",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-bridesmaids.webp",
+   "thumb": "assets/media/thumbs/still-ma-bridesmaids.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "family"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride with her bridal party in matching teal outfits",
+   "source": "C8DQW8ZPKIR.mp4 ~107.5s"
+  },
+  {
+   "id": "still-ma-firstlook",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-firstlook.webp",
+   "thumb": "assets/media/thumbs/still-ma-firstlook.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "couple",
+    "walima"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Couple meeting on a tree-lined walkway, the veil spread behind the bride",
+   "source": "C8DQW8ZPKIR.mp4 ~65.6s"
+  },
+  {
+   "id": "still-ma-henna",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-henna.webp",
+   "thumb": "assets/media/thumbs/still-ma-henna.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "detail",
+    "walima"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride's henna hands and silver bangles against her embroidered sleeve",
+   "source": "C8DQW8ZPKIR.mp4 ~54.0s"
+  },
+  {
+   "id": "still-ma-hug",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-hug.webp",
+   "thumb": "assets/media/thumbs/still-ma-hug.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "couple",
+    "walima"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride hugging the groom in his cream turban",
+   "source": "C8DQW8ZPKIR.mp4 ~71.1s"
+  },
+  {
+   "id": "still-ma-portrait",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-portrait.webp",
+   "thumb": "assets/media/thumbs/still-ma-portrait.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "portrait"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Close portrait of the bride in her jewelled veil",
+   "source": "C8DQW8ZPKIR.mp4 ~139.8s"
+  },
+  {
+   "id": "still-ma-silhouette",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-silhouette.webp",
+   "thumb": "assets/media/thumbs/still-ma-silhouette.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "couple",
+    "walima"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Couple walking hand in hand across a sunny lawn, the veil flowing behind",
+   "source": "C8DQW8ZPKIR.mp4 ~82.8s"
+  },
+  {
+   "id": "still-ma-stage-seated",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-stage-seated.webp",
+   "thumb": "assets/media/thumbs/still-ma-stage-seated.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "couple",
+    "decor"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Couple seated on gold chairs on the walima stage",
+   "source": "C8DQW8ZPKIR.mp4 ~148.4s"
+  },
+  {
+   "id": "still-ma-stage-sparks",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-stage-sparks.webp",
+   "thumb": "assets/media/thumbs/still-ma-stage-sparks.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "reception",
+    "couple"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Couple on the carved ivory stage with cold-spark fountains",
+   "source": "C8DQW8ZPKIR.mp4 ~128.8s"
+  },
+  {
+   "id": "still-ma-train",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-train.webp",
+   "thumb": "assets/media/thumbs/still-ma-train.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "decor"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "The bride's long blush train spread down the white aisle",
+   "source": "C8DQW8ZPKIR.mp4 ~121.2s"
+  },
+  {
+   "id": "still-ma-veil",
+   "type": "still",
+   "src": "assets/media/stills/still-ma-veil.webp",
+   "thumb": "assets/media/thumbs/still-ma-veil.webp",
+   "w": 1280,
+   "h": 720,
+   "tags": [
+    "walima",
+    "detail"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Bride from behind with a long blush veil trailing across a city walkway",
+   "source": "C8DQW8ZPKIR.mp4 ~57.4s"
+  },
+  {
+   "id": "still-mandap",
+   "type": "still",
+   "src": "assets/media/stills/still-mandap.webp",
+   "thumb": "assets/media/thumbs/still-mandap.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "decor",
+    "pheras"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Gold and white floral mandap on a white aisle in a glass-roofed hall",
+   "source": "DZqtvNisFwo.mp4 ~30.2s"
+  },
+  {
+   "id": "still-pergola",
+   "type": "still",
+   "src": "assets/media/stills/still-pergola.webp",
+   "thumb": "assets/media/thumbs/still-pergola.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "sangeet",
+    "couple",
+    "venue"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Couple in festive outfits under a wooden pergola beside a waterfall",
+   "source": "DZWPmS6sEyY.mp4 ~1.6s"
+  },
+  {
+   "id": "still-pheras-wide",
+   "type": "still",
+   "src": "assets/media/stills/still-pheras-wide.webp",
+   "thumb": "assets/media/thumbs/still-pheras-wide.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "pheras",
+    "decor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Bride in a red lehenga arriving at the floral mandap where the groom waits",
+   "source": "DZqtvNisFwo.mp4 ~43.0s"
+  },
+  {
+   "id": "still-sacred-fire",
+   "type": "still",
+   "src": "assets/media/stills/still-sacred-fire.webp",
+   "thumb": "assets/media/thumbs/still-sacred-fire.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "pheras",
+    "detail"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Couple and family making offerings at the sacred fire during the pheras",
+   "source": "DZqtvNisFwo.mp4 ~39.1s"
+  },
+  {
+   "id": "still-sangeet-dance",
+   "type": "still",
+   "src": "assets/media/stills/still-sangeet-dance.webp",
+   "thumb": "assets/media/thumbs/still-sangeet-dance.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "sangeet",
+    "dancefloor"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Group dance performance in front of the pink arch sangeet stage",
+   "source": "DZWPmS6sEyY.mp4 ~28.4s"
+  },
+  {
+   "id": "still-sangeet-stage",
+   "type": "still",
+   "src": "assets/media/stills/still-sangeet-stage.webp",
+   "thumb": "assets/media/thumbs/still-sangeet-stage.webp",
+   "w": 1600,
+   "h": 900,
+   "tags": [
+    "sangeet",
+    "decor",
+    "family"
+   ],
+   "story": null,
+   "credit": "@mnkpics @conluismiguel",
+   "alt": "Family gathered on the sangeet stage in front of a pink and gold arch backdrop",
+   "source": "DZWPmS6sEyY.mp4 ~21.2s"
+  },
+  {
+   "id": "still-team-cake",
+   "type": "still",
+   "src": "assets/media/stills/still-team-cake.webp",
+   "thumb": "assets/media/thumbs/still-team-cake.webp",
+   "w": 1152,
+   "h": 1600,
+   "tags": [
+    "team-bts",
+    "food",
+    "decor"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Coordinator arranging a white wedding cake with blue florals",
+   "source": "DbV69Hngsnq.mp4 ~75.0s"
+  },
+  {
+   "id": "still-team-chargers",
+   "type": "still",
+   "src": "assets/media/stills/still-team-chargers.webp",
+   "thumb": "assets/media/thumbs/still-team-chargers.webp",
+   "w": 1152,
+   "h": 1600,
+   "tags": [
+    "team-bts",
+    "decor"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Gold charger plates and blue runners being set on a reception table",
+   "source": "DbV69Hngsnq.mp4 ~35.0s"
+  },
+  {
+   "id": "still-team-founders",
+   "type": "still",
+   "src": "assets/media/stills/still-team-founders.webp",
+   "thumb": "assets/media/thumbs/still-team-founders.webp",
+   "w": 1152,
+   "h": 1600,
+   "tags": [
+    "team-bts",
+    "founders"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Two Dreamz Planners coordinators in black with name badges in front of draped fabric",
+   "source": "DbV69Hngsnq.mp4 ~2.3s"
+  },
+  {
+   "id": "still-team-trio",
+   "type": "still",
+   "src": "assets/media/stills/still-team-trio.webp",
+   "thumb": "assets/media/thumbs/still-team-trio.webp",
+   "w": 1152,
+   "h": 1600,
+   "tags": [
+    "team-bts",
+    "founders"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Three Dreamz Planners team members in black in front of a green drape and white florals",
+   "source": "DbV69Hngsnq.mp4 ~84.1s"
+  },
+  {
+   "id": "tile-couple-stage",
+   "type": "still",
+   "src": "assets/media/stills/tile-couple-stage.webp",
+   "thumb": "assets/media/thumbs/tile-couple-stage.webp",
+   "w": 640,
+   "h": 640,
+   "tags": [
+    "small",
+    "couple",
+    "reception"
+   ],
+   "story": null,
+   "credit": "Dreamz Planners",
+   "alt": "Couple smiling on a gold sofa in front of a ring-and-bauble backdrop",
+   "source": "photos/07_DIrl6W2yBbT.jpg"
+  },
+  {
+   "id": "tile-hb-venue",
+   "type": "still",
+   "src": "assets/media/stills/tile-hb-venue.webp",
+   "thumb": "assets/media/thumbs/tile-hb-venue.webp",
+   "w": 576,
+   "h": 576,
+   "tags": [
+    "small",
+    "venue"
+   ],
+   "story": "hina-behram",
+   "credit": "@hakimsstudio",
+   "alt": "Venue entrance with tall white columns and a hanging lantern",
+   "source": "photos/12_CzCLnBRvhFx.jpg"
+  },
+  {
+   "id": "tile-ma-window",
+   "type": "still",
+   "src": "assets/media/stills/tile-ma-window.webp",
+   "thumb": "assets/media/thumbs/tile-ma-window.webp",
+   "w": 640,
+   "h": 640,
+   "tags": [
+    "small",
+    "getting-ready"
+   ],
+   "story": "muhsin-arneeb",
+   "credit": "@mnkpics",
+   "alt": "Split frame: the bride silhouetted at a window and the groom checking his watch",
+   "source": "photos/11_C7w1UIcpGwT.jpg"
+  }
+ ],
+ "stories": {
+  "faraz-mahnoor": {
+   "title": "Faraz & Mahnoor",
+   "credit": "@mnkpics",
+   "note": "Reception sign in both reels reads 'Mahnoor and Faraz' (DXIt7Rdjc1y and DW9yR3gACW_).",
+   "loops": [
+    "mehndi-01",
+    "reception-01",
+    "couple-03",
+    "food-01",
+    "food-02"
+   ],
+   "stills": [
+    "still-fm-bench",
+    "still-fm-bride",
+    "still-fm-cake",
+    "still-fm-curtain",
+    "still-fm-henna",
+    "still-fm-jewellery",
+    "still-fm-stage",
+    "still-fm-veil-hands"
+   ]
+  },
+  "muhsin-arneeb": {
+   "title": "Muhsin & Arneeb",
+   "event": "Walima",
+   "credit": "@mnkpics",
+   "loops": [
+    "walima-01",
+    "walima-02",
+    "decor-01",
+    "couple-01"
+   ],
+   "stills": [
+    "still-ma-ballroom-bride",
+    "still-ma-ballroom",
+    "still-ma-bride",
+    "still-ma-bridesmaids",
+    "still-ma-firstlook",
+    "still-ma-henna",
+    "still-ma-hug",
+    "still-ma-portrait",
+    "still-ma-silhouette",
+    "still-ma-stage-seated",
+    "still-ma-stage-sparks",
+    "still-ma-train",
+    "still-ma-veil",
+    "tile-ma-window"
+   ]
+  },
+  "hina-behram": {
+   "title": "Hina & Behram",
+   "credit": "@hakimsstudio",
+   "venue": "@premiereventhalls",
+   "note": "Only one small 576 px photo available.",
+   "loops": [],
+   "stills": [
+    "tile-hb-venue"
+   ]
+  }
+ }
+}
