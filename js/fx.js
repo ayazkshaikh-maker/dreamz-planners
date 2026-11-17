@@ -33,7 +33,8 @@
     window.addEventListener('pointermove', function (e) { mx = e.clientX; my = e.clientY; }, { passive: true });
     function frame() {
       ctx.clearRect(0, 0, W, H);
-      ctx.globalCompositeOperation = 'lighter';
+      var light = DP.themeNow && DP.themeNow.mode === 'light';
+      ctx.globalCompositeOperation = light ? 'source-over' : 'lighter';
       for (var i = 0; i < parts.length; i++) {
         var p = parts[i];
         p.t += p.tw; p.x += p.vx + Math.sin(p.t) * 0.18; p.y += p.vy;
@@ -42,8 +43,13 @@
         if (p.y < -10 || p.x < -20 || p.x > W + 20) spawn(p, false);
         var alpha = p.a * (0.55 + 0.45 * Math.sin(p.t * 2));
         var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+        if (light) {
+          g.addColorStop(0, p.hue ? 'rgba(196,110,135,' + alpha * 0.8 + ')' : 'rgba(176,134,58,' + alpha * 0.85 + ')');
+          g.addColorStop(0.35, p.hue ? 'rgba(196,110,135,' + alpha * 0.3 + ')' : 'rgba(176,134,58,' + alpha * 0.32 + ')');
+        } else {
         g.addColorStop(0, p.hue ? 'rgba(255,170,200,' + alpha + ')' : 'rgba(246,227,176,' + alpha + ')');
         g.addColorStop(0.35, p.hue ? 'rgba(194,24,91,' + alpha * 0.4 + ')' : 'rgba(212,168,83,' + alpha * 0.45 + ')');
+        }
         g.addColorStop(1, 'rgba(212,168,83,0)');
         ctx.fillStyle = g;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4, 0, 6.2832); ctx.fill();
@@ -70,32 +76,45 @@
     ['hero', 'promise', 'begin'].forEach(function (id) { var el = document.getElementById(id); if (el) FX._dustIO.observe(el); });
   };
 
-  /* ---------- custom cursor (desktop fine pointer only) ---------- */
+  /* ---------- cursor follower (desktop fine pointer only) ----------
+     Decorative ring that trails the NATIVE cursor (which always stays visible). It hides itself over
+     form fields, selects and inside dialogs / the lightbox. Switch: theme.effects.customCursor (old key: cursor). */
+  FX.cursorEnabled = function () {
+    var eff = (DP.content && DP.content.theme && DP.content.theme.effects) || {};
+    return eff.customCursor !== false && eff.cursor !== false && u.finePointer() && !u.reduced();
+  };
   FX.cursor = function () {
     var c = u.$('#cursor');
-    if (!c || FX._cursorOn || !u.finePointer() || u.reduced() || !(DP.content.theme.effects || {}).cursor) return;
+    if (!c) return;
+    var on = FX.cursorEnabled();
+    document.documentElement.classList.toggle('has-cursor', on && !!FX._cursorOn);
+    if (!on || FX._cursorOn) return;
     FX._cursorOn = true;
     document.documentElement.classList.add('has-cursor');
-    var dot = c.querySelector('.cursor__dot'), ring = c.querySelector('.cursor__ring'), label = c.querySelector('.cursor__label');
-    var x = -100, y = -100, rx = -100, ry = -100;
+    var ring = c.querySelector('.cursor__ring'), label = c.querySelector('.cursor__label');
+    var x = -100, y = -100, rx = -100, ry = -100, raf = 0;
+    var quiet = 'input,select,textarea,option,[contenteditable],dialog,.lightbox,.modal,.film,.announce,iframe';
     window.addEventListener('pointermove', function (e) {
       if (e.pointerType !== 'mouse') return;
       x = e.clientX; y = e.clientY;
-      dot.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
       var t = e.target;
+      var hide = !document.documentElement.classList.contains('has-cursor') || !!document.querySelector('dialog[open]') || !!(t.closest && t.closest(quiet));
+      c.classList.toggle('is-hidden', hide);
+      if (hide) return;
       var view = t.closest && t.closest('[data-cursor]');
-      var link = t.closest && t.closest('a,button,[role=button],summary,label,input,select,textarea');
+      var link = t.closest && t.closest('a,button,[role=button],summary,label');
       c.classList.toggle('is-view', !!view);
       c.classList.toggle('is-link', !view && !!link);
       label.textContent = view ? view.getAttribute('data-cursor') : '';
-      c.classList.remove('is-hidden');
+      if (!raf) raf = requestAnimationFrame(loop);
     }, { passive: true });
     document.addEventListener('pointerleave', function () { c.classList.add('is-hidden'); });
-    (function loop() {
-      rx += (x - rx) * 0.18; ry += (y - ry) * 0.18;
+    window.addEventListener('blur', function () { c.classList.add('is-hidden'); });
+    function loop() {
+      rx += (x - rx) * 0.2; ry += (y - ry) * 0.2;
       ring.style.transform = 'translate3d(' + rx.toFixed(1) + 'px,' + ry.toFixed(1) + 'px,0)';
-      requestAnimationFrame(loop);
-    })();
+      raf = (Math.abs(x - rx) + Math.abs(y - ry) > 0.3) ? requestAnimationFrame(loop) : 0;
+    }
   };
 
   /* ---------- magnetic buttons ---------- */
@@ -136,6 +155,7 @@
     var imgs = pool.slice(0, 14).map(function (id) {
       var m = DP.media.resolve(id);
       var im = u.h('img', { class: 'trail__img', src: m.thumb || m.src, alt: '', loading: 'lazy', decoding: 'async' });
+      if (m.focus) im.style.objectPosition = m.focus;
       zone.appendChild(im); return im;
     });
     var k = 0, lx = 0, ly = 0, z = 1;

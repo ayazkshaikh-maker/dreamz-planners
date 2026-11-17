@@ -109,6 +109,38 @@
     if (m.type === 'video') box.appendChild(h('span', { class: 'thumb__badge', text: 'video' }));
     return box;
   };
+  /* Focal point: click the thumbnail to mark what must stay in view when the picture is cropped.
+     Saved per media in content.mediaFocus[ref] (applies everywhere that media appears). */
+  F.focus = function (thumb, ref, row) {
+    var map = C().mediaFocus = (C().mediaFocus && typeof C().mediaFocus === 'object' && !Array.isArray(C().mediaFocus)) ? C().mediaFocus : {};
+    var man = (S.media.manifest && S.media.manifest[ref]) || {};
+    function curPos() { return map[ref] || man.focus || '50% 50%'; }
+    var dot = h('span', { class: 'focus-dot', 'aria-hidden': 'true' });
+    var out = h('span', { class: 'focus-out muted' });
+    var reset = u.btn('Centre', { small: true, kind: 'ghost', title: 'Reset the focal point', onclick: function () { delete map[ref]; S.changed('mediaFocus'); paint(); } });
+    function paint() {
+      var p = curPos().split(/\s+/);
+      dot.style.left = p[0]; dot.style.top = p[1] || '50%';
+      out.textContent = 'Focal point ' + curPos() + (map[ref] ? '' : man.focus ? ' (library default)' : '');
+      reset.hidden = !map[ref];
+    }
+    thumb.classList.add('thumb--focus');
+    // show the whole picture (the thumbnail takes the media's own shape) so a click maps to the real image
+    if (man.w && man.h) thumb.style.aspectRatio = man.w + ' / ' + man.h;
+    u.$$('img', thumb).forEach(function (im) { im.addEventListener('load', function () { if (im.naturalWidth && !(man.w && man.h)) thumb.style.aspectRatio = im.naturalWidth + ' / ' + im.naturalHeight; }); });
+    thumb.title = 'Click where the faces / subject are — that part stays in view when the picture is cropped';
+    thumb.setAttribute('role', 'button'); thumb.setAttribute('tabindex', '0');
+    thumb.setAttribute('aria-label', 'Set focal point (arrow keys move it)');
+    thumb.appendChild(dot);
+    function set(x, y) { map[ref] = Math.round(Math.max(0, Math.min(100, x))) + '% ' + Math.round(Math.max(0, Math.min(100, y))) + '%'; S.changed('mediaFocus'); paint(); }
+    thumb.addEventListener('click', function (e) { var r = thumb.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100, (e.clientY - r.top) / r.height * 100); });
+    thumb.addEventListener('keydown', function (e) {
+      var k = { ArrowLeft: [-5, 0], ArrowRight: [5, 0], ArrowUp: [0, -5], ArrowDown: [0, 5] }[e.key]; if (!k) return;
+      e.preventDefault(); var p = curPos().split(/\s+/).map(parseFloat); set(p[0] + k[0], (isFinite(p[1]) ? p[1] : 50) + k[1]);
+    });
+    row.appendChild(h('div', { class: 'focus-bar' }, [out, reset]));
+    paint();
+  };
   F.media = function (path, label, o) {
     o = o || {};
     var row = h('div', { class: 'media-field' });
@@ -117,7 +149,9 @@
       var cur = val(path);
       var inp = h('input', { class: 'input', value: cur || '', placeholder: 'Media id or URL', spellcheck: 'false', 'aria-label': label + ' (media id or URL)' });
       inp.addEventListener('change', function () { put(path, inp.value.trim()); draw(); });
-      row.appendChild(F.thumb(cur));
+      var th = F.thumb(cur);
+      row.appendChild(th);
+      if (cur && !/^(brand|seo)\./.test(path) && o.focus !== false) F.focus(th, cur, row);
       row.appendChild(h('div', { class: 'media-field__side' }, [inp, h('div', { class: 'row' }, [
         u.btn('Choose…', { small: true, kind: 'outline', icon: 'image', onclick: function () { S.media.pick({ kind: o.kind }).then(function (ref) { if (ref) { put(path, ref); draw(); } }); } }),
         cur ? u.btn('Clear', { small: true, kind: 'ghost', onclick: function () { put(path, ''); draw(); } }) : null

@@ -14,7 +14,8 @@
    - `index.html?preview=local` merges `localStorage['dp:preview-content']` over the defaults (offline / local mode).
    - Live preview in an iframe: `iframe.contentWindow.postMessage({ type: 'dp:preview', content }, location.origin)` re-renders the page immediately with `content` merged over the loaded content (same origin only). Debounce to ~300 ms.
    - `?motion=reduce` forces the calm static layout (no pins, no smooth scroll, posters instead of autoplay).
-4. Media ids are resolved by `DP.media.resolve(id)`: first `assets/media/manifest.json` (`loops[]`, `stills[]`), then folder conventions (`still-*`/`tile-*` → `assets/media/stills/<id>.webp`; anything else → `assets/media/loops/<id>.mp4` + `posters/<id>.webp`). A media field may also hold a full URL (e.g. a Supabase Storage `site-media` public URL) or a site-relative path.
+   - `?theme=<preset-id>` forces a theme preset for testing (not remembered).
+4. Media ids are resolved by `DP.media.resolve(id)` (manifest entries may carry `focus`, a CSS object-position such as `"50% 40%"`): first `assets/media/manifest.json` (`loops[]`, `stills[]`), then folder conventions (`still-*`/`tile-*` → `assets/media/stills/<id>.webp`; anything else → `assets/media/loops/<id>.mp4` + `posters/<id>.webp`). A media field may also hold a full URL (e.g. a Supabase Storage `site-media` public URL) or a site-relative path.
 
 ## Mini-markup in text fields
 
@@ -35,6 +36,7 @@ Fields marked **rich** accept `*word*`, which renders as the gold italic accent 
 | `sections` | array | Order + visibility of chapters. |
 | `nav` | array | Header / footer / mobile menu links. |
 | `mediaCredits` | object | Optional override: `{ "<mediaId>": "credit text" }`. Empty → credit from the media manifest. |
+| `mediaFocus` | object | Optional focal points: `{ "<mediaId or URL>": "50% 30%" }` (CSS `object-position`, x then y). Wins over the manifest `focus`. Applied everywhere the media is cover-cropped (hero, behind-the-curtain card and full bleed, reel cards, decks, founders photo, service previews, image trail, begin background). Studio: click the thumbnail in any media field. |
 | `hero`, `promise`, `behind`, `celebrations`, `weddings`, `services`, `estimator`, `process`, `vendors`, `founders`, `reviews`, `faq`, `begin` | object | One per chapter (below). |
 | `dateCheck` | object | Labels for the date-check widget. |
 | `availability` | array | Local fallback dates (Supabase `availability` table wins). |
@@ -48,15 +50,27 @@ Fields marked **rich** accept `*word*`, which renders as the gold italic accent 
 | `name` | string | "Dreamz Planners" — used in logo alt text, JSON-LD, footer. |
 | `shortName` | string | Giant footer word ("Dreamz"). |
 | `tagline` | string | Footer tagline, JSON-LD slogan, hero fallback headline. |
-| `logo.horizontal` | path/URL | Header logo (gold, for dark backgrounds). Falls back to a text wordmark if it fails to load. |
-| `logo.horizontalDark`, `logo.stacked`, `logo.mark`, `logo.mark3d` | path/URL | `stacked` is used in the footer. |
+| `logo.horizontal` | path/URL | Header logo, light/gold version — used on dark themes and over the hero film in every theme. Falls back to a text wordmark if it fails to load. |
+| `logo.horizontalDark` | path/URL | Header logo, dark version — used on light themes once the header leaves the hero. |
+| `logo.stacked`, `logo.stackedDark` | path/URL | Footer logo (light/gold and dark versions). Dark falls back to `horizontalDark`, then `stacked`. |
+| `logo.mark`, `logo.markDark`, `logo.mark3d` | path/URL | Monogram (light/dark) and the 3D render. The preloader draws `assets/brand/logo-mark.svg` or `logo-mark-dark.svg` by mode. |
+| `favicon` | path/URL | Optional favicon override. |
 
 ### `theme`
+Themes are complete designed looks defined in `js/themes.js` (shared by the site, `404.html`, `privacy.html` and the Studio). Each preset sets the page tokens **and** a separate "media" palette used for everything laid over photos/video (hero, reel cards, the behind-the-curtain quote, captions, the header while it floats over the hero, the film player). Media stays cinematic (dark shade + light text) in every theme, so text over video is always legible.
+
 | Key | Type | Notes |
 |---|---|---|
-| `colors.ink` `plum` `aubergine` `rani` `gold` `goldDeep` `champagne` `ivory` | hex | Written to CSS variables `--ink`, `--plum`, `--aubergine`, `--rani`, `--gold`, `--gold-deep`, `--champagne`, `--ivory` at load. Keep text-on-background contrast AA (ivory on ink, ink on gold). |
+| `preset` | string | `midnight-gold` (default, dark), `emerald-night` (dark), `satin-ivory` (light), `rose-champagne` (light). Unknown/missing → `midnight-gold`. Test any preset with `index.html?theme=<id>`. |
+| `colors` | object | **Optional per-token overrides** on top of the preset (fine-tuning). Keys: `ink` (page background), `ivory` (main text), `plum` (cards/surfaces), `aubergine` (soft tint), `gold`, `goldDeep`, `champagne` (secondary accent text), `rani` (pink accent), plus for light themes `mediaInk` (shade over photos/video), `mediaText`, `mediaGold`. Empty `{}` = pure preset. The Studio clears this when another preset is picked. Old content that has the 8 classic colours and no `preset` renders exactly as before (Midnight Gold + those colours). Overrides apply only to the main preset, not to the visitor-toggle alternative. |
+| `visitorToggle` | `false` \| `true` \| `"auto"` | Light/dark button in the header. `true`: starts on `preset`; `"auto"`: starts from the visitor's `prefers-color-scheme`. The visitor's choice is remembered in `localStorage['dp:visitor-mode']`. |
+| `lightPreset`, `darkPreset` | preset id | The pair the toggle flips between. If `preset` is light it is the light side (and `darkPreset` the dark side), and vice versa. Defaults `satin-ivory` / `midnight-gold`. |
 | `fonts.display` `label` `body` `script` | Google Font family name | Defaults: Cormorant Garamond / Marcellus / Manrope / Pinyon Script. Any other Google Font family name is loaded automatically. |
-| `effects.grain` `vignette` `particles` `cursor` `smoothScroll` | boolean | Film grain overlay, vignette, gold-dust canvas, custom desktop cursor, Lenis smooth scroll. |
+| `effects.grain` `vignette` `particles` `smoothScroll` | boolean | Film grain, vignette, gold-dust canvas, Lenis smooth scroll (each adapts to light themes). |
+| `effects.customCursor` | boolean | Decorative gold ring that follows the mouse on desktop (default `true`). The native cursor is never hidden; the ring hides itself over form fields, selects and inside dialogs/lightbox. Old key `effects.cursor: false` also switches it off. |
+| `effects.mediaCredits` | boolean | Photographer credit labels (© @handle) in the corner of photos/videos, lightbox and film bar (default `true`). `false` hides them site-wide (credits listed in each wedding story's text stay). |
+
+The last applied theme is cached in `localStorage['dp:theme-cache']` and painted from `<head>` on the next visit (no dark flash on light themes). CSS: tokens live on `:root`; `html[data-mode=light|dark]` and `data-theme=<id>` are set on `<html>`; `.on-media` re-scopes tokens for content over photos/video.
 
 ### `seo`
 | Key | Type | Notes |
@@ -89,13 +103,13 @@ Fields marked **rich** accept `*word*`, which renders as the gold italic accent 
 `{ label, href }` — `href` is usually `#<section id>`.
 
 ### `hero` — chapter 1 "The Dream"
-`eyebrow` · `headline` rich (split letter by letter) · `sub` rich · `video` media id · `ctaPrimary {label, action}` / `ctaSecondary {label, action}` — `action` is `"wizard"` (opens the inquiry wizard) or `"film"` (opens the film player) · `film` media id[] (clips played back-to-back by "Watch the film") · `filmCaption` · `scrollCue`.
+`eyebrow` · `headline` rich (split letter by letter) · `sub` rich · `video` media id (any loop or an uploaded MP4/WebM URL) · `poster` optional image id/URL shown while the video loads (use it for uploaded videos, which have no poster) · `ctaPrimary {label, action}` / `ctaSecondary {label, action}` — `action` is `"wizard"` (opens the inquiry wizard) or `"film"` (opens the film player) · `film` media id[] (clips played back-to-back by "Watch the film") · `filmCaption` · `scrollCue`.
 
 ### `promise` — chapter 2
 `eyebrow` · `text` rich (fills in word by word) · `aside` (small caps line under it).
 
 ### `behind` — chapter 3 "Behind the curtain"
-`eyebrow` · `title` rich · `quote` · `body` rich · `video` media id (grows from card to full screen) · `side` media id[] (two floating stills).
+`eyebrow` · `title` rich · `quote` · `body` rich · `video` media id (grows from card to full screen; its focal point decides what the small card shows) · `videoLabel` optional accessible description · `side` media id[] (two floating stills).
 
 ### `celebrations` — chapter 4 (horizontal reel)
 `eyebrow` · `title` rich · `intro` rich · `items[]` `{ id, name (rich), subtitle, description (rich), video (media id), image (media id, used if no video), credit (optional override) }` · `endTitle` rich · `endBody` rich (closing card of the reel).
@@ -173,4 +187,4 @@ Lead row written to Supabase `leads` (insert only, no select): `name, phone, ema
 `note` · `copyright` (year is appended automatically) · `links[]` `{label, href}`.
 
 ### `labels`
-`planCta`, `call`, `whatsapp`, `instagram`, `plan`, `close`, `next`, `back`, `submit`, `skip`, `viewGallery`, `credit`, `callUs`, `news`, `photos`, `nextClip`, `contactOptions`.
+`planCta`, `call`, `whatsapp`, `instagram`, `plan`, `close`, `next`, `back`, `submit`, `skip`, `viewGallery`, `credit`, `callUs`, `news`, `photos`, `nextClip`, `contactOptions`, `backToTop` (footer button + floating button that appears after scrolling far), `lightTheme` / `darkTheme` (visitor toggle labels).

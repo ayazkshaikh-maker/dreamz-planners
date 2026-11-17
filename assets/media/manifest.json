@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generated": "2026-11-16",
- "notes": "Loops are silent (no audio track), H.264 mp4 with +faststart; webm (VP9) only where it came out smaller. Posters = first frame. 'source' fields record reel + seconds for re-cutting.",
+ "generated": "2026-11-17",
+ "notes": "Loops are silent (no audio track), H.264 mp4 with +faststart; webm (VP9) only where it came out smaller. Posters = first frame. 'source' fields record reel + seconds for re-cutting. Optional 'focus' = CSS object-position (e.g. '50% 30%') used wherever the media is cover-cropped; content can override per placement.",
  "loops": [
   {
    "id": "hero-01",
@@ -64,25 +64,26 @@
    "type": "loop",
    "src": "assets/media/loops/bts-feature.mp4",
    "poster": "assets/media/posters/bts-feature.webp",
-   "w": 720,
-   "h": 1000,
-   "duration": 12.7,
+   "w": 960,
+   "h": 960,
+   "duration": 13.7,
    "tags": [
     "team-bts",
     "bts-feature"
    ],
    "story": null,
    "credit": "Dreamz Planners",
-   "alt": "The Dreamz Planners team placing gold chargers on tables, then briefing on the dance floor before guests arrive",
-   "source": "DbV69Hngsnq.mp4 28.4-41.2s"
+   "alt": "Dreamz Planners coordinators reviewing the run sheet in the ballroom, welcoming guests on the mic, and the team together before the event",
+   "source": "DbV69Hngsnq.mp4 3.4-9.4s + 14.3-16.3s + 63.0-66.0s + 82.1-84.8s, crop 1440x1440 at y=500 (below burned-in caption), faces visible",
+   "focus": "50% 40%"
   },
   {
    "id": "team-bts-01",
    "type": "loop",
    "src": "assets/media/loops/team-bts-01.mp4",
    "poster": "assets/media/posters/team-bts-01.webp",
-   "w": 720,
-   "h": 1000,
+   "w": 960,
+   "h": 960,
    "duration": 8.4,
    "tags": [
     "team-bts"
@@ -90,17 +91,17 @@
    "story": null,
    "credit": "Dreamz Planners",
    "alt": "Dreamz Planners coordinators reviewing the run sheet on clipboards in the ballroom",
-   "source": "DbV69Hngsnq.mp4 3.0-11.5s"
+   "source": "DbV69Hngsnq.mp4 3.0-11.4s, crop 1440x1440 at y=500",
+   "focus": "50% 40%"
   },
   {
    "id": "team-bts-02",
    "type": "loop",
    "src": "assets/media/loops/team-bts-02.mp4",
-   "webm": "assets/media/loops/team-bts-02.webm",
    "poster": "assets/media/posters/team-bts-02.webp",
-   "w": 720,
-   "h": 1000,
-   "duration": 8.9,
+   "w": 960,
+   "h": 960,
+   "duration": 6.0,
    "tags": [
     "team-bts",
     "decor",
@@ -109,7 +110,8 @@
    "story": null,
    "credit": "Dreamz Planners",
    "alt": "A coordinator arranging the wedding cake and florals on the cake table",
-   "source": "DbV69Hngsnq.mp4 71.5-80.5s"
+   "source": "DbV69Hngsnq.mp4 71.4-77.4s, crop 1440x1440 at y=475",
+   "focus": "50% 15%"
   },
   {
    "id": "mehndi-01",

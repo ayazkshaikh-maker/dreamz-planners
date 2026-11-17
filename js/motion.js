@@ -29,7 +29,9 @@
     if (!M.enabled()) { pre.remove(); return Promise.resolve(); }
     var count = pre.querySelector('.preloader__count'), bar = pre.querySelector('.preloader__line i'), mark = pre.querySelector('.preloader__mark');
     var prog = { v: 0 };
-    var drawn = fetch('assets/brand/logo-mark.svg').then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (txt) {
+    var lightMode = document.documentElement.getAttribute('data-mode') === 'light';
+    var markUrl = lightMode ? 'assets/brand/logo-mark-dark.svg' : 'assets/brand/logo-mark.svg';
+    var drawn = fetch(markUrl).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (txt) {
       mark.innerHTML = txt.replace(/<\?xml[^>]*>/, '');
       var svg = mark.querySelector('svg'); if (!svg) return;
       svg.removeAttribute('width'); svg.removeAttribute('height'); svg.setAttribute('aria-hidden', 'true');
@@ -63,6 +65,12 @@
   };
 
   /* ---------- helpers ---------- */
+  function cardShift(media) {
+    if (!media || !media.style) return 0;
+    var fy = parseFloat((media.style.objectPosition || '50% 50%').split(/\s+/)[1]);
+    if (!isFinite(fy)) fy = 50;
+    return Math.max(0, Math.min(20, (66 - fy) * 0.55));
+  }
   function wrapWords(el) {
     if (el.dataset.wrapped) return u.$$('.rw__i', el);
     el.dataset.wrapped = '1';
@@ -138,7 +146,9 @@
         var stage = behind.querySelector('.behind__stage'), frame = behind.querySelector('.behind__frame');
         if (desk) {
           gsap.timeline({ scrollTrigger: { trigger: stage, start: 'top top', end: '+=230%', scrub: 0.8, pin: true, anticipatePin: 1 } })
-            .fromTo(frame, { clipPath: 'inset(46% 37% 6% 37% round 26px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 }, 0)
+            .fromTo(frame, { clipPath: 'inset(39% 37% 7% 37% round 26px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 }, 0)
+            // while it is still a small card (lower part of the screen), slide the film down so its focal point (faces) sits in the card
+            .fromTo(frame.querySelector('.media'), { yPercent: cardShift(frame.querySelector('.media')) }, { yPercent: 0, ease: 'power2.inOut', duration: 1 }, 0)
             .to(behind.querySelector('.behind__title'), { opacity: 0, scale: 0.9, filter: 'blur(8px)', duration: 0.55 }, 0.05)
             .to(behind.querySelector('.behind__side--a'), { yPercent: -160, xPercent: -60, rotate: -14, opacity: 0, duration: 0.8 }, 0)
             .to(behind.querySelector('.behind__side--b'), { yPercent: 160, xPercent: 60, rotate: 14, opacity: 0, duration: 0.8 }, 0)

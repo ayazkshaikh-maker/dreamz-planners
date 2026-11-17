@@ -97,25 +97,39 @@
     if (src) v.appendChild(h('source', { src: src, type: 'video/mp4' }));
     v.load();
   }
-  /* Build a <figure>-less media element for a media id. Videos: poster first, src on view. */
+  /* Build a <figure>-less media element for a media id. Videos: poster first, src on view.
+     The media's focal point (manifest "focus" or content.mediaFocus[id]) becomes object-position,
+     so cover-cropped frames keep faces in view. opts.fill: portrait media in a wide frame is shown
+     whole over a blurred copy of itself (see .mfill in site.css). opts.poster overrides the poster. */
   function media(ref, opts) {
     opts = opts || {};
     var m = DP.media.resolve(ref);
     if (!m) return h('div', { class: 'media media--empty ' + (opts.class || '') });
+    if (opts.fill && m.w && m.h && m.h / m.w > 1.15) {
+      var wrapEl = h('div', { class: 'media mfill ' + (opts.class || '') });
+      var bgSrc = opts.poster || m.poster || m.thumb || m.src;
+      if (bgSrc) wrapEl.appendChild(h('img', { class: 'mfill__bg', src: bgSrc, alt: '', loading: 'lazy', decoding: 'async', 'aria-hidden': 'true' }));
+      var inner = media(ref, { still: opts.still, label: opts.label, alt: opts.alt, poster: opts.poster, class: 'mfill__fg' });
+      wrapEl.appendChild(inner);
+      return wrapEl;
+    }
+    var pos = opts.focus || m.focus || '';
     if (m.type === 'video' && !opts.still) {
       var v = h('video', {
         class: 'media ' + (opts.class || ''), muted: true, playsinline: true, loop: true, preload: 'none',
-        poster: m.poster || '', 'aria-hidden': opts.label ? null : 'true', 'aria-label': opts.label || null,
+        poster: opts.poster || m.poster || '', 'aria-hidden': opts.label ? null : 'true', 'aria-label': opts.label || null,
         'data-src': m.src, 'data-webm': m.webm || null, disablepictureinpicture: true
       });
       v.muted = true;
+      if (pos) v.style.objectPosition = pos;
       v.addEventListener('error', function () { v.dataset.failed = '1'; }, true);
       var obs = videoObserver();
       if (obs) obs.observe(v); else loadVideo(v);
       return v;
     }
-    var src = m.type === 'video' ? m.poster : (opts.thumb ? m.thumb : m.src);
+    var src = m.type === 'video' ? (opts.poster || m.poster) : (opts.thumb ? m.thumb : m.src);
     var img = h('img', { class: 'media ' + (opts.class || ''), src: src, alt: opts.alt || m.alt || '', loading: opts.eager ? 'eager' : 'lazy', decoding: 'async' });
+    if (pos) img.style.objectPosition = pos;
     img.addEventListener('error', function () {
       if (img.dataset.fb) { img.classList.add('media--empty'); img.removeAttribute('src'); return; }
       img.dataset.fb = '1';

@@ -229,6 +229,7 @@
     if (isObj(ref)) ref = ref.id || ref.src;
     ref = String(ref);
     var credits = (DP.content && DP.content.mediaCredits) || {};
+    var focusMap = (DP.content && DP.content.mediaFocus) || {};
     var m = manifest[ref];
     if (m) {
       var isVideo = /video|loop|film/.test(m.type || '') || /\.(mp4|webm|mov)$/i.test(m.src || '');
@@ -237,17 +238,18 @@
         id: ref, type: isVideo ? 'video' : 'image',
         src: normPath(m.src), webm: webm ? normPath(webm) : '',
         poster: normPath(m.poster || (isVideo ? '' : m.src)), thumb: normPath(m.thumb || m.poster || m.src),
-        w: m.w, h: m.h, credit: credits[ref] || m.credit || '', alt: m.alt || m.title || ''
+        w: m.w, h: m.h, credit: credits[ref] || m.credit || '', alt: m.alt || m.title || '',
+        focus: focusMap[ref] || m.focus || ''
       };
     }
     if (/^(https?:|data:|blob:)/.test(ref) || ref.indexOf('/') >= 0) {
       var v = /\.(mp4|webm|mov)(\?|$)/i.test(ref);
-      return { id: ref, type: v ? 'video' : 'image', src: normPath(ref), webm: '', poster: v ? '' : normPath(ref), thumb: normPath(ref), credit: credits[ref] || '' };
+      return { id: ref, type: v ? 'video' : 'image', src: normPath(ref), webm: '', poster: v ? '' : normPath(ref), thumb: v ? '' : normPath(ref), credit: credits[ref] || '', focus: focusMap[ref] || '' };
     }
     if (/^(still|tile)-/.test(ref)) {
-      return { id: ref, type: 'image', src: base + 'stills/' + ref + '.webp', poster: base + 'stills/' + ref + '.webp', thumb: base + 'thumbs/' + ref + '.webp', webm: '', credit: credits[ref] || '' };
+      return { id: ref, type: 'image', src: base + 'stills/' + ref + '.webp', poster: base + 'stills/' + ref + '.webp', thumb: base + 'thumbs/' + ref + '.webp', webm: '', credit: credits[ref] || '', focus: focusMap[ref] || '' };
     }
-    return { id: ref, type: 'video', src: base + 'loops/' + ref + '.mp4', webm: '', poster: base + 'posters/' + ref + '.webp', thumb: base + 'posters/' + ref + '.webp', credit: credits[ref] || '' };
+    return { id: ref, type: 'video', src: base + 'loops/' + ref + '.mp4', webm: '', poster: base + 'posters/' + ref + '.webp', thumb: base + 'posters/' + ref + '.webp', credit: credits[ref] || '', focus: focusMap[ref] || '' };
   }
 
   DP.media = { load: loadManifest, resolve: resolve };

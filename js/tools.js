@@ -35,11 +35,15 @@
       document.documentElement.style.setProperty('--promo-h', '0px');
     }
 
-    var logo = u.$('#header-logo');
+    // two logo files: gold (for dark backgrounds / over the hero film) and dark (for light themes); CSS shows the right one
+    var logo = u.$('#header-logo'), lg = c.brand.logo || {};
     logo.innerHTML = '';
-    var img = u.h('img', { src: c.brand.logo.horizontal, alt: c.brand.name, width: 220, height: 44 });
-    img.addEventListener('error', function () { logo.innerHTML = '<span class="wordmark">' + u.esc(c.brand.name) + '</span>'; });
-    logo.appendChild(img);
+    [['logo-for-dark', lg.horizontal], ['logo-for-light', lg.horizontalDark || lg.horizontal]].forEach(function (pair, k) {
+      var img = u.h('img', { class: pair[0], src: pair[1], alt: k ? '' : c.brand.name, width: 220, height: 44 });
+      img.addEventListener('error', function () { logo.innerHTML = '<span class="wordmark">' + u.esc(c.brand.name) + '</span>'; });
+      logo.appendChild(img);
+    });
+    T.themeToggle();
 
     var nav = u.$('#nav'), mnav = u.$('#mobile-nav');
     var links = (c.nav || []).map(function (n) { return '<a href="' + u.esc(n.href) + '">' + u.esc(n.label) + '</a>'; }).join('');
@@ -55,6 +59,7 @@
       mnav.toggleAttribute('inert', !open);
       if (DP.lenis) open ? DP.lenis.stop() : DP.lenis.start();
       if (open) { var a = mnav.querySelector('a'); if (a) a.focus(); }
+      if (T._syncTop) T._syncTop();
     }
     if (!btn.dataset.bound) {
       btn.dataset.bound = '1';
@@ -64,9 +69,18 @@
       mnav.setAttribute('inert', '');
 
       var lastY = 0;
+      // over the hero film the header uses the light-on-dark media palette; once scrolled it becomes page glass
+      T._syncTop = function () {
+        var first = u.$('main > section');
+        var over = !top.classList.contains('is-scrolled') && first && first.id === 'hero' && !mnav.classList.contains('is-open');
+        top.classList.toggle('on-media', !!over);
+      };
       var onScroll = function () {
         var y = window.scrollY;
         top.classList.toggle('is-scrolled', y > 40);
+        T._syncTop();
+        var tt = u.$('#totop-float');
+        if (tt) tt.classList.toggle('is-on', y > window.innerHeight * 2.5);
         var hide = y > lastY + 4 && y > window.innerHeight * 0.9 && !mnav.classList.contains('is-open');
         if (y < lastY - 4 || y < 200) top.classList.remove('is-hidden'); else if (hide) top.classList.add('is-hidden');
         lastY = y;
@@ -86,6 +100,43 @@
       }
     }
     if (T._navIO) u.$$('main > section').forEach(function (s) { T._navIO.observe(s); });
+    if (T._syncTop) T._syncTop();
+
+    // floating back-to-top (appears after scrolling far); the footer has its own button
+    var ft = u.$('#totop-float');
+    if (ft) { ft.setAttribute('aria-label', c.labels.backToTop || 'Back to top'); ft.querySelector('.totop-float__tip').textContent = c.labels.backToTop || 'Back to top'; }
+  };
+
+  /* ---------------- visitor light / dark toggle (theme.visitorToggle) ---------------- */
+  T.themeToggle = function () {
+    var th = C().theme || {}, holder = u.$('#theme-toggle');
+    if (!holder) return;
+    holder.hidden = !th.visitorToggle || !DP.themes;
+    if (holder.hidden) return;
+    var now = DP.themeNow || { mode: 'dark' };
+    var toLight = now.mode !== 'light';
+    var lb = C().labels || {};
+    var label = toLight ? (lb.lightTheme || 'Switch to light theme') : (lb.darkTheme || 'Switch to dark theme');
+    holder.setAttribute('aria-label', label); holder.title = label;
+    holder.setAttribute('aria-pressed', now.mode === 'light' ? 'true' : 'false');
+    if (!holder.dataset.bound) {
+      holder.dataset.bound = '1';
+      holder.addEventListener('click', function () {
+        var next = (DP.themeNow && DP.themeNow.mode === 'light') ? 'dark' : 'light';
+        try { localStorage.setItem('dp:visitor-mode', next); } catch (e) {}
+        DP.visitorClicked = true;
+        DP.applyTheme(DP.content);
+        T.themeToggle();
+      });
+    }
+  };
+
+  /* ---------------- back to top ---------------- */
+  T.toTop = function () {
+    var focusEl = u.$('#header-logo') || u.$('#main');
+    if (DP.lenis) DP.lenis.scrollTo(0, { duration: 1.8 });
+    else window.scrollTo({ top: 0, behavior: u.reduced() ? 'auto' : 'smooth' });
+    setTimeout(function () { try { focusEl.focus({ preventScroll: true }); } catch (e) {} }, u.reduced() ? 0 : 1200);
   };
 
   /* ---------------- dock ---------------- */
@@ -614,6 +665,7 @@
         var act = a.dataset.action;
         if (act === 'wizard') { e.preventDefault(); T.openWizard(); }
         if (act === 'film') { e.preventDefault(); T.openFilm(); }
+        if (act === 'top') { e.preventDefault(); T.toTop(); }
         return;
       }
       var g = e.target.closest('[data-gallery]');

@@ -6,12 +6,16 @@
   var u = DP.u;
   var DEFAULT_FONTS = ['Cormorant Garamond', 'Marcellus', 'Manrope', 'Pinyon Script'];
 
+  /* Theme = preset (js/themes.js) + optional per-token overrides in theme.colors.
+     ?theme=<preset-id> forces a preset (testing); DP.forceTheme is set by the Studio preview. */
   function applyTheme(C) {
-    var root = document.documentElement.style;
-    var col = (C.theme && C.theme.colors) || {};
-    var map = { ink: '--ink', plum: '--plum', aubergine: '--aubergine', rani: '--rani', gold: '--gold', goldDeep: '--gold-deep', champagne: '--champagne', ivory: '--ivory' };
-    Object.keys(map).forEach(function (k) { if (col[k]) root.setProperty(map[k], col[k]); });
-    var f = (C.theme && C.theme.fonts) || {};
+    var html = document.documentElement, root = html.style;
+    var th = C.theme || {};
+    var t = DP.themes.vars(th, DP.themes.active(th, { force: DP.forceTheme || DP.themes.urlTheme(), ignoreVisitor: /[?&]preview=/.test(location.search) && !DP.visitorClicked }));
+    DP.themes.apply(t);
+    DP.themeNow = t;
+    if (!/[?&](preview|theme)=/.test(location.search)) DP.themes.remember({ preset: th.preset, colors: th.colors, visitorToggle: th.visitorToggle, lightPreset: th.lightPreset, darkPreset: th.darkPreset });
+    var f = th.fonts || {};
     var stacks = { display: [f.display, 'Georgia, serif'], label: [f.label, 'Georgia, serif'], body: [f.body, 'system-ui, sans-serif'], script: [f.script, 'cursive'] };
     Object.keys(stacks).forEach(function (k) { if (stacks[k][0]) root.setProperty('--f-' + k, "'" + stacks[k][0] + "', " + stacks[k][1]); });
     var extra = [f.display, f.label, f.body, f.script].filter(function (n) { return n && DEFAULT_FONTS.indexOf(n) < 0; });
@@ -21,10 +25,11 @@
       if (!link) { link = u.h('link', { rel: 'stylesheet', id: 'dp-extra-fonts' }); document.head.appendChild(link); }
       link.href = href;
     }
-    var eff = (C.theme && C.theme.effects) || {};
+    var eff = th.effects || {};
     u.$('.grain').hidden = eff.grain === false;
     u.$('.vignette').hidden = eff.vignette === false;
-    var meta = document.querySelector('meta[name=theme-color]'); if (meta && col.ink) meta.content = col.ink;
+    html.classList.toggle('no-credits', eff.mediaCredits === false);
+    if (DP.tools && DP.tools.themeToggle && DP.content) try { DP.tools.themeToggle(); } catch (e) {}
     // Studio: optional favicon override (brand.favicon)
     var fav = C.brand && C.brand.favicon;
     if (fav) Array.prototype.forEach.call(document.querySelectorAll('link[rel~=icon]'), function (l) { l.href = fav; l.removeAttribute('type'); });
@@ -80,6 +85,7 @@
     try { DP.fx.dust(); DP.fx.dustObserve(); DP.fx.cursor(); DP.fx.magnetic(document); DP.fx.tilt(document); DP.fx.trail(); DP.fx.marquee(); } catch (e) { console.error('[dp] fx failed', e); }
   }
   DP.mount = mount;
+  DP.applyTheme = applyTheme;
 
   function boot() {
     if (u.reduced()) document.documentElement.classList.add('is-static');

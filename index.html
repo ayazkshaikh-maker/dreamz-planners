@@ -36,6 +36,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@400;500;600;700&family=Marcellus&family=Pinyon+Script&display=swap">
   <link rel="preload" as="image" href="assets/media/posters/hero-01.webp" fetchpriority="high">
   <link rel="stylesheet" href="css/site.css">
+  <!-- theme: paint the last-seen preset before first render (no dark flash on light themes) -->
+  <script src="js/themes.js"></script>
+  <script>try { DP.themes.boot(); } catch (e) {}</script>
   <noscript><style>.preloader, .dock { display: none !important; }</style></noscript>
 
   <script type="application/ld+json" id="ld-business">
@@ -75,6 +78,7 @@
       <a class="header__logo" id="header-logo" href="#hero" aria-label="Dreamz Planners — home"><span class="wordmark">Dreamz Planners</span></a>
       <nav class="nav" id="nav" aria-label="Main"></nav>
       <div class="header__actions">
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch theme" hidden><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6Z"/></svg></button>
         <button type="button" class="btn btn--gold btn--sm magnetic" id="header-plan" data-action="wizard">Plan my event</button>
         <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu"><span></span></button>
       </div>
@@ -95,6 +99,7 @@
   </main>
 
   <div class="dock" id="dock" role="navigation" aria-label="Quick contact"></div>
+  <button type="button" class="totop-float" id="totop-float" data-action="top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="totop-float__tip" aria-hidden="true">Back to top</span></button>
 
   <div class="announce" id="announce" role="dialog" aria-modal="false" aria-labelledby="announce-title"></div>
 
@@ -116,7 +121,7 @@
     <div class="lb__bottom"><span class="lb__count" aria-live="polite"></span><div class="lb__thumbs"></div><span class="lb__credit"></span></div>
   </dialog>
 
-  <dialog class="film" id="film" aria-label="Film">
+  <dialog class="film on-media" id="film" aria-label="Film">
     <div class="film__stage"></div>
     <div class="film__bar">
       <div class="film__progress" aria-hidden="true"></div>

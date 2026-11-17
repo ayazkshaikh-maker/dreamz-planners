@@ -20,13 +20,6 @@
     document.head.appendChild(h('link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?' + fams.map(function (f) { return 'family=' + f.replace(/ /g, '+'); }).join('&') + '&display=swap' }));
   }
 
-  var PRESETS = [
-    { name: 'Midnight Gold', colors: { ink: '#0E0A14', plum: '#2A1238', aubergine: '#45194F', rani: '#C2185B', gold: '#D4A853', goldDeep: '#9C7430', champagne: '#F1DFB6', ivory: '#FAF5EC' }, fonts: { display: 'Cormorant Garamond', label: 'Marcellus', body: 'Manrope', script: 'Pinyon Script' } },
-    { name: 'Rani Night', colors: { ink: '#14060E', plum: '#3A0C26', aubergine: '#5C1238', rani: '#E0407A', gold: '#E6B85C', goldDeep: '#A67C2E', champagne: '#F6D9C0', ivory: '#FFF4F0' }, fonts: { display: 'Playfair Display', label: 'Cinzel', body: 'Manrope', script: 'Great Vibes' } },
-    { name: 'Ivory Day', colors: { ink: '#F8F1E6', plum: '#EFE3D3', aubergine: '#E4D2C0', rani: '#A3124A', gold: '#8C6420', goldDeep: '#6E5020', champagne: '#5A3E1C', ivory: '#24141F' }, fonts: { display: 'Cormorant Garamond', label: 'Marcellus', body: 'Manrope', script: 'Pinyon Script' } },
-    { name: 'Emerald Mehndi', colors: { ink: '#07130F', plum: '#0F2A22', aubergine: '#1A3D30', rani: '#C2185B', gold: '#D9B45E', goldDeep: '#9C7430', champagne: '#EBDDB3', ivory: '#F7F3E8' }, fonts: { display: 'Bodoni Moda', label: 'Marcellus', body: 'DM Sans', script: 'Parisienne' } }
-  ];
-
   var sectionIds = function () { return (C().sections || []).map(function (s) { return s.id; }).filter(function (id) { return id !== 'preloader'; }); };
 
   var E = (S.editors = [
@@ -35,26 +28,77 @@
       return [
         F.group('Name', [F.text('brand.name', 'Business name'), F.text('brand.shortName', 'Short name (giant footer word)'), F.text('brand.tagline', 'Tagline')]),
         F.group('Logos', [
-          F.media('brand.logo.horizontal', 'Header logo (gold, for dark backgrounds)', { kind: 'image', hint: 'SVG or transparent PNG/WebP works best. Falls back to the name in text if it cannot load.' }),
-          F.media('brand.logo.stacked', 'Footer logo (stacked)', { kind: 'image' }),
-          F.media('brand.logo.horizontalDark', 'Logo for light backgrounds', { kind: 'image' }),
-          F.media('brand.logo.mark', 'Monogram mark', { kind: 'image' }),
+          F.media('brand.logo.horizontal', 'Header logo — light/gold version (dark themes and over the hero film)', { kind: 'image', hint: 'SVG or transparent PNG/WebP works best. Falls back to the name in text if it cannot load.' }),
+          F.media('brand.logo.horizontalDark', 'Header logo — dark version (light themes)', { kind: 'image' }),
+          F.media('brand.logo.stacked', 'Footer logo — light/gold version', { kind: 'image' }),
+          F.media('brand.logo.stackedDark', 'Footer logo — dark version (light themes)', { kind: 'image' }),
+          F.media('brand.logo.mark', 'Monogram mark — light/gold version', { kind: 'image' }),
+          F.media('brand.logo.markDark', 'Monogram mark — dark version', { kind: 'image' }),
           F.media('brand.logo.mark3d', '3D logo render', { kind: 'image' })
         ]),
         F.group('Browser icon', [F.media('brand.favicon', 'Favicon (square, 512 px PNG or SVG)', { kind: 'image', hint: 'Shown in the browser tab. Leave empty to keep the built-in DP icon.' })])
       ];
     } },
-    { id: 'theme', group: 'Look & feel', label: 'Colours & fonts', render: function () {
+    { id: 'theme', group: 'Look & feel', label: 'Theme, colours & fonts', render: function () {
       loadFontSamples();
+      var TH = window.DP && window.DP.themes;
+      var th = C().theme = C().theme || {};
+      if (!th.colors || typeof th.colors !== 'object') th.colors = {};
+      if (!th.effects) th.effects = {};
+      if (!TH) return [F.note('Theme presets could not load (js/themes.js). Reload the Studio.', 'warn')];
+      var current = TH.get(th.preset);
+      function eff() { return TH.vars(th, TH.get(th.preset)); }
+
+      /* ---- preset picker: live mini previews ---- */
+      function mini(id) {
+        var t = TH.vars({ preset: id }, id), c = t.colors, m = t.media, v = t.vars;
+        var font = "'" + ((th.fonts && th.fonts.display) || 'Cormorant Garamond') + "', Georgia, serif";
+        return h('div', { class: 'tmini', 'aria-hidden': 'true', style: { background: c.ink, color: c.ivory } }, [
+          h('div', { class: 'tmini__bar', style: { borderColor: 'color-mix(in srgb, ' + c.gold + ' 30%, transparent)' } }, [
+            h('i', { style: { background: c.gold } }), h('span', { style: { background: c.ivory, opacity: .35 } }), h('span', { style: { background: c.ivory, opacity: .35 } }), h('b', { style: { background: v['--btn-grad'] } })
+          ]),
+          h('div', { class: 'tmini__hero', style: { background: 'linear-gradient(180deg, transparent, rgb(' + v['--scrim'] + ' / .85)), url(../assets/media/posters/hero-01.webp) center/cover' } }, [
+            h('span', { class: 'tmini__h', style: { color: m.ivory, fontFamily: font } }, ['Turning ', h('em', { style: { color: m.gold }, text: 'moments' })])
+          ]),
+          h('div', { class: 'tmini__body' }, [
+            h('small', { style: { color: c.gold }, text: 'THE PROMISE' }),
+            h('span', { class: 'tmini__t', style: { fontFamily: font, color: c.ivory }, text: 'From setup to send off' }),
+            h('span', { class: 'tmini__row' }, [
+              h('span', { class: 'tmini__card', style: { background: t.mode === 'light' ? v['--surface'] : c.plum, borderColor: 'color-mix(in srgb, ' + c.gold + ' 30%, transparent)' } }),
+              h('span', { class: 'tmini__btn', style: { background: v['--btn-grad'], color: v['--on-gold'] }, text: 'Plan' })
+            ])
+          ])
+        ]);
+      }
+      function worst(id) {
+        var rows = TH.checks(TH.vars({ preset: id }, id));
+        return rows.every(function (r) { var k = TH.contrast(r[1], r[2]); return k == null || k >= r[3]; });
+      }
+      var picker = h('div', { class: 'tpresets', role: 'radiogroup', 'aria-label': 'Theme preset' });
+      Object.keys(TH.presets).forEach(function (id) {
+        var p = TH.presets[id];
+        var b = h('button', { type: 'button', role: 'radio', class: 'tpreset' + (id === current ? ' is-on' : ''), 'aria-checked': String(id === current), onclick: function () {
+          if (id === TH.get(th.preset) && !Object.keys(th.colors).length) return;
+          th.preset = id;
+          th.colors = {};
+          if (p.mode === 'light') th.lightPreset = id; else th.darkPreset = id;
+          S.changed('theme.preset'); S.rerender();
+          u.toast(p.label + ' applied to your draft — save or publish to keep it', 'ok');
+        } }, [mini(id), h('span', { class: 'tpreset__meta' }, [
+          h('strong', { text: p.label }), h('small', { text: (p.mode === 'light' ? 'Light · ' : 'Dark · ') + p.note }),
+          h('em', { class: worst(id) ? 'is-ok' : 'is-bad', text: worst(id) ? 'Readability AA ✓' : 'Check readability' })
+        ])]);
+        picker.appendChild(b);
+      });
+
+      /* ---- fine-tune: shows the preset value, saves only what you change ---- */
+      var t0 = eff();
       var warn = h('div', { class: 'contrast' });
       function check() {
-        var c = C().theme.colors, rows = [
-          ['Body text on page background', c.ivory, c.ink, 4.5], ['Champagne text on background', c.champagne, c.ink, 4.5],
-          ['Gold accents on background', c.gold, c.ink, 3], ['Button text on gold', c.ink, c.gold, 4.5], ['Text on plum cards', c.ivory, c.plum, 4.5]
-        ];
+        var t = eff();
         u.clear(warn);
-        rows.forEach(function (r) {
-          var k = u.contrast(r[1], r[2]); if (k == null) return;
+        TH.checks(t).forEach(function (r) {
+          var k = TH.contrast(r[1], r[2]); if (k == null) return;
           var good = k >= r[3];
           warn.appendChild(h('div', { class: 'contrast__row ' + (good ? 'is-ok' : 'is-bad') }, [
             h('span', { class: 'contrast__sample', style: { color: r[1], background: r[2] }, text: 'Aa' }),
@@ -62,31 +106,61 @@
           ]));
         });
       }
-      var presetRow = h('div', { class: 'presets' }, PRESETS.map(function (p) {
-        return h('button', { type: 'button', class: 'preset', onclick: function () {
-          C().theme.colors = Object.assign({}, p.colors); C().theme.fonts = Object.assign({}, p.fonts); S.changed('theme'); S.rerender(); u.toast(p.name + ' applied — save or publish to keep it', 'ok');
-        } }, [h('span', { class: 'preset__dots' }, ['ink', 'plum', 'rani', 'gold', 'ivory'].map(function (k) { return h('i', { style: { background: p.colors[k] } }); })), h('span', { class: 'preset__name', text: p.name, style: { fontFamily: "'" + p.fonts.display + "', serif" } })]);
-      }));
-      var colorLabels = { ink: 'Page background (ink)', plum: 'Surfaces (plum)', aubergine: 'Gradients & hover (aubergine)', rani: 'Accent pink (rani)', gold: 'Gold (lines, buttons)', goldDeep: 'Gold shadow', champagne: 'Light accent text (champagne)', ivory: 'Main text (ivory)' };
-      var colors = Object.keys(colorLabels).map(function (k) { return F.color('theme.colors.' + k, colorLabels[k], { onchange: check }); });
+      var colorLabels = { ink: 'Page background', ivory: 'Main text', plum: 'Cards & surfaces', aubergine: 'Soft tint (gradients, hover)', gold: 'Gold (labels, lines, buttons)', goldDeep: 'Gold shadow side', champagne: 'Secondary accent text', rani: 'Pink accent', mediaInk: 'Shade over photos & video', mediaText: 'Text over photos & video', mediaGold: 'Gold over photos & video' };
+      function tune(k) {
+        var base = k === 'mediaInk' ? t0.media.ink : k === 'mediaText' ? t0.media.ivory : k === 'mediaGold' ? t0.media.gold : t0.colors[k];
+        var cur = TH.hex(th.colors[k]) ? th.colors[k].toUpperCase() : base;
+        var pick = h('input', { type: 'color', class: 'swatch', value: cur, 'aria-label': colorLabels[k] + ' colour picker' });
+        var txt = h('input', { class: 'input input--hex', value: cur, maxlength: 7, spellcheck: 'false', 'aria-label': colorLabels[k] + ' hex value' });
+        var reset = u.btn('', { small: true, kind: 'ghost', icon: 'reload', title: 'Back to the preset colour', onclick: function () { delete th.colors[k]; pick.value = base; txt.value = base; mark(); S.changed('theme.colors'); check(); } });
+        function mark() { var on = TH.hex(th.colors[k]) && th.colors[k].toUpperCase() !== base.toUpperCase(); field.classList.toggle('is-tuned', !!on); reset.hidden = !on; }
+        function set(v) { v = v.toUpperCase(); if (v === base.toUpperCase()) delete th.colors[k]; else th.colors[k] = v; mark(); S.changed('theme.colors.' + k); check(); }
+        pick.addEventListener('input', function () { txt.value = pick.value.toUpperCase(); set(pick.value); });
+        txt.addEventListener('input', function () { if (/^#[0-9a-f]{6}$/i.test(txt.value)) { pick.value = txt.value; set(txt.value); } });
+        var field = F.wrap(colorLabels[k], h('div', { class: 'color-row' }, [pick, txt, reset]), { cls: 'field--color' });
+        mark();
+        return field;
+      }
+      var tuneKeys = TH.COLOR_KEYS.concat(TH.presets[current].mode === 'light' ? TH.EXTRA_KEYS : []);
+      var colors = tuneKeys.map(tune);
       check();
+      var resetAll = u.btn('Reset all fine-tuning', { small: true, kind: 'outline', icon: 'reload', onclick: function () { th.colors = {}; S.changed('theme.colors'); S.rerender(); } });
+
       function fontSel(key, label) {
         var sample = h('p', { class: 'font-sample', text: key === 'script' ? 'Forever & always' : key === 'body' ? 'From the first setup to the final dance.' : 'Dreamz Planners' });
         function upd() { sample.style.fontFamily = "'" + C().theme.fonts[key] + "'"; }
         upd();
         return F.select('theme.fonts.' + key, label, FONTS[key].map(function (f) { return { value: f, label: f, font: f }; }), { onchange: upd, extra: sample });
       }
+      var presetOpts = function (mode) { return Object.keys(TH.presets).filter(function (id) { return TH.presets[id].mode === mode; }).map(function (id) { return { value: id, label: TH.presets[id].label }; }); };
+      function visitorSel() {
+        var sel = h('select', { class: 'input', 'aria-label': 'Light/dark button for visitors' }, [
+          h('option', { value: 'off', text: 'No — always use the theme above' }),
+          h('option', { value: 'on', text: 'Yes — visitors can switch (starts on the theme above)' }),
+          h('option', { value: 'auto', text: 'Yes — and start from the visitor\'s phone/computer setting' })
+        ]);
+        sel.value = th.visitorToggle === 'auto' ? 'auto' : th.visitorToggle ? 'on' : 'off';
+        sel.addEventListener('change', function () { th.visitorToggle = sel.value === 'auto' ? 'auto' : sel.value === 'on'; S.changed('theme.visitorToggle'); });
+        return F.wrap('Show a light/dark button in the header', sel, { hint: 'The visitor\'s choice is remembered on their device.' });
+      }
+      var cursorToggle = F.toggle('theme.effects.customCursor', 'Cursor ring', { hint: 'Desktop only. A soft gold ring follows the normal mouse pointer (the pointer itself always stays visible).', onchange: function (on) { th.effects.cursor = on; } });
       return [
-        F.group('Presets', [presetRow], { intro: 'One tap sets all colours and fonts. You can fine-tune afterwards. Light presets (Ivory Day) turn the text dark — check the hero over video in the preview before publishing.' }),
-        F.group('Colours', colors, { cols: 2 }),
-        F.group('Readability check', [warn], { intro: 'WCAG AA: 4.5:1 for text, 3:1 for large accents.' }),
+        F.group('Theme', [picker], { intro: 'Each theme is a complete look — page, cards, wizard, gallery and menus are designed for it. Photos and videos keep a cinematic shade in every theme so the text on them stays readable. Tap one to try it in the preview; nothing goes live until you publish.' }),
+        F.group('Readability check — ' + TH.presets[current].label, [warn], { intro: 'WCAG AA: 4.5:1 for normal text, 3:1 for large accents. Re-checked as you fine-tune.' }),
+        F.group('Fine-tune colours', colors.concat([h('div', { class: 'row' }, [resetAll])]), { cols: 2, intro: 'Optional. Starts from the theme\'s own colours; only what you change is saved, and picking another theme clears it.' }),
+        F.group('Light / dark switch for visitors', [
+          visitorSel(),
+          F.select('theme.lightPreset', 'Light theme for the switch', presetOpts('light'), { hint: 'Used when the main theme is dark.' }),
+          F.select('theme.darkPreset', 'Dark theme for the switch', presetOpts('dark'), { hint: 'Used when the main theme is light.' })
+        ], { cols: 1 }),
         F.group('Fonts', [fontSel('display', 'Display (headlines)'), fontSel('label', 'Labels & wordmark'), fontSel('body', 'Body text'), fontSel('script', 'Script accent')], { cols: 2 }),
         F.group('Effects', [
           F.toggle('theme.effects.grain', 'Film grain', { hint: 'Subtle texture over the page' }),
-          F.toggle('theme.effects.vignette', 'Vignette', { hint: 'Soft dark edges' }),
+          F.toggle('theme.effects.vignette', 'Vignette', { hint: 'Soft shaded edges' }),
           F.toggle('theme.effects.particles', 'Gold dust', { hint: 'Floating particles' }),
-          F.toggle('theme.effects.cursor', 'Custom cursor', { hint: 'Desktop only' }),
-          F.toggle('theme.effects.smoothScroll', 'Smooth scrolling', { hint: 'Cinematic scroll feel' })
+          cursorToggle,
+          F.toggle('theme.effects.smoothScroll', 'Smooth scrolling', { hint: 'Cinematic scroll feel' }),
+          F.toggle('theme.effects.mediaCredits', 'Photographer credits on photos & videos', { hint: 'Small © @photographer notes in the corner of each picture. Switch off to hide them everywhere (story credits under each wedding stay).' })
         ])
       ];
     } },
@@ -147,7 +221,7 @@
       var actions = [{ value: 'wizard', label: 'Open the inquiry wizard' }, { value: 'film', label: 'Play the film' }];
       return [
         F.group('Text', [F.text('hero.eyebrow', 'Eyebrow'), F.text('hero.headline', 'Headline', { rich: true, hint: 'Animated letter by letter. Keep it short.' }), F.area('hero.sub', 'Sub-line', { rich: true })]),
-        F.group('Background video', [F.media('hero.video', 'Hero video loop', { kind: 'video' })]),
+        F.group('Background video', [F.media('hero.video', 'Hero video loop', { kind: 'video', hint: 'Pick a loop from the library, or Upload your own MP4/WebM (up to 10 MB). Click the picture to set the focal point.' }), F.media('hero.poster', 'Poster photo (optional)', { kind: 'image', hint: 'Shown while the video loads. Leave empty to use the first frame of the video (uploaded videos have none, so add one here).' })]),
         F.group('Buttons', [F.text('hero.ctaPrimary.label', 'Main button'), F.select('hero.ctaPrimary.action', 'Main button does', actions), F.text('hero.ctaSecondary.label', 'Second button'), F.select('hero.ctaSecondary.action', 'Second button does', actions)], { cols: 2 }),
         F.group('The film', [F.mediaList('hero.film', 'Clips played back-to-back', { kind: 'video' }), F.text('hero.filmCaption', 'Film caption')]),
         F.group('', [F.text('hero.scrollCue', 'Scroll hint')])

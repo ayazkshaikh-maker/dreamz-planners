@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "meta": {
-    "updated": "2026-11-16",
+    "updated": "2026-11-17",
     "note": "Default content. The Studio publishes overrides to Supabase site_content id='published'; missing keys fall back to this file."
   },
   "brand": {
@@ -12,21 +12,18 @@
       "horizontal": "assets/brand/logo-horizontal.svg",
       "horizontalDark": "assets/brand/logo-horizontal-dark.svg",
       "stacked": "assets/brand/logo-stacked.svg",
+      "stackedDark": "assets/brand/logo-stacked-dark.svg",
       "mark": "assets/brand/logo-mark.svg",
+      "markDark": "assets/brand/logo-mark-dark.svg",
       "mark3d": "assets/brand/logo-3d.webp"
     }
   },
   "theme": {
-    "colors": {
-      "ink": "#0E0A14",
-      "plum": "#2A1238",
-      "aubergine": "#45194F",
-      "rani": "#C2185B",
-      "gold": "#D4A853",
-      "goldDeep": "#9C7430",
-      "champagne": "#F1DFB6",
-      "ivory": "#FAF5EC"
-    },
+    "preset": "midnight-gold",
+    "colors": {},
+    "visitorToggle": false,
+    "lightPreset": "satin-ivory",
+    "darkPreset": "midnight-gold",
     "fonts": {
       "display": "Cormorant Garamond",
       "label": "Marcellus",
@@ -37,8 +34,9 @@
       "grain": true,
       "vignette": true,
       "particles": true,
-      "cursor": true,
-      "smoothScroll": true
+      "customCursor": true,
+      "smoothScroll": true,
+      "mediaCredits": true
     }
   },
   "seo": {
@@ -208,11 +206,13 @@
     }
   ],
   "mediaCredits": {},
+  "mediaFocus": {},
   "hero": {
     "eyebrow": "Atlanta · South Asian weddings & celebrations",
     "headline": "Turning moments into *unforgettable* memories",
     "sub": "Wedding planning and day-of coordination for Indian, Pakistani, Ismaili and Muslim celebrations — from the first setup to the final dance.",
     "video": "hero-01",
+    "poster": "",
     "ctaPrimary": {
       "label": "Plan my event",
       "action": "wizard"
@@ -889,6 +889,9 @@
     "news": "News",
     "photos": "photos",
     "nextClip": "Next clip",
-    "contactOptions": "Contact options"
+    "contactOptions": "Contact options",
+    "backToTop": "Back to top",
+    "lightTheme": "Switch to light theme",
+    "darkTheme": "Switch to dark theme"
   }
 }

@@ -38,9 +38,9 @@
   var R = {};
 
   R.hero = function (c, C) {
-    var s = u.h('section', { id: 'hero', class: 'hero', 'data-chapter': 'hero', 'aria-label': u.plain(c.headline) });
+    var s = u.h('section', { id: 'hero', class: 'hero on-media', 'data-chapter': 'hero', 'aria-label': u.plain(c.headline) });
     var mediaWrap = append(s, u.h('div', { class: 'hero__media' }));
-    var vid = u.media(c.video, { class: 'hero__video' });
+    var vid = u.media(c.video, { class: 'hero__video', poster: c.poster ? (DP.media.resolve(c.poster) || {}).src : '' });
     vid.setAttribute && vid.setAttribute('preload', 'metadata');
     mediaWrap.appendChild(vid);
     mediaWrap.appendChild(u.h('div', { class: 'hero__shade' }));
@@ -79,10 +79,11 @@
       var d = append(stage, u.h('div', { class: 'behind__side behind__side--' + (i ? 'b' : 'a'), 'aria-hidden': 'true' }));
       d.appendChild(u.media(id, { still: true }));
     });
-    var frame = append(stage, u.h('div', { class: 'behind__frame' }));
-    frame.appendChild(u.media(c.video, { label: 'The Dreamz Planners team setting up a ballroom' }));
-    stage.insertAdjacentHTML('beforeend', '<div class="behind__quote"><blockquote>“' + u.esc(c.quote) + '”</blockquote>' +
-      (c.body ? '<p>' + u.rich(c.body) + '</p>' : '') + u.credit(c.video) + '</div>');
+    var frame = append(stage, u.h('div', { class: 'behind__frame on-media' }));
+    frame.appendChild(u.media(c.video, { label: c.videoLabel || 'The Dreamz Planners team at work before the guests arrive' }));
+    frame.insertAdjacentHTML('beforeend', u.credit(c.video));
+    stage.insertAdjacentHTML('beforeend', '<div class="behind__quote on-media"><blockquote>“' + u.esc(c.quote) + '”</blockquote>' +
+      (c.body ? '<p>' + u.rich(c.body) + '</p>' : '') + '</div>');
     return s;
   };
 
@@ -92,8 +93,8 @@
     var reel = append(s, u.h('div', { class: 'reel' }));
     var track = append(reel, u.h('div', { class: 'reel__track' }));
     (c.items || []).forEach(function (it, i) {
-      var card = append(track, u.h('article', { class: 'reel__card', 'aria-label': u.plain(it.name) }));
-      card.appendChild(u.media(it.video || it.image, { label: null }));
+      var card = append(track, u.h('article', { class: 'reel__card on-media', 'aria-label': u.plain(it.name) }));
+      card.appendChild(u.media(it.video || it.image, { label: null, fill: true }));
       card.insertAdjacentHTML('beforeend', u.credit(it.video || it.image, it.credit) +
         '<div class="reel__body"><span class="reel__num">' + String(i + 1).padStart(2, '0') + ' / ' + String(c.items.length).padStart(2, '0') + '</span>' +
         '<h3 class="reel__name">' + u.rich(it.name) + '</h3><p class="reel__sub">' + u.esc(it.subtitle) + '</p>' +
@@ -133,7 +134,7 @@
         var card = append(deck, u.h('div', { class: 'deck__card' }));
         card.appendChild(u.media(id, { still: true, thumb: compact, alt: '' }));
       });
-      deck.insertAdjacentHTML('beforeend', (gal.length > 1 ? '<span class="deck__count">' + gal.length + ' ' + u.esc(DP.content.labels.photos) + '</span>' : '') + u.credit(st.cover, (st.credits && st.credits[0]) ? st.credits[0].role + ' @' + String(st.credits[0].handle).replace(/^@/, '') : ''));
+      deck.insertAdjacentHTML('beforeend', (gal.length > 1 ? '<span class="deck__count on-media">' + gal.length + ' ' + u.esc(DP.content.labels.photos) + '</span>' : '') + u.credit(st.cover, (st.credits && st.credits[0]) ? st.credits[0].role + ' @' + String(st.credits[0].handle).replace(/^@/, '') : ''));
       art.appendChild(deck);
     });
     return s;
@@ -213,7 +214,7 @@
     if (c.photo) {
       var fig = append(grid, u.h('figure', { class: 'founders__photo', style: 'margin:0' }));
       fig.appendChild(u.media(c.photo, { still: true, alt: c.photoCaption || '' }));
-      fig.insertAdjacentHTML('beforeend', '<figcaption><span>' + u.esc(c.photoCaption || '') + '</span>' + u.credit(c.photo) + '</figcaption>');
+      fig.insertAdjacentHTML('beforeend', '<figcaption class="on-media"><span>' + u.esc(c.photoCaption || '') + '</span>' + u.credit(c.photo) + '</figcaption>');
     }
     var cards = append(grid, u.h('div', { class: 'founders__cards' }));
     (c.people || []).forEach(function (p) {
@@ -272,7 +273,10 @@
     var phones = (C.contact.phones || []).map(function (ph) { return '<li><a href="' + u.telHref(ph) + '">' + u.esc(ph.number) + '</a></li>'; }).join('');
     var nav = (C.nav || []).map(function (n) { return '<li><a href="' + u.esc(n.href) + '">' + u.esc(n.label) + '</a></li>'; }).join('');
     var links = (C.footer.links || []).map(function (n) { return '<a href="' + u.esc(n.href) + '">' + u.esc(n.label) + '</a>'; }).join(' · ');
-    f.innerHTML = '<div class="footer__grid"><div><img class="footer__logo" src="' + u.esc(C.brand.logo.stacked || C.brand.logo.horizontal) + '" alt="' + u.esc(C.brand.name) + '" onerror="this.replaceWith(Object.assign(document.createElement(\'p\'),{className:\'display\',textContent:\'' + u.esc(C.brand.name).replace(/'/g, '') + '\'}))">' +
+    var lg = C.brand.logo || {};
+    var onErr = ' onerror="this.replaceWith(Object.assign(document.createElement(\'p\'),{className:\'display footer__logo-text\',textContent:\'' + u.esc(C.brand.name).replace(/'/g, '') + '\'}))"';
+    f.innerHTML = '<div class="footer__grid"><div><img class="footer__logo logo-for-dark" src="' + u.esc(lg.stacked || lg.horizontal) + '" alt="' + u.esc(C.brand.name) + '"' + onErr + '>' +
+      '<img class="footer__logo logo-for-light" src="' + u.esc(lg.stackedDark || lg.horizontalDark || lg.stacked || lg.horizontal) + '" alt=""' + onErr + '>' +
       '<p class="footer__tag">' + u.esc(C.brand.tagline) + '</p><p style="color:var(--muted);max-width:28rem;margin:0">' + u.esc(C.footer.note) + '</p></div>' +
       '<div><h3>Contact</h3><ul>' + phones + '<li><a href="' + u.waHref(C.contact.whatsapp.number, C.contact.whatsapp.defaultMessage) + '" target="_blank" rel="noopener">WhatsApp</a></li>' +
       '<li><a href="' + u.esc(C.contact.instagram.url) + '" target="_blank" rel="noopener">Instagram @' + u.esc(C.contact.instagram.handle) + '</a></li>' +
@@ -280,7 +284,8 @@
       '<li style="color:var(--muted)">' + u.esc([C.contact.address, C.contact.city, C.contact.region].filter(Boolean).join(', ')) + '</li></ul></div>' +
       '<div><h3>Explore</h3><ul>' + nav + '<li><a href="#begin">' + u.esc(C.labels.planCta) + '</a></li></ul></div></div>' +
       '<p class="footer__big gold-text" aria-hidden="true">' + u.esc(C.brand.shortName || C.brand.name) + '</p>' +
-      '<div class="footer__base"><span>' + u.esc(C.footer.copyright) + ' ' + new Date().getFullYear() + '</span><span>' + links + '</span></div>';
+      '<div class="footer__base"><span>' + u.esc(C.footer.copyright) + ' ' + new Date().getFullYear() + '</span><span>' + links + '</span>' +
+      '<button type="button" class="totop" data-action="top">' + u.esc(C.labels.backToTop || 'Back to top') + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></div>';
     return f;
   }
 
