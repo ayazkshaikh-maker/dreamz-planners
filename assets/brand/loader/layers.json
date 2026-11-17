@@ -1,0 +1,178 @@
+{
+  "canvas": {
+    "w": 1200,
+    "h": 1033
+  },
+  "units": "px on the shared canvas (all layers are the same size and stack at 0,0)",
+  "crestViewBox": [
+    117.6,
+    41.29,
+    788.8,
+    679.26
+  ],
+  "layers": {
+    "peacock-left": {
+      "file": "loader/peacock-left.webp",
+      "z": 1,
+      "bbox": [
+        32,
+        266,
+        450,
+        1012
+      ],
+      "bytes": 155606,
+      "pivot": [
+        323.1,
+        472.7
+      ],
+      "note": "rump / root of the train: rotate or scaleY the train from here to unfurl"
+    },
+    "peacock-right": {
+      "file": "loader/peacock-right.webp",
+      "z": 1,
+      "bbox": [
+        756,
+        266,
+        1174,
+        1012
+      ],
+      "bytes": 150362,
+      "pivot": [
+        876.9,
+        472.7
+      ],
+      "note": "mirror of the left pivot"
+    },
+    "train-left": {
+      "file": "loader/train-left.webp",
+      "z": 1,
+      "bbox": [
+        32,
+        470,
+        331,
+        1012
+      ],
+      "bytes": 123490,
+      "pivot": [
+        323.1,
+        472.7
+      ],
+      "tip": [
+        78.2,
+        973.2
+      ]
+    },
+    "train-right": {
+      "file": "loader/train-right.webp",
+      "z": 1,
+      "bbox": [
+        875,
+        470,
+        1174,
+        1012
+      ],
+      "bytes": 119020,
+      "pivot": [
+        876.9,
+        472.7
+      ],
+      "tip": [
+        1121.8,
+        973.2
+      ]
+    },
+    "bird-left": {
+      "file": "loader/bird-left.webp",
+      "z": 2,
+      "bbox": [
+        255,
+        266,
+        450,
+        760
+      ],
+      "bytes": 41184,
+      "pivot": [
+        344.4,
+        567.0
+      ],
+      "note": "feet on the perch"
+    },
+    "bird-right": {
+      "file": "loader/bird-right.webp",
+      "z": 2,
+      "bbox": [
+        756,
+        266,
+        951,
+        760
+      ],
+      "bytes": 40176,
+      "pivot": [
+        855.6,
+        567.0
+      ]
+    },
+    "jharokha": {
+      "file": "loader/jharokha.webp",
+      "z": 4,
+      "bbox": [
+        397,
+        262,
+        809,
+        841
+      ],
+      "bytes": 66930,
+      "pivot": [
+        600.0,
+        533.5
+      ],
+      "lotus": [
+        600.0,
+        576.1
+      ],
+      "note": "window centre; canopy, crown and lotus are included"
+    },
+    "dome": {
+      "file": "loader/dome.webp",
+      "z": 5,
+      "bbox": [
+        374,
+        35,
+        832,
+        330
+      ],
+      "bytes": 40190,
+      "pivot": [
+        600.0,
+        265.8
+      ],
+      "note": "bottom centre of the dome rim (pearl drops hang below it); descend from above"
+    },
+    "ribbon": {
+      "file": "loader/ribbon.webp",
+      "z": 3,
+      "bbox": [
+        182,
+        758,
+        1024,
+        930
+      ],
+      "bytes": 38332,
+      "pivot": [
+        600.0,
+        850.0
+      ],
+      "note": "centre of the banner"
+    }
+  },
+  "crest": {
+    "file": "logo-crest-gold-3d.webp",
+    "png": "logo-crest-gold-3d.png",
+    "webpQuality": 88
+  },
+  "sheenMask": {
+    "file": "loader/sheen-mask.png",
+    "note": "white + alpha; use as mask-image over a moving gold-white gradient"
+  },
+  "stackOrder": "z ascending: peacocks (or train then bird) 1-2, ribbon 3, jharokha 4, dome 5. Layers are pre-occluded: at rest they recombine into logo-crest-gold-3d exactly."
+}

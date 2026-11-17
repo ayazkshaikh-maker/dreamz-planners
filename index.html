@@ -35,6 +35,15 @@
   <link rel="preconnect" href="https://mbmmnswxuuegbloouuti.supabase.co" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@400;500;600;700&family=Marcellus&family=Pinyon+Script&display=swap">
   <link rel="preload" as="image" href="assets/media/posters/hero-01.webp" fetchpriority="high">
+  <!-- header lockup (gold: used over the hero film in every theme) + the layered gold crest of the preloader -->
+  <link rel="preload" as="image" href="assets/brand/logo-horizontal.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="assets/brand/loader/jharokha.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/brand/loader/ribbon.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/brand/loader/dome.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/brand/loader/train-left.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/brand/loader/train-right.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/brand/loader/bird-left.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/brand/loader/bird-right.webp" type="image/webp">
   <link rel="stylesheet" href="css/site.css">
   <!-- theme: paint the last-seen preset before first render (no dark flash on light themes) -->
   <script src="js/themes.js"></script>
@@ -66,7 +75,7 @@
     <div class="preloader__panel preloader__panel--top"></div>
     <div class="preloader__panel preloader__panel--bottom"></div>
     <div class="preloader__inner">
-      <div class="preloader__mark"></div>
+      <div class="preloader__mark"><div class="pcrest" aria-hidden="true"></div></div>
       <div class="preloader__line"><i></i></div>
       <div class="preloader__count">000</div>
     </div>
@@ -99,6 +108,7 @@
   </main>
 
   <div class="dock" id="dock" role="navigation" aria-label="Quick contact"></div>
+  <button type="button" class="music-toggle" id="music-toggle" aria-pressed="false" aria-label="Background music" hidden><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="music-toggle__tip" aria-hidden="true"></span></button>
   <button type="button" class="totop-float" id="totop-float" data-action="top" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="totop-float__tip" aria-hidden="true">Back to top</span></button>
 
   <div class="announce" id="announce" role="dialog" aria-modal="false" aria-labelledby="announce-title"></div>
@@ -158,6 +168,8 @@
   <script src="js/printing.js" defer></script>
   <script src="js/fx.js" defer></script>
   <script src="js/motion.js" defer></script>
+  <script src="js/music.js" defer></script>
+  <script src="js/intro.js" defer></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

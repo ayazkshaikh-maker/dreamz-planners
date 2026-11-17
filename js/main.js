@@ -83,6 +83,7 @@
       try { fn(); } catch (e) { console.error('[dp] tool failed', e); }
     });
     try { DP.motion.lenis(); DP.motion.init(); } catch (e) { console.error('[dp] motion failed', e); document.documentElement.classList.add('is-static'); }
+    try { if (DP.music) DP.music.init(); } catch (e) { console.error('[dp] music failed', e); }
     try { DP.fx.dust(); DP.fx.dustObserve(); DP.fx.cursor(); DP.fx.magnetic(document); DP.fx.tilt(document); DP.fx.trail(); DP.fx.marquee(); } catch (e) { console.error('[dp] fx failed', e); }
   }
   DP.mount = mount;
@@ -107,6 +108,9 @@
       document.getElementById('main').innerHTML = '<section class="section"><div class="wrap"><h1 class="display">Dreamz Planners</h1><p class="lede">Call us at <a href="tel:+14044887643">404-488-7643</a> or <a href="tel:+14045433444">404-543-3444</a>.</p></div></section>';
     });
     DP.motion.preloader(mounted).then(function () {
+      // intro film overlay (theme.intro) — resolves as it hands over to the hero
+      return DP.intro ? DP.intro.run().catch(function (e) { console.error('[dp] intro failed', e); }) : null;
+    }).then(function () {
       DP.motion.heroIntro();
       if (window.ScrollTrigger) ScrollTrigger.refresh();
       setTimeout(function () { DP.data.flushQueue(); }, 3000);

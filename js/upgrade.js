@@ -30,6 +30,18 @@
         var k = c.wizard.services.indexOf('Not sure yet');
         if (k >= 0) c.wizard.services.splice(k, 0, svc); else c.wizard.services.push(svc);
       }
+    },
+    /* intro film overlay + page background music (theme.intro, theme.music). Objects deep-merge from the
+       defaults on their own; this only adds built-in track / cue options missing from a saved list. */
+    'intro-music': function (c, d) {
+      var dt = d.theme || {};
+      c.theme = c.theme || {};
+      ['intro', 'music'].forEach(function (k) { if (!c.theme[k] || typeof c.theme[k] !== 'object') c.theme[k] = JSON.parse(JSON.stringify(dt[k] || {})); });
+      [[c.theme.music, (dt.music || {}).tracks, 'tracks'], [c.theme.intro, (dt.intro || {}).cues, 'cues']].forEach(function (x) {
+        var obj = x[0], defs = x[1] || [], key = x[2];
+        if (!Array.isArray(obj[key])) { obj[key] = JSON.parse(JSON.stringify(defs)); return; }
+        defs.forEach(function (t) { if (find(obj[key], function (s) { return s && s.id === t.id; }) < 0) obj[key].push(JSON.parse(JSON.stringify(t))); });
+      });
     }
   };
   DP.upgradeContent = function (merged, saved, defaults) {

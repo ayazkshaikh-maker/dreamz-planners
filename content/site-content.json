@@ -1,7 +1,8 @@
 {
   "schemaVersion": 1,
   "features": [
-    "printing"
+    "printing",
+    "intro-music"
   ],
   "meta": {
     "updated": "2026-11-17",
@@ -18,7 +19,10 @@
       "stackedDark": "assets/brand/logo-stacked-dark.svg",
       "mark": "assets/brand/logo-mark.svg",
       "markDark": "assets/brand/logo-mark-dark.svg",
-      "mark3d": "assets/brand/logo-3d.webp"
+      "mark3d": "assets/brand/logo-3d.webp",
+      "horizontalCompact": "assets/brand/logo-horizontal-compact.svg",
+      "horizontalCompactDark": "assets/brand/logo-horizontal-compact-dark.svg",
+      "crest3d": "assets/brand/logo-crest-gold-3d.webp"
     }
   },
   "theme": {
@@ -40,6 +44,72 @@
       "customCursor": true,
       "smoothScroll": true,
       "mediaCredits": true
+    },
+    "intro": {
+      "mode": "first-visit",
+      "src16x9": "assets/film/intro-16x9.mp4",
+      "src9x16": "assets/film/intro-9x16.mp4",
+      "silent16x9": "assets/film/intro-16x9-silent.mp4",
+      "silent9x16": "assets/film/intro-9x16-silent.mp4",
+      "posters": {
+        "16x9": "assets/film/poster-16x9-first.webp",
+        "9x16": "assets/film/poster-9x16-first.webp",
+        "16x9Last": "assets/film/poster-16x9-last.webp",
+        "9x16Last": "assets/film/poster-9x16-last.webp"
+      },
+      "cue": "film",
+      "cues": [
+        {
+          "id": "film",
+          "label": "A · Shehnai, ceremonial (in the film)",
+          "src": "assets/audio/intro-A-shehnai-ceremonial.m4a",
+          "srcOgg": "assets/audio/intro-A-shehnai-ceremonial.ogg"
+        },
+        {
+          "id": "intro-b",
+          "label": "B · Shehnai, brighter",
+          "src": "assets/audio/intro-B-shehnai-ceremonial-short.m4a",
+          "srcOgg": "assets/audio/intro-B-shehnai-ceremonial-short.ogg"
+        },
+        {
+          "id": "intro-c",
+          "label": "C · Sitar alap + bansuri",
+          "src": "assets/audio/intro-C-sitar-alap-bansuri.m4a",
+          "srcOgg": "assets/audio/intro-C-sitar-alap-bansuri.ogg"
+        }
+      ],
+      "enterLabel": "Tap to enter",
+      "skipLabel": "Skip intro",
+      "playLabel": "Play the film",
+      "soundLabel": "Sound on"
+    },
+    "music": {
+      "enabled": true,
+      "track": "loop-b",
+      "tracks": [
+        {
+          "id": "loop-a",
+          "label": "A · Shehnai wedding (festive)",
+          "src": "assets/audio/loop-A-shehnai-wedding.m4a",
+          "srcOgg": "assets/audio/loop-A-shehnai-wedding.ogg"
+        },
+        {
+          "id": "loop-b",
+          "label": "B · Bansuri prayer (soft)",
+          "src": "assets/audio/loop-B-bansuri-prayer.m4a",
+          "srcOgg": "assets/audio/loop-B-bansuri-prayer.ogg"
+        },
+        {
+          "id": "loop-c",
+          "label": "C · Peaceful classical (calm)",
+          "src": "assets/audio/loop-C-peaceful-classical.m4a",
+          "srcOgg": "assets/audio/loop-C-peaceful-classical.ogg"
+        }
+      ],
+      "volume": 0.25,
+      "autoplayAfterIntro": true,
+      "showToggle": true,
+      "label": "Background music"
     }
   },
   "seo": {

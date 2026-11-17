@@ -123,13 +123,33 @@
     u.$$('.magnetic', root).forEach(function (el) {
       if (el.dataset.mag) return;
       el.dataset.mag = '1';
-      var xTo = gsap.quickTo(el, 'x', { duration: 0.6, ease: 'elastic.out(1,0.4)' });
-      var yTo = gsap.quickTo(el, 'y', { duration: 0.6, ease: 'elastic.out(1,0.4)' });
+      // Only the hovered element moves, and never further than just under half the gap to its nearest
+      // magnetic neighbour (no overshooting ease), so two buttons in a row can never touch or overlap.
+      var xTo = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3.out' });
+      var yTo = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3.out' });
+      function clampAmp() {
+        var r = el.getBoundingClientRect(), gx = Infinity, gy = Infinity;
+        u.$$('.magnetic', el.parentElement).forEach(function (o) {
+          if (o === el) return;
+          var q = o.getBoundingClientRect();
+          if (!q.width) return;
+          var ox = Math.max(q.left - r.right, r.left - q.right), oy = Math.max(q.top - r.bottom, r.top - q.bottom);
+          if (oy < 0) gx = Math.min(gx, Math.max(0, ox)); // side by side
+          if (ox < 0) gy = Math.min(gy, Math.max(0, oy)); // stacked
+        });
+        return { x: Math.min(14, gx / 2 - 2), y: Math.min(10, gy / 2 - 2) };
+      }
+      var cap = null;
+      el.addEventListener('pointerenter', function () { cap = clampAmp(); });
       el.addEventListener('pointermove', function (e) {
-        var r = el.getBoundingClientRect();
-        xTo((e.clientX - r.left - r.width / 2) * 0.35); yTo((e.clientY - r.top - r.height / 2) * 0.45);
+        // measure against the element's resting box (subtract the current offset)
+        var r = el.getBoundingClientRect(), cx = +gsap.getProperty(el, 'x') || 0, cy = +gsap.getProperty(el, 'y') || 0;
+        if (!cap) cap = clampAmp();
+        var dx = (e.clientX - (r.left - cx) - r.width / 2) * 0.3, dy = (e.clientY - (r.top - cy) - r.height / 2) * 0.4;
+        var mx = Math.max(0, cap.x), my = Math.max(0, cap.y);
+        xTo(Math.max(-mx, Math.min(mx, dx))); yTo(Math.max(-my, Math.min(my, dy)));
       });
-      el.addEventListener('pointerleave', function () { xTo(0); yTo(0); });
+      el.addEventListener('pointerleave', function () { cap = null; xTo(0); yTo(0); });
     });
   };
 

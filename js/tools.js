@@ -39,7 +39,7 @@
     var logo = u.$('#header-logo'), lg = c.brand.logo || {};
     logo.innerHTML = '';
     [['logo-for-dark', lg.horizontal], ['logo-for-light', lg.horizontalDark || lg.horizontal]].forEach(function (pair, k) {
-      var img = u.h('img', { class: pair[0], src: pair[1], alt: k ? '' : c.brand.name, width: 196, height: 44 });
+      var img = u.h('img', { class: pair[0], src: pair[1], alt: k ? '' : c.brand.name, width: 247, height: 72, decoding: 'async', fetchpriority: k ? 'low' : 'high' });
       img.addEventListener('error', function () { logo.innerHTML = '<span class="wordmark">' + u.esc(c.brand.name) + '</span>'; });
       logo.appendChild(img);
     });
@@ -612,6 +612,7 @@
     d.querySelector('.film__caption').innerHTML = u.esc(c.filmCaption || '') + ' <a href="' + u.esc(C().contact.instagram.url) + '" target="_blank" rel="noopener" style="color:var(--gold)">@' + u.esc(C().contact.instagram.handle) + '</a>';
     d.querySelector('.film__next').textContent = C().labels.nextClip || 'Next clip';
     openDialog(d);
+    if (DP.music) DP.music.hold('film'); // the page music steps aside while a film plays
     film.i = 0; play();
     cancelAnimationFrame(film.raf);
     (function tick() {
@@ -629,7 +630,7 @@
   }
   function next(dir) { if (!film.vids.length) return; film.i = (film.i + dir + film.vids.length) % film.vids.length; play(); }
   T.filmNext = next;
-  T.stopFilm = function () { cancelAnimationFrame(film.raf); film.vids.forEach(function (v) { v.pause(); v.removeAttribute('src'); }); u.$('#film .film__stage').innerHTML = ''; film.vids = []; };
+  T.stopFilm = function () { if (DP.music) DP.music.release('film'); cancelAnimationFrame(film.raf); film.vids.forEach(function (v) { v.pause(); v.removeAttribute('src'); }); u.$('#film .film__stage').innerHTML = ''; film.vids = []; };
 
   /* ---------------- announcement ---------------- */
   T.announcement = function () {

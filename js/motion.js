@@ -22,53 +22,95 @@
     } catch (e) { console.warn('[dp] lenis unavailable', e); }
   };
 
-  /* ---------- preloader ---------- */
+  /* ---------- preloader: the layered photoreal gold crest (assets/brand/loader/, see layers.json) ----------
+     The jharokha and ribbon rise in first (the layers are pre-cut, so they must be there before the
+     peacocks open), the dome descends onto its rim, the trains unfurl from the rump, the birds settle,
+     then a gold sheen sweeps the seal. Always on ink (#0E0A14): the layers carry their own shadows. */
+  var LOADER = 'assets/brand/loader/';
+  var CW = 1200, CH = 1033;
+  // z ascending; pivot in canvas px (transform-origin)
+  var LAYERS = [
+    { id: 'train-left', p: [323.1, 472.7] }, { id: 'train-right', p: [876.9, 472.7] },
+    { id: 'bird-left', p: [344.4, 567.0] }, { id: 'bird-right', p: [855.6, 567.0] },
+    { id: 'ribbon', p: [600, 850] }, { id: 'jharokha', p: [600, 533.5] }, { id: 'dome', p: [600, 265.8] }
+  ];
+  function buildCrest(box) {
+    box.innerHTML = '';
+    var els = {};
+    var glow = document.createElement('i'); glow.className = 'pcrest__glow'; box.appendChild(glow);
+    LAYERS.forEach(function (L) {
+      var im = new Image();
+      im.className = 'pcrest__l pcrest__l--' + L.id; im.alt = ''; im.decoding = 'async'; im.draggable = false;
+      im.style.transformOrigin = (L.p[0] / CW * 100).toFixed(2) + '% ' + (L.p[1] / CH * 100).toFixed(2) + '%';
+      im.src = LOADER + L.id + '.webp';
+      box.appendChild(im); els[L.id] = im;
+    });
+    var sheen = document.createElement('i'); sheen.className = 'pcrest__sheen'; box.appendChild(sheen);
+    var dust = document.createElement('i'); dust.className = 'pcrest__dust'; box.appendChild(dust);
+    els.glow = glow; els.sheen = sheen; els.dust = dust;
+    return els;
+  }
+  function decodeAll(els, ms) {
+    var all = LAYERS.map(function (L) {
+      var im = els[L.id];
+      return (im.decode ? im.decode() : new Promise(function (r, j) { im.onload = r; im.onerror = j; })).then(function () { return true; }, function () { return false; });
+    });
+    return Promise.race([Promise.all(all).then(function (r) { return r.every(Boolean); }), new Promise(function (r) { setTimeout(function () { r(false); }, ms); })]);
+  }
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
   M.preloader = function (ready) {
     var pre = u.$('#preloader');
     if (!pre) return Promise.resolve();
-    if (!M.enabled()) { pre.remove(); return Promise.resolve(); }
-    var count = pre.querySelector('.preloader__count'), bar = pre.querySelector('.preloader__line i'), mark = pre.querySelector('.preloader__mark');
+    var count = pre.querySelector('.preloader__count'), bar = pre.querySelector('.preloader__line i'), box = pre.querySelector('.pcrest');
+    var els = buildCrest(box);
+    var t0 = performance.now();
     var prog = { v: 0 };
-    var lightMode = document.documentElement.getAttribute('data-mode') === 'light';
-    // Royal Seal crest (parts grouped by id) — the dome and canopy settle in, the jharokha opens,
-    // the peacocks shine in on either side, then a gold sheen sweeps across the whole seal.
-    var crestUrl = lightMode ? 'assets/brand/logo-crest-dark.svg' : 'assets/brand/logo-crest.svg';
-    var drawn = fetch(crestUrl).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (txt) {
-      mark.innerHTML = txt.replace(/<\?xml[^>]*>/, '');
-      var svg = mark.querySelector('svg'); if (!svg) return;
-      svg.removeAttribute('width'); svg.removeAttribute('height'); svg.setAttribute('aria-hidden', 'true');
-      var t = svg.querySelector('title'); if (t) t.remove();
-      var sheen = document.createElement('i');
-      sheen.className = 'preloader__sheen';
-      sheen.style.webkitMaskImage = sheen.style.maskImage = 'url("' + crestUrl + '")';
-      mark.appendChild(sheen);
-      function part(id) { return svg.querySelector('#dp-' + id); }
-      var all = ['jharokha', 'canopy', 'crown', 'dome', 'peacocks', 'ribbon'].map(part).filter(Boolean);
-      all.forEach(function (g) { g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 50%'; });
-      var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tl.set(all, { opacity: 0 })
-        .fromTo(part('jharokha'), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.7 })
-        .fromTo([part('canopy'), part('crown')], { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06 }, '-=0.35')
-        .fromTo(part('dome'), { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' }, '-=0.35')
-        .fromTo(part('peacocks'), { opacity: 0, scaleX: 0.82 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: 'expo.out' }, '-=0.5')
-        .fromTo(part('ribbon'), { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1, duration: 0.6, ease: 'expo.out' }, '-=0.6')
-        .fromTo(sheen, { backgroundPosition: '-120% 0' }, { backgroundPosition: '220% 0', duration: 1.0, ease: 'power2.inOut' }, '-=0.3');
-      return new Promise(function (res) { tl.eventCallback('onComplete', res); });
-    }).catch(function () {
-      mark.innerHTML = '<span class="display gold-text" style="font-size:3rem">Dreamz</span>';
-    });
     function paint() { count.textContent = String(Math.round(prog.v)).padStart(3, '0'); bar.style.transform = 'scaleX(' + prog.v / 100 + ')'; }
-    var pre1 = gsap.to(prog, { v: 82, duration: 1.4, ease: 'power2.out', onUpdate: paint });
-    var cap = new Promise(function (r) { setTimeout(r, 4500); });
-    return Promise.race([Promise.all([ready, drawn, new Promise(function (r) { setTimeout(r, 1500); })]), cap]).then(function () {
+
+    // reduced motion, or GSAP missing: the finished crest simply fades in, holds, and the loader fades away
+    if (!M.enabled()) {
+      pre.classList.add('is-calm');
+      var fade = function (el, from, to, ms) { return el.animate ? el.animate([{ opacity: from }, { opacity: to }], { duration: ms, easing: 'ease', fill: 'forwards' }).finished.catch(function () {}) : Promise.resolve(); };
+      return decodeAll(els, 1500).then(function () {
+        box.classList.add('is-on');
+        prog.v = 100; paint();
+        return Promise.all([fade(box, 0, 1, 500), Promise.race([ready, wait(2200)]), wait(900)]);
+      }).then(function () { return fade(pre, 1, 0, 450); }).then(function () { pre.remove(); });
+    }
+
+    var counter = gsap.to(prog, { v: 88, duration: 2.3, ease: 'power1.out', onUpdate: paint });
+    var drawn = decodeAll(els, 1300).then(function (ok) {
+      box.classList.add('is-on');
+      var T = LAYERS.map(function (L) { return els[L.id]; });
+      var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      if (!ok) { // something is slow: no choreography, just bring in what is there
+        tl.fromTo(T, { opacity: 0 }, { opacity: 1, duration: 0.6 });
+        return new Promise(function (res) { tl.eventCallback('onComplete', res); });
+      }
+      tl.set(T, { opacity: 0 })
+        .fromTo(els.glow, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' }, 0)
+        .fromTo(els.jharokha, { opacity: 0, yPercent: 7, scale: 0.92 }, { opacity: 1, yPercent: 0, scale: 1, duration: 0.85 }, 0)
+        .fromTo(els.ribbon, { opacity: 0, yPercent: 6, scaleX: 0.55 }, { opacity: 1, yPercent: 0, scaleX: 1, duration: 0.8, ease: 'expo.out' }, 0.12)
+        .fromTo(els.dome, { opacity: 0, yPercent: -16 }, { opacity: 1, yPercent: 0, duration: 0.9, ease: 'back.out(1.25)' }, 0.32)
+        .fromTo(els['train-left'], { opacity: 0, scale: 0.2, rotate: -30 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.15, ease: 'back.out(1.5)' }, 0.55)
+        .fromTo(els['train-right'], { opacity: 0, scale: 0.2, rotate: 30 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.15, ease: 'back.out(1.5)' }, 0.55)
+        .fromTo([els['bird-left'], els['bird-right']], { opacity: 0, yPercent: -3, scale: 0.94 }, { opacity: 1, yPercent: 0, scale: 1, duration: 0.75, ease: 'power2.out', stagger: 0.05 }, 0.62)
+        .fromTo(els.sheen, { '--sx': '-60%' }, { '--sx': '160%', duration: 0.85, ease: 'power2.inOut' }, 1.55)
+        .fromTo(els.dust, { opacity: 0 }, { opacity: 1, duration: 0.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 1.6);
+      return new Promise(function (res) { tl.eventCallback('onComplete', res); });
+    });
+    // capped: the curtain opens 3 s after the loader started at the latest
+    var cap = wait(Math.max(0, 3000 - (performance.now() - t0)));
+    return Promise.race([Promise.all([ready, drawn]), cap]).then(function () {
       return new Promise(function (resolve) {
-        pre1.kill();
+        counter.kill();
         var tl = gsap.timeline({ onComplete: function () { pre.remove(); } });
-        tl.to(prog, { v: 100, duration: 0.45, ease: 'power2.inOut', onUpdate: paint })
-          .to(pre.querySelector('.preloader__inner'), { scale: 0.9, opacity: 0, duration: 0.55, ease: 'power3.in' }, '+=0.1')
+        tl.to(prog, { v: 100, duration: 0.3, ease: 'power2.inOut', onUpdate: paint })
+          .to(pre.querySelector('.preloader__inner'), { scale: 0.94, opacity: 0, duration: 0.45, ease: 'power3.in' }, '+=0.05')
           .add(function () { pre.classList.add('is-done'); resolve(); })
-          .to(pre.querySelector('.preloader__panel--top'), { yPercent: -100, duration: 1.15, ease: 'expo.inOut' }, '<0.1')
-          .to(pre.querySelector('.preloader__panel--bottom'), { yPercent: 100, duration: 1.15, ease: 'expo.inOut' }, '<');
+          .to(pre.querySelector('.preloader__panel--top'), { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '<0.05')
+          .to(pre.querySelector('.preloader__panel--bottom'), { yPercent: 100, duration: 1.1, ease: 'expo.inOut' }, '<');
       });
     });
   };
@@ -229,7 +271,7 @@
       /* generic reveals: headings word-by-word, blur-in leads, staggered blocks */
       u.$$('.reveal-split').forEach(function (h) {
         var inner = wrapWords(h);
-        gsap.from(inner, { yPercent: 115, rotate: 5, duration: 1.2, ease: 'power4.out', stagger: 0.07, scrollTrigger: { trigger: h, start: 'top 88%' } });
+        gsap.from(inner, { yPercent: 125, rotate: 5, duration: 1.2, ease: 'power4.out', stagger: 0.07, scrollTrigger: { trigger: h, start: 'top 88%' } });
       });
       u.$$('.reveal-blur, .section__head .eyebrow').forEach(function (el) {
         gsap.from(el, { opacity: 0, y: 26, filter: 'blur(12px)', duration: 1.2, ease: 'power3.out', clearProps: 'filter', scrollTrigger: { trigger: el, start: 'top 90%' } });

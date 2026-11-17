@@ -51,7 +51,8 @@
     var seen = {};
     var ups = library().concat(M.remoteUploads || []).filter(function (x) { if (!x || !x.url || seen[x.url]) return false; seen[x.url] = 1; return true; }).map(function (x) {
       var vid = /^video/.test(x.type || '') || /\.(mp4|webm)(\?|$)/i.test(x.url);
-      return { ref: x.url, kind: vid ? 'video' : 'image', thumb: vid ? '' : x.url, src: x.url, title: x.name || x.path, credit: '', tags: 'upload', alt: '', source: 'upload', path: x.path, size: x.size, created: x.created };
+      var aud = /^audio/.test(x.type || '') || /\.(mp3|m4a|ogg)(\?|$)/i.test(x.url);
+      return { ref: x.url, kind: aud ? 'audio' : vid ? 'video' : 'image', thumb: vid || aud ? '' : x.url, src: x.url, title: x.name || x.path, credit: '', tags: 'upload', alt: '', source: 'upload', path: x.path, size: x.size, created: x.created };
     });
     var loc = localMedia().map(function (x) { return { ref: x.url, kind: 'image', thumb: x.url, src: x.url, title: x.name, credit: '', tags: 'upload local', source: 'local', id: x.id, size: x.size }; });
     return ups.concat(loc).concat(items);
@@ -76,7 +77,14 @@
       if (file.size > MAX) return Promise.reject(new Error(file.name + ' is ' + (file.size / 1048576).toFixed(1) + ' MB — videos must be 10 MB or less. Trim or compress it first.'));
       return Promise.resolve({ blob: file, name: file.name, type: type });
     }
-    if (!/^image\//.test(type)) return Promise.reject(new Error(file.name + ': only images and MP4/WebM videos can be uploaded.'));
+    // audio (background music tracks): MP3 / M4A / OGG, uploaded as-is
+    if (/^audio\/(mpeg|mp3|mp4|x-m4a|aac|ogg)$/.test(type) || (!type && /\.(mp3|m4a|ogg)$/i.test(file.name))) {
+      if (file.size > MAX) return Promise.reject(new Error(file.name + ' is ' + (file.size / 1048576).toFixed(1) + ' MB — music files must be 10 MB or less.'));
+      var at = type || ({ mp3: 'audio/mpeg', m4a: 'audio/mp4', ogg: 'audio/ogg' })[file.name.split('.').pop().toLowerCase()];
+      if (at === 'audio/x-m4a') at = 'audio/mp4';
+      return Promise.resolve({ blob: file, name: file.name, type: at });
+    }
+    if (!/^image\//.test(type)) return Promise.reject(new Error(file.name + ': only images, MP4/WebM videos and MP3/M4A/OGG music can be uploaded.'));
     if (/svg|gif|x-icon|vnd.microsoft.icon/.test(type)) {
       if (file.size > MAX) return Promise.reject(new Error(file.name + ' is larger than 10 MB.'));
       return Promise.resolve({ blob: file, name: file.name, type: type });
@@ -147,7 +155,7 @@
     });
     var search = h('input', { class: 'input', type: 'search', placeholder: 'Search id, tag, credit…', 'aria-label': 'Search media' });
     search.addEventListener('input', u.debounce(function () { state.q = search.value.toLowerCase(); draw(); }, 150));
-    var file = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp,image/svg+xml,image/gif,image/x-icon,video/mp4,video/webm', multiple: true, hidden: true });
+    var file = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp,image/svg+xml,image/gif,image/x-icon,video/mp4,video/webm,audio/mpeg,audio/mp4,audio/x-m4a,audio/ogg,.mp3,.m4a,.ogg', multiple: true, hidden: true });
     var upBtn = u.btn('Upload', { kind: 'gold', small: true, icon: 'upload', onclick: function () { file.click(); } });
     file.addEventListener('change', function () { doUpload(file.files); file.value = ''; });
     var bar = h('div', { class: 'mlib__bar' }, [tabs, search, upBtn, file]);

@@ -6,6 +6,24 @@
   function C() { return S.state.content; }
   function head(base) { return [F.text(base + '.eyebrow', 'Eyebrow (small caps line)'), F.text(base + '.title', 'Title', { rich: true })]; }
   function plain(s) { return String(s || '').replace(/\*/g, ''); }
+  /* one shared audio element for the Play buttons of the music / intro-cue pickers */
+  var previewAudio = null, previewBtn = null;
+  function sitePath(p) { return !p ? '' : /^(https?:|data:|blob:)/.test(p) ? p : '../' + String(p).replace(/^\.?\//, ''); }
+  function playBtn(t, label) {
+    var b = u.btn('▶ ' + (label || 'Play'), { small: true, kind: 'ghost', title: 'Listen to ' + (t.label || t.id) });
+    b.addEventListener('click', function () {
+      var mine = previewBtn === b && previewAudio && !previewAudio.paused;
+      if (previewAudio) { previewAudio.pause(); if (previewBtn) previewBtn.classList.remove('is-active'); }
+      if (mine) { previewBtn = null; return; }
+      var probe = document.createElement('audio');
+      var src = t.srcOgg && probe.canPlayType('audio/ogg; codecs="opus"') ? t.srcOgg : (t.src || t.srcOgg);
+      if (!src) return u.toast('This track has no file', 'err');
+      previewAudio = new Audio(sitePath(src)); previewAudio.volume = 0.6; previewBtn = b; b.classList.add('is-active');
+      previewAudio.addEventListener('ended', function () { b.classList.remove('is-active'); });
+      previewAudio.play().catch(function () { u.toast('Could not play this file in this browser', 'err'); b.classList.remove('is-active'); });
+    });
+    return b;
+  }
 
   var FONTS = {
     display: ['Cormorant Garamond', 'Playfair Display', 'Bodoni Moda', 'EB Garamond', 'Libre Caslon Display', 'DM Serif Display', 'Gilda Display', 'Prata', 'Italiana', 'Cinzel'],
@@ -161,6 +179,88 @@
           cursorToggle,
           F.toggle('theme.effects.smoothScroll', 'Smooth scrolling', { hint: 'Cinematic scroll feel' }),
           F.toggle('theme.effects.mediaCredits', 'Photographer credits on photos & videos', { hint: 'Small © @photographer notes in the corner of each picture. Switch off to hide them everywhere (story credits under each wedding stay).' })
+        ])
+      ];
+    } },
+    /* ---- intro film overlay + page background music (theme.intro / theme.music) ---- */
+    { id: 'intro', group: 'Look & feel', label: 'Intro film', render: function () {
+      var th = C().theme = C().theme || {};
+      var it = th.intro = th.intro || {};
+      if (!it.posters) it.posters = {};
+      var cues = Array.isArray(it.cues) ? it.cues : [];
+      var preview = u.btn('Preview the intro', { kind: 'gold', icon: 'eye', onclick: function () {
+        document.body.classList.add('preview-open');
+        if (S.schedulePreview) S.schedulePreview();
+        var fr = document.querySelector('.preview__frame');
+        setTimeout(function () { try { fr.contentWindow.postMessage({ type: 'dp:intro-preview' }, location.origin); } catch (e) { u.toast('Open the preview first', 'err'); } }, 500);
+      } });
+      return [
+        F.group('When it plays', [
+          F.select('theme.intro.mode', 'Show the intro film', [
+            { value: 'first-visit', label: 'Once per visit (first page load of a browser session)' },
+            { value: 'every-load', label: 'Every time the page loads' },
+            { value: 'off', label: 'Off — go straight to the website' }
+          ], { hint: 'After the gold loader, visitors see the first frame with "Tap to enter". Tapping plays the film with sound; if they do nothing for 6 seconds it plays silently. Skip is always there, and Esc skips. Links straight to a chapter (#begin…) never show it.' }),
+          h('div', { class: 'row' }, [preview])
+        ]),
+        F.group('Film files', [
+          F.media('theme.intro.src16x9', 'Film — wide 16:9 (with sound)', { kind: 'video', focus: false, hint: 'Computers, tablets and phones held sideways. MP4, up to 10 MB when uploaded.' }),
+          F.media('theme.intro.src9x16', 'Film — tall 9:16 (with sound)', { kind: 'video', focus: false, hint: 'Phones held upright.' }),
+          F.media('theme.intro.silent16x9', 'Silent copy — 16:9 (optional)', { kind: 'video', focus: false, hint: 'Played muted when the visitor has not tapped. Empty = the version above, muted.' }),
+          F.media('theme.intro.silent9x16', 'Silent copy — 9:16 (optional)', { kind: 'video', focus: false }),
+          F.media('theme.intro.posters.16x9', 'First frame — 16:9 poster', { kind: 'image', focus: false, hint: 'Shown with "Tap to enter" until the film starts.' }),
+          F.media('theme.intro.posters.9x16', 'First frame — 9:16 poster', { kind: 'image', focus: false })
+        ], { cols: 2 }),
+        F.group('Music under the film', [
+          F.select('theme.intro.cue', 'Intro music', cues.map(function (q) { return { value: q.id, label: q.label || q.id }; }), { hint: '"In the film" uses the sound mixed into the film. Another choice plays that cue over the silent copy of the film.' }),
+          h('div', { class: 'row' }, cues.map(function (q) { return playBtn(q, 'Play ' + (q.label || q.id).split('·')[0].trim()); }))
+        ]),
+        F.group('Labels', [F.text('theme.intro.enterLabel', 'Enter button', { hint: 'A ✦ is added after it.' }), F.text('theme.intro.skipLabel', 'Skip button'), F.text('theme.intro.playLabel', 'Play button (visitors who prefer less motion)'), F.text('theme.intro.soundLabel', 'Sound button (while it plays silently)')], { cols: 2 })
+      ];
+    } },
+    { id: 'music', group: 'Look & feel', label: 'Background music', render: function () {
+      var th = C().theme = C().theme || {};
+      var m = th.music = th.music || {};
+      if (!Array.isArray(m.tracks)) m.tracks = [];
+      var list = h('div', { class: 'tracks', role: 'radiogroup', 'aria-label': 'Music track' });
+      function draw() {
+        u.clear(list);
+        m.tracks.forEach(function (t, i) {
+          var id = 'trk-' + i;
+          var radio = h('input', { type: 'radio', name: 'dp-track', id: id, value: t.id, checked: m.track === t.id });
+          radio.addEventListener('change', function () { m.track = t.id; S.changed('theme.music.track'); });
+          var custom = !/^loop-[abc]$/.test(t.id || '');
+          list.appendChild(h('div', { class: 'row', style: { alignItems: 'center', gap: '10px', padding: '6px 0' } }, [
+            radio, h('label', { for: id, text: t.label || t.id, style: { flex: '1' } }), playBtn(t, 'Play'),
+            custom ? u.btn('', { small: true, kind: 'ghost', icon: 'trash', title: 'Remove this track from the list', cls: 'is-danger', onclick: function () {
+              m.tracks.splice(i, 1); if (m.track === t.id) m.track = (m.tracks[0] || {}).id || ''; S.changed('theme.music.tracks'); draw();
+            } }) : null
+          ]));
+        });
+      }
+      draw();
+      var file = h('input', { type: 'file', accept: 'audio/mpeg,audio/mp4,audio/x-m4a,audio/aac,audio/ogg,.mp3,.m4a,.ogg', hidden: true });
+      file.addEventListener('change', function () {
+        var f = file.files && file.files[0]; file.value = '';
+        if (!f) return;
+        S.media.uploadFiles([f]).then(function (added) {
+          if (!added || !added.length) return;
+          var t = { id: 'custom-' + Date.now().toString(36), label: f.name.replace(/\.[^.]+$/, ''), src: added[0], srcOgg: '' };
+          m.tracks.push(t); m.track = t.id; S.changed('theme.music.tracks'); draw();
+        });
+      });
+      var up = u.btn('Upload your own track', { small: true, kind: 'outline', icon: 'upload', onclick: function () { file.click(); } });
+      var vol = h('input', { type: 'range', class: 'range', min: 5, max: 60, step: 1, value: Math.round((+m.volume || 0.25) * 100), 'aria-label': 'Volume' });
+      var out = h('output', { class: 'range-out', text: vol.value + '%' });
+      vol.addEventListener('input', function () { out.textContent = vol.value + '%'; m.volume = +vol.value / 100; S.changed('theme.music.volume'); });
+      return [
+        F.group('', [F.toggle('theme.music.enabled', 'Play soft music on the website', { big: true, hint: 'Never starts on its own: it begins after a visitor taps "enter" on the intro film, or when they press the music button. Their choice is remembered on their device.' })]),
+        F.group('Track', [list, h('div', { class: 'row' }, [up, file]), F.note('Uploads: MP3, M4A or OGG up to 10 MB (live Studio only). For a gap-free loop, the end of the file should crossfade into its start — the three built-in tracks already do.', 'info')], { intro: 'Pick one. Use Play to listen here first.' }),
+        F.group('Behaviour', [
+          F.wrap('Volume', h('div', { class: 'range-row' }, [vol, out]), { hint: 'Kept low so it sits under the page (25% recommended).' }),
+          F.toggle('theme.music.autoplayAfterIntro', 'Start after the intro film', { hint: 'Only when the visitor tapped "enter" (with sound).' }),
+          F.toggle('theme.music.showToggle', 'Show the music button', { hint: 'Small round button bottom-left. Keep it on so visitors can always switch the music off.' }),
+          F.text('theme.music.label', 'Button label (screen readers and tooltip)')
         ])
       ];
     } },

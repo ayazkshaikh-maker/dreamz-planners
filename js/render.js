@@ -277,8 +277,8 @@
     var links = (C.footer.links || []).map(function (n) { return '<a href="' + u.esc(n.href) + '">' + u.esc(n.label) + '</a>'; }).join(' · ');
     var lg = C.brand.logo || {};
     var onErr = ' onerror="this.replaceWith(Object.assign(document.createElement(\'p\'),{className:\'display footer__logo-text\',textContent:\'' + u.esc(C.brand.name).replace(/'/g, '') + '\'}))"';
-    f.innerHTML = '<div class="footer__grid"><div><img class="footer__logo logo-for-dark" src="' + u.esc(lg.stacked || lg.horizontal) + '" alt="' + u.esc(C.brand.name) + '"' + onErr + '>' +
-      '<img class="footer__logo logo-for-light" src="' + u.esc(lg.stackedDark || lg.horizontalDark || lg.stacked || lg.horizontal) + '" alt=""' + onErr + '>' +
+    f.innerHTML = '<div class="footer__grid"><div><img class="footer__logo logo-for-dark" loading="lazy" decoding="async" src="' + u.esc(lg.stacked || lg.horizontal) + '" alt="' + u.esc(C.brand.name) + '"' + onErr + '>' +
+      '<img class="footer__logo logo-for-light" loading="lazy" decoding="async" src="' + u.esc(lg.stackedDark || lg.horizontalDark || lg.stacked || lg.horizontal) + '" alt=""' + onErr + '>' +
       '<p class="footer__tag">' + u.esc(C.brand.tagline) + '</p><p style="color:var(--muted);max-width:28rem;margin:0">' + u.esc(C.footer.note) + '</p></div>' +
       '<div><h3>Contact</h3><ul>' + phones + '<li><a href="' + u.waHref(C.contact.whatsapp.number, C.contact.whatsapp.defaultMessage) + '" target="_blank" rel="noopener">WhatsApp</a></li>' +
       '<li><a href="' + u.esc(C.contact.instagram.url) + '" target="_blank" rel="noopener">Instagram @' + u.esc(C.contact.instagram.handle) + '</a></li>' +
