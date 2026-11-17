@@ -25,6 +25,9 @@
     u.$('.grain').hidden = eff.grain === false;
     u.$('.vignette').hidden = eff.vignette === false;
     var meta = document.querySelector('meta[name=theme-color]'); if (meta && col.ink) meta.content = col.ink;
+    // Studio: optional favicon override (brand.favicon)
+    var fav = C.brand && C.brand.favicon;
+    if (fav) Array.prototype.forEach.call(document.querySelectorAll('link[rel~=icon]'), function (l) { l.href = fav; l.removeAttribute('type'); });
   }
 
   function applySeo(C) {
