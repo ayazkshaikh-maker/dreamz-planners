@@ -254,11 +254,11 @@
     if (st === 2) html += '<h3 class="wiz__q" id="' + id + '-q">' + u.esc(W.servicesQ) + '</h3><p class="hint" style="margin:-8px 0 14px">' + u.esc(W.servicesHint) + '</p>' + chips(c.services, 'services', true);
     if (st === 3) html += '<h3 class="wiz__q" id="' + id + '-q">' + u.esc(W.budgetQ) + '</h3><p class="hint" style="margin:-8px 0 14px">' + u.esc(W.budgetHint) + '</p>' + chips(c.budgets, 'budget', false);
     if (st === 4) html += '<h3 class="wiz__q" id="' + id + '-q">' + u.esc(W.contactQ) + '</h3>' +
-      '<div class="field"><label for="' + id + '-name">' + u.esc(W.nameLabel) + '</label><input class="input" id="' + id + '-name" name="name" autocomplete="name" required value="' + u.esc(s.name) + '"></div>' +
-      '<div class="field-row"><div class="field"><label for="' + id + '-phone">' + u.esc(W.phoneLabel) + '</label><input class="input" type="tel" id="' + id + '-phone" name="phone" autocomplete="tel" inputmode="tel" value="' + u.esc(s.phone) + '"></div>' +
-      '<div class="field"><label for="' + id + '-email">' + u.esc(W.emailLabel) + '</label><input class="input" type="email" id="' + id + '-email" name="email" autocomplete="email" value="' + u.esc(s.email) + '"></div></div>' +
+      '<div class="field"><label for="' + id + '-name">' + u.esc(W.nameLabel) + '</label><input class="input" id="' + id + '-name" name="name" autocomplete="name" required maxlength="120" value="' + u.esc(s.name) + '"></div>' +
+      '<div class="field-row"><div class="field"><label for="' + id + '-phone">' + u.esc(W.phoneLabel) + '</label><input class="input" type="tel" id="' + id + '-phone" name="phone" autocomplete="tel" inputmode="tel" maxlength="40" value="' + u.esc(s.phone) + '"></div>' +
+      '<div class="field"><label for="' + id + '-email">' + u.esc(W.emailLabel) + '</label><input class="input" type="email" id="' + id + '-email" name="email" autocomplete="email" maxlength="160" value="' + u.esc(s.email) + '"></div></div>' +
       '<p class="field-label" id="' + id + '-mq" style="margin-top:6px">' + u.esc(W.methodLabel) + '</p>' + chips(c.contactMethods, 'method', false).replace('aria-labelledby="' + id + '-q"', 'aria-labelledby="' + id + '-mq"') +
-      '<div class="field" style="margin-top:14px"><label for="' + id + '-msg">' + u.esc(W.messageLabel) + '</label><textarea class="input" id="' + id + '-msg" name="message" rows="3">' + u.esc(s.message) + '</textarea></div>' +
+      '<div class="field" style="margin-top:14px"><label for="' + id + '-msg">' + u.esc(W.messageLabel) + '</label><textarea class="input" id="' + id + '-msg" name="message" rows="3" maxlength="4000">' + u.esc(s.message) + '</textarea></div>' +
       '<div class="hp" aria-hidden="true"><label>Company<input tabindex="-1" autocomplete="off" name="company" value=""></label></div>';
     if (st === 5) {
       var rows = [
@@ -378,6 +378,9 @@
       'Guests: ' + (s.guests || '—'),
       'Services: ' + (s.services.join(', ') || '—'),
       'Budget: ' + (s.budget || '—'),
+      s.phone ? 'Phone: ' + s.phone : '',
+      s.email ? 'Email: ' + s.email : '',
+      s.method ? 'Reach me by: ' + s.method : '',
       s.message ? 'Notes: ' + s.message : ''
     ].filter(Boolean).join('\n');
   };

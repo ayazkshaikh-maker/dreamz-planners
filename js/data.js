@@ -103,29 +103,44 @@
   function readQueue() { try { return JSON.parse(localStorage.getItem(LEAD_QUEUE_KEY) || '[]'); } catch (e) { return []; } }
   function writeQueue(q) { try { localStorage.setItem(LEAD_QUEUE_KEY, JSON.stringify(q)); } catch (e) {} }
 
-  function toRow(lead) {
-    var n = parseInt(lead.guests, 10);
-    var date = /^\d{4}-\d{2}-\d{2}$/.test(lead.event_date || '') ? lead.event_date : null;
+  /* Limits mirror the CHECK constraints on public.leads, so a long answer can never make
+     the insert fail (a failed insert would leave the lead stuck in this browser's queue). */
+  function cut(v, n) { if (v === undefined || v === null || v === '') return null; return Array.from(String(v)).slice(0, n).join(''); }
+  function clampRow(r) {
+    var n = parseInt(r.guests, 10);
+    var payload = r.payload && typeof r.payload === 'object' ? r.payload : {};
+    try {
+      if (JSON.stringify(payload).length > 6000) { payload = Object.assign({}, payload); delete payload.ua; }
+      if (JSON.stringify(payload).length > 6000) payload = { truncated: true, events: payload.events, contactMethod: payload.contactMethod };
+    } catch (e) { payload = {}; }
     return {
-      name: String(lead.name || '').slice(0, 200),
-      phone: lead.phone || null,
-      email: lead.email || null,
-      event_type: lead.event_type || null,
-      event_date: date,
-      guests: isFinite(n) ? n : null,
-      services: Array.isArray(lead.services) ? lead.services : [],
-      budget: lead.budget || null,
-      message: lead.message || null,
-      source: lead.source || 'website',
-      payload: lead.payload || {}
+      name: cut(String(r.name || '').trim(), 120) || '-',
+      phone: cut(r.phone, 40),
+      email: cut(r.email, 160),
+      event_type: cut(r.event_type, 80),
+      event_date: /^\d{4}-\d{2}-\d{2}$/.test(r.event_date || '') ? r.event_date : null,
+      guests: isFinite(n) ? Math.max(0, Math.min(5000, n)) : null,
+      services: (Array.isArray(r.services) ? r.services : []).slice(0, 20).map(function (x) { return cut(x, 120); }).filter(Boolean),
+      budget: cut(r.budget, 60),
+      message: cut(r.message, 4000),
+      source: cut(r.source || 'website', 60),
+      payload: payload
     };
+  }
+
+  function toRow(lead) {
+    return clampRow({
+      name: lead.name, phone: lead.phone, email: lead.email, event_type: lead.event_type,
+      event_date: lead.event_date, guests: lead.guests, services: lead.services, budget: lead.budget,
+      message: lead.message, source: lead.source, payload: lead.payload
+    });
   }
 
   function insertRow(row) {
     var c = getClient();
     if (!c) return Promise.reject(new Error('no-supabase'));
     // No .select(): anonymous visitors may insert but not read leads.
-    return withTimeout(c.from('leads').insert(row), 8000).then(function (res) {
+    return withTimeout(c.from('leads').insert(clampRow(row)), 8000).then(function (res) {
       if (res.error) throw new Error(res.error.message);
       return true;
     });
@@ -154,7 +169,13 @@
     flushing = true;
     var remaining = [];
     q.reduce(function (p, item) {
-      return p.then(function () { return insertRow(item.row).catch(function () { remaining.push(item); }); });
+      return p.then(function () {
+        return insertRow(item.row).catch(function (e) {
+          // keep it for the next visit only when the failure can heal (network, timeout); drop rows the database rejects for good
+          if (!/violates|invalid input|PGRST/i.test(String(e && e.message))) remaining.push(item);
+          else log('queued lead dropped', e.message);
+        });
+      });
     }, Promise.resolve()).then(function () { writeQueue(remaining); flushing = false; });
   }
 

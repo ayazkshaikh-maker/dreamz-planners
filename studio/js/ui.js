@@ -175,7 +175,17 @@
     return api;
   };
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && openModals.length) { e.preventDefault(); openModals[openModals.length - 1].close(null); }
+    if (e.key === 'Escape' && openModals.length) { e.preventDefault(); openModals[openModals.length - 1].close(null); return; }
+    // keep Tab inside the top dialog (aria-modal promises that)
+    if (e.key === 'Tab' && openModals.length) {
+      var box = openModals[openModals.length - 1].el;
+      var f = [].filter.call(box.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'), function (x) { return x.offsetParent !== null; });
+      if (!f.length) { e.preventDefault(); return; }
+      var first = f[0], last = f[f.length - 1], a = document.activeElement;
+      if (!box.contains(a)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && a === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && a === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
   /* confirm({title, body, ok, danger, input:{label, value, maxlength}}) -> Promise<false | true | string> */
