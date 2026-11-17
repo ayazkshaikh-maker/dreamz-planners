@@ -299,6 +299,83 @@
         F.group('Small text', F.auto('estimator.copy', { rich: ['emptyTitle'] }), { cols: 2 })
       ];
     } },
+    { id: 'printing', group: 'Chapters', label: '6c · Printing & stationery', render: function () {
+      var P = C().printing = C().printing || {};
+      if (!Array.isArray(P.items)) P.items = [];
+      if (!P.options || typeof P.options !== 'object') P.options = {};
+      ['papers', 'finishes', 'methods', 'addons'].forEach(function (k) { if (!P.options[k]) P.options[k] = { label: u.human(k), items: [] }; });
+      if (!Array.isArray(P.packages)) P.packages = [];
+      if (!P.copy) P.copy = {};
+      var secIdx = (C().sections || []).map(function (s) { return s.id; }).indexOf('printing');
+      var vis = secIdx >= 0
+        ? F.toggle('sections.' + secIdx + '.visible', 'Show the Printing & stationery chapter', { hint: 'Order on the page: Look & feel → Sections & menu.' })
+        : h('div', {}, [F.note('This chapter is not in the page order yet.', 'warn'), u.btn('Add it after the celebration builder', { small: true, kind: 'outline', icon: 'plus', onclick: function () {
+            var list = C().sections = (C().sections || []).slice(); var at = list.map(function (s) { return s.id; }).indexOf('estimator');
+            list.splice(at >= 0 ? at + 1 : list.length, 0, { id: 'printing', label: '6c · Printing & stationery', visible: true }); S.changed('sections'); S.rerender();
+          } })]);
+      var cats = [];
+      P.items.forEach(function (it) { if (it && it.category && cats.indexOf(it.category) < 0) cats.push(it.category); });
+      var CAT_HINT = 'Pieces with the same category share a filter chip. In use: ' + (cats.join(', ') || '—') + '. Keep it to a handful (e.g. Invitations, Ceremony & events, Reception, Signage, Favours & packaging, Finishing touches); the piece name says what it is.';
+      return [
+        F.group('Chapter', [vis]),
+        F.group('Intro', head('printing').concat([
+          F.area('printing.intro', 'Intro', { rich: true }),
+          F.text('printing.wallHint', 'Hint under the wall (desktop)'),
+          F.text('printing.mobileHint', 'Hint under the deck (phones)'),
+          F.text('printing.filterAll', 'Label of the "All" filter chip'),
+          F.text('printing.sampleNote', 'Sample-design note', { hint: 'Shown while any piece is marked as a sample design.' })
+        ])),
+        F.group('Pieces on the wall', [F.list('printing.items', 'Printed pieces', {
+          title: function (it) { return it && it.name; },
+          sub: function (it) { return it && [it.category, (it.images || []).length + ' photos', it.price ? it.price : 'price on request', it.featured ? 'featured' : ''].filter(Boolean).join(' · '); },
+          blank: function () { return { id: u.uid('piece'), name: 'New piece', category: cats[0] || 'Invitation suite', description: '', images: [], finishes: [], paper: '', price: '', unit: '', minQty: '', leadTime: '', featured: false, sample: false }; },
+          dupe: function (it) { it.id = u.uid('piece'); return it; },
+          addLabel: 'Add a piece',
+          fields: function (b) {
+            return [
+              F.text(b + '.name', 'Name', { rich: true }),
+              F.text(b + '.category', 'Category', { hint: CAT_HINT }),
+              F.area(b + '.description', 'Description', { rich: true, rows: 3 }),
+              F.list(b + '.images', 'Photos (first one hangs on the wall)', {
+                title: function (im) { return im && (typeof im === 'string' ? im : im.src) || 'No photo yet'; },
+                blank: function () { return { src: '', focus: '', zoom: 1, alt: '' }; },
+                addLabel: 'Add a photo',
+                fields: function (ib, im) {
+                  if (typeof im === 'string') { var arr = u.get(C(), b + '.images'); var k = +ib.split('.').pop(); arr[k] = { src: im, focus: '', zoom: 1, alt: '' }; }
+                  return [
+                    F.media(ib + '.src', 'Photo', { kind: 'image', hint: 'Choose from the library or upload. Click the thumbnail to set the focal point everywhere this photo is used.' }),
+                    F.text(ib + '.focus', 'Focal point for this card only (optional)', { placeholder: 'e.g. 50% 30%', hint: 'x% y% — overrides the library focal point on the wall and in the detail view.' }),
+                    F.number(ib + '.zoom', 'Zoom into the focal point (1 = whole photo)', { min: 1, max: 4, step: 0.1, hint: 'e.g. 1.8 to show just the wax seal or the tag of a wider photo.' }),
+                    F.text(ib + '.alt', 'Description for screen readers (optional)')
+                  ];
+                }
+              }),
+              F.strings(b + '.finishes', 'Finishes', { addLabel: 'Add finish', placeholder: 'e.g. Gold foil' }),
+              F.text(b + '.paper', 'Paper / material'),
+              F.text(b + '.price', 'Price (optional)', { placeholder: 'Leave empty to show "Price on request"', hint: 'Shown exactly as typed, e.g. "From $6". Nothing is shown when empty.' }),
+              F.text(b + '.unit', 'Unit (optional)', { placeholder: 'e.g. card, set of 50' }),
+              F.text(b + '.minQty', 'Minimum order (optional)', { placeholder: 'e.g. 50 pieces' }),
+              F.text(b + '.leadTime', 'Lead time (optional)', { placeholder: 'e.g. 3–4 weeks' }),
+              F.toggle(b + '.featured', 'Featured (gold ribbon on the wall)'),
+              F.toggle(b + '.sample', 'Sample design (adds the sample note)', { hint: 'Switch off once the photo shows real work you printed.' }),
+              F.text(b + '.id', 'Id', { hint: 'Lowercase, no spaces. Used by quote lists.' })
+            ];
+          }
+        })], { intro: 'Add, remove, reorder or duplicate pieces. Prices stay empty unless you type one.' }),
+        F.group('Paper, finishes & methods', [F.text('printing.optionsTitle', 'Title', { rich: true }), F.area('printing.optionsIntro', 'Intro', { rich: true, rows: 2 })].concat(
+          ['papers', 'finishes', 'methods', 'addons'].map(function (k) {
+            return h('div', { class: 'subgroup' }, [F.text('printing.options.' + k + '.label', 'List title'), F.strings('printing.options.' + k + '.items', P.options[k].label || u.human(k), { addLabel: 'Add option' })]);
+          })
+        )),
+        F.group('Packages', [F.text('printing.packagesTitle', 'Title', { rich: true }), F.area('printing.packagesIntro', 'Intro', { rich: true, rows: 2 }), F.list('printing.packages', 'Packages', {
+          title: function (p) { return p && p.name; }, sub: function (p) { return p && [(p.includes || []).length + ' items', p.price || 'price on request', p.highlight ? 'highlighted' : ''].filter(Boolean).join(' · '); },
+          blank: function () { return { name: 'New package', includes: [], price: '', note: '', highlight: false }; },
+          addLabel: 'Add a package',
+          fields: function (b) { return [F.text(b + '.name', 'Name', { rich: true }), F.strings(b + '.includes', 'What is included', { addLabel: 'Add item' }), F.text(b + '.price', 'Price (optional)', { placeholder: 'Leave empty to show "Price on request"' }), F.text(b + '.note', 'Small note (optional)'), F.toggle(b + '.highlight', 'Highlight this package')]; }
+        })]),
+        F.group('Buttons & small text', F.auto('printing.copy'), { cols: 2 })
+      ];
+    } },
     { id: 'process', group: 'Chapters', label: '7 · The process', render: function () {
       return [F.group('Intro', head('process')), F.group('Steps', [F.list('process.steps', 'Steps (designed for 5)', {
         title: function (s) { return s && s.title; }, blank: function () { return { id: u.uid('step'), title: 'New step', body: '' }; }, dupe: function (s) { s.id = u.uid('step'); return s; },

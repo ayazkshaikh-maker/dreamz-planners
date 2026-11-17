@@ -77,8 +77,9 @@
     applySeo(C);
     if (DP.motion) DP.motion.kill();
     DP.render(C);
+    try { DP.motion.lenis(); } catch (e) { console.warn('[dp] lenis', e); } // before the tools, so they can listen to smooth scroll
     var T = DP.tools;
-    [T.chrome, T.dock, T.dialogs, T.wizards, T.estimator, T.dateCheck, T.services, T.reviews, T.announcement].forEach(function (fn) {
+    [T.chrome, T.dock, T.dialogs, T.wizards, T.estimator, T.dateCheck, T.services, T.reviews, T.announcement, DP.printing && DP.printing.init].filter(Boolean).forEach(function (fn) {
       try { fn(); } catch (e) { console.error('[dp] tool failed', e); }
     });
     try { DP.motion.lenis(); DP.motion.init(); } catch (e) { console.error('[dp] motion failed', e); document.documentElement.classList.add('is-static'); }

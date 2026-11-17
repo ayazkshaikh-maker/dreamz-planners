@@ -142,7 +142,7 @@
       if (promise) {
         var words = u.$$('.promise__text .w', promise);
         gsap.timeline({ scrollTrigger: desk
-          ? { trigger: promise, start: 'top top', end: '+=140%', scrub: 0.6, pin: true, anticipatePin: 1 }
+          ? { trigger: promise, start: 'top top', end: '+=140%', scrub: 0.6, pin: true, anticipatePin: 1, invalidateOnRefresh: true }
           : { trigger: promise, start: 'top 70%', end: 'bottom 70%', scrub: 0.6 } })
           .to(words, { opacity: 1, stagger: 0.12, ease: 'none', duration: 0.6 })
           .from(promise.querySelector('.promise__aside'), { opacity: 0, y: 20, filter: 'blur(8px)', duration: 0.8 }, '-=0.2')
@@ -154,7 +154,7 @@
       if (behind) {
         var stage = behind.querySelector('.behind__stage'), frame = behind.querySelector('.behind__frame');
         if (desk) {
-          gsap.timeline({ scrollTrigger: { trigger: stage, start: 'top top', end: '+=230%', scrub: 0.8, pin: true, anticipatePin: 1 } })
+          gsap.timeline({ scrollTrigger: { trigger: stage, start: 'top top', end: '+=230%', scrub: 0.8, pin: true, anticipatePin: 1, invalidateOnRefresh: true } })
             .fromTo(frame, { clipPath: 'inset(39% 37% 7% 37% round 26px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'power2.inOut', duration: 1 }, 0)
             // while it is still a small card (lower part of the screen), slide the film down so its focal point (faces) sits in the card
             .fromTo(frame.querySelector('.media'), { yPercent: cardShift(frame.querySelector('.media')) }, { yPercent: 0, ease: 'power2.inOut', duration: 1 }, 0)
@@ -205,6 +205,9 @@
         });
       });
 
+      /* chapter 6c: the stationery wall (rails drift in parallax, threads draw, pieces drop onto their clips) */
+      if (DP.printing && DP.printing.motion) DP.printing.motion(desk);
+
       /* founders photo parallax */
       var fp = u.$('.founders__photo .media');
       if (fp) gsap.fromTo(fp, { yPercent: -8 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.founders__photo', start: 'top bottom', end: 'bottom top', scrub: true } });
@@ -242,6 +245,12 @@
       return function () { u.$$('.is-lit').forEach(function (s) { s.classList.remove('is-lit'); }); };
     });
 
+    // orientation / large resizes: one debounced refresh after the layout settles (matchMedia rebuilds scenes across the 768px breakpoint)
+    if (!M._resizeBound) {
+      M._resizeBound = true;
+      var rt = 0;
+      window.addEventListener('orientationchange', function () { clearTimeout(rt); rt = setTimeout(function () { if (window.ScrollTrigger) ScrollTrigger.refresh(); }, 400); });
+    }
     // late layout shifts (fonts, images) — refresh once things settle
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
     window.addEventListener('load', function () { ScrollTrigger.refresh(); }, { once: true });

@@ -37,7 +37,8 @@ Fields marked **rich** accept `*word*`, which renders as the gold italic accent 
 | `nav` | array | Header / footer / mobile menu links. |
 | `mediaCredits` | object | Optional override: `{ "<mediaId>": "credit text" }`. Empty → credit from the media manifest. |
 | `mediaFocus` | object | Optional focal points: `{ "<mediaId or URL>": "50% 30%" }` (CSS `object-position`, x then y). Wins over the manifest `focus`. Applied everywhere the media is cover-cropped (hero, behind-the-curtain card and full bleed, reel cards, decks, founders photo, service previews, image trail, begin background). Studio: click the thumbnail in any media field. |
-| `hero`, `promise`, `behind`, `celebrations`, `weddings`, `services`, `estimator`, `process`, `vendors`, `founders`, `reviews`, `faq`, `begin` | object | One per chapter (below). |
+| `features` | string[] | Content features this saved content knows about (see below). |
+| `hero`, `promise`, `behind`, `celebrations`, `weddings`, `services`, `estimator`, `printing`, `process`, `vendors`, `founders`, `reviews`, `faq`, `begin` | object | One per chapter (below). |
 | `dateCheck` | object | Labels for the date-check widget. |
 | `availability` | array | Local fallback dates (Supabase `availability` table wins). |
 | `wizard` | object | Inquiry wizard options + copy. |
@@ -70,6 +71,8 @@ Themes are complete designed looks defined in `js/themes.js` (shared by the site
 | `effects.customCursor` | boolean | Decorative gold ring that follows the mouse on desktop (default `true`). The native cursor is never hidden; the ring hides itself over form fields, selects and inside dialogs/lightbox. Old key `effects.cursor: false` also switches it off. |
 | `effects.mediaCredits` | boolean | Photographer credit labels (© @handle) in the corner of photos/videos, lightbox and film bar (default `true`). `false` hides them site-wide (credits listed in each wedding story's text stay). |
 
+**Readability guarantees (js/themes.js):** every preset exposes `--accent` (the fill of selected / checked / pressed states: wizard chips, estimator toggles, the chosen date, filter chips, open accordion icons, lit process steps) and `--on-accent` (= `--on-gold`), the text colour picked per theme for the best contrast against every stop of that fill (≥ 4.5:1 for the presets). Selected-state rules use these tokens and outrank the light-theme base fills (which are wrapped in `:where()`), so a selected option can never lose its text. On light themes the gold is also deepened automatically (towards `goldDeep`) until it reads at ≥ 4.6:1 on the card/tint surfaces, and light buttons use a gradient that never gets lighter than the gold. The Studio's readability check lists these pairs.
+
 The last applied theme is cached in `localStorage['dp:theme-cache']` and painted from `<head>` on the next visit (no dark flash on light themes). CSS: tokens live on `:root`; `html[data-mode=light|dark]` and `data-theme=<id>` are set on `<html>`; `.on-media` re-scopes tokens for content over photos/video.
 
 ### `seo`
@@ -97,7 +100,7 @@ The last applied theme is cached in `localStorage['dp:theme-cache']` and painted
 `enabled` boolean · `id` string (change it to show a new announcement to people who dismissed the old one; dismissal is remembered in `localStorage['dp:ann:<id>']`) · `title` rich · `body` rich · `cta.label`, `cta.href` · `start`, `end` ISO date/time strings (empty = no limit) · `delaySeconds` number.
 
 ### `sections[]`
-`{ id, label, visible }`. Order of this array = order on the page. `id` must be one of: `hero`, `promise`, `behind`, `celebrations`, `weddings`, `services`, `estimator`, `process`, `vendors`, `founders`, `reviews`, `faq`, `begin` (`preloader` is listed for completeness; it always runs). `label` is only for the Studio UI. `visible: false` removes the chapter. The `reviews` chapter additionally stays hidden while there are no published reviews.
+`{ id, label, visible }`. Order of this array = order on the page. `id` must be one of: `hero`, `promise`, `behind`, `celebrations`, `weddings`, `services`, `estimator`, `printing`, `process`, `vendors`, `founders`, `reviews`, `faq`, `begin` (`preloader` is listed for completeness; it always runs). `label` is only for the Studio UI. `visible: false` removes the chapter. The `reviews` chapter additionally stays hidden while there are no published reviews.
 
 ### `nav[]`
 `{ label, href }` — `href` is usually `#<section id>`.
@@ -145,6 +148,45 @@ The last applied theme is cached in `localStorage['dp:theme-cache']` and painted
 
 No dollar figures are shown unless `services.showPrices` is true and the matching service has a `price`.
 
+### `printing` — chapter 6c "Printing & stationery"
+Rendered by `js/printing.js` (anchor `#printing`, nav link "Printing"). Desktop: the **stationery wall** — pieces hang from gold threads on up to three rails (back rail smaller, rails drift in parallax), sway with scroll velocity, lift forward on hover/focus with a foil sheen and a spec tag; click opens the detail view (`#pdetail`): the card turns over to its specs, photo thumbnails, finishes to pick, price, "Add to quote" and "Request a printing quote". Phones (< 768 px): a swipeable fanned deck with previous/next buttons. Reduced motion (`?motion=reduce` or the OS setting): a tidy grid. Category chips filter the wall.
+
+| Key | Type | Notes |
+|---|---|---|
+| `eyebrow`, `title` (rich), `intro` (rich) | string | Chapter head. |
+| `wallHint`, `mobileHint` | string | Small caps hint under the wall (desktop / phones). |
+| `filterAll` | string | Label of the "All" filter chip. Other chips are made from the items' `category` values (in order of first use). |
+| `sampleNote` | string | Shown under the wall while any item has `sample: true`. |
+| `items[]` | object | The pieces on the wall (order = order on the wall). See below. |
+| `optionsTitle` (rich), `optionsIntro` (rich) | string | Head of the paper / finishes block. |
+| `options` | object | `papers`, `finishes`, `methods`, `addons` — each `{ label, items: string[] }`. Extra keys with the same shape are shown too. Empty lists are hidden. |
+| `packagesTitle` (rich), `packagesIntro` (rich) | string | Head of the packages block. |
+| `packages[]` | object | `{ name (rich), includes: string[], price, note, highlight: boolean }`. `price` is shown exactly as typed; **empty → `copy.priceOnRequest`**. `highlight` adds the gold frame + `copy.highlight` flag. Its button opens the wizard with the package named in the message. |
+| `copy` | object | UI strings: `priceOnRequest`, `paperLabel`, `finishesLabel`, `unitLabel`, `minQtyLabel`, `leadTimeLabel`, `addToQuote`, `inQuote`, `removeFromQuote`, `quoteTitle`, `quoteEmpty`, `requestQuote`, `flipFront`, `flipBack`, `choosePackage`, `featured`, `sample`, `close`, `prev`, `next`, `highlight`, `wizardService` (the wizard service chip to pre-select, must match an entry of `wizard.services`; default "Printing & stationery"), `wizardNote` (prefix of the wizard message, "Printing quote"). |
+
+`items[]`:
+
+| Key | Type | Notes |
+|---|---|---|
+| `id` | slug | Unique; used by the quote list. |
+| `name` | rich | |
+| `category` | string | Filter chip. Keep to a handful (defaults: Invitations, Ceremony & events, Reception, Signage, Favours & packaging, Finishing touches). |
+| `description` | rich | Detail view. |
+| `images[]` | `{ src, focus, zoom, alt }` or media id string | First image hangs on the wall; all show as thumbnails in the detail view. `src` = media id (e.g. `print-suite-plum-a`) or URL. `focus` = CSS object-position for this placement (falls back to `mediaFocus` / manifest). `zoom` ≥ 1 crops into the photo around `focus` (e.g. `1.8` shows just the wax seal). `alt` overrides the manifest alt text. |
+| `finishes` | string[] | Shown on the spec tag (first two) and as selectable chips in the detail view; chosen finishes travel with the quote. |
+| `paper` | string | Paper / material. |
+| `price` | string | **Default empty.** Shown exactly as typed (`unit` appended as " / unit"); empty shows `copy.priceOnRequest`. Never fill in invented prices. |
+| `unit`, `minQty`, `leadTime` | string | Optional; each row is only shown when filled. Defaults are empty. |
+| `featured` | boolean | Gold "Featured" ribbon on the wall. |
+| `sample` | boolean | Marks a sample design (adds "Sample design" in the detail view and the `sampleNote`). The default items use generated sample photos (manifest tag `printing`, alt text starts "Sample design —"); untick when the photo shows real printed work. |
+
+**Quote list:** "Add to quote" stores `[{ id, finishes[] }]` in `localStorage['dp:print-quote']` (this device only) and shows a tray under the wall. "Request a printing quote" opens the inquiry wizard with `copy.wizardService` pre-selected (added to any services already chosen) and the message prefilled `Printing quote: Name (finish, finish); …`. The lead payload gets `payload.printing = { items: [{id, finishes}], package }`.
+
+**Images:** `assets/media/printing/<id>.webp` (≤ 300 KB, 896×1200) + `assets/media/printing/thumbs/<id>.webp` (600 px wide), listed in `assets/media/manifest.json → stills[]` with tags `printing`, `sample`.
+
+### `features`
+`string[]` — content features this saved content already knows about (default `["printing"]`). Because saved arrays replace the defaults as a whole, `js/upgrade.js` (`DP.upgradeContent`, used by the site and the Studio) adds a newly introduced chapter to `sections`, its `nav` link and its wizard option **once** for saved content whose `features` lack it; after the next save the list is stored and owner removals are respected.
+
 ### `process` — chapter 7
 `eyebrow` · `title` rich · `steps[]` `{ id, title (rich), body (rich) }` (designed for 5).
 
@@ -174,14 +216,14 @@ No dollar figures are shown unless `services.showPrices` is true and the matchin
 |---|---|---|
 | `title` | string | Modal title. |
 | `steps` | string[6] | Step names, in order: event, date & guests, services, budget, contact, review. |
-| `eventTypes`, `services`, `budgets`, `contactMethods` | string[] | Chip options. Budgets are the visitor's own range, not our prices. |
+| `eventTypes`, `services`, `budgets`, `contactMethods` | string[] | Chip options. Budgets are the visitor's own range, not our prices. `services` includes "Printing & stationery" (pre-selected by the printing chapter's quote buttons). |
 | `guests` | `{min, max, default}` | |
 | `successTitle` (rich), `successBody` (rich) | string | Success screen. |
 | `whatsappIntro` | string | First line of the prefilled WhatsApp summary (`https://wa.me/<contact.whatsapp.number>?text=…`). |
 | `consent` | string | Note on the review step (links to privacy.html). |
 | `copy` | object | Every question, label and error message of the wizard (`eventQ`, `eventHint`, `dateQ`, `dateLabel`, `guestsLabel`, `flexibleLabel`, `servicesQ`, `servicesHint`, `budgetQ`, `budgetHint`, `contactQ`, `nameLabel`, `phoneLabel`, `emailLabel`, `methodLabel`, `messageLabel`, `reviewQ`, `sending`, `sendWhatsapp`, `restart`, `errEvent`, `errDate`, `errGuests`, `errName`, `errContact`, `errPhone`, `errEmail`, `errSubmit`, `localNote`). |
 
-Lead row written to Supabase `leads` (insert only, no select): `name, phone, email, event_type (events joined by ", "), event_date (YYYY-MM-DD or null), guests, services[], budget, message, source ('website-inline' | 'website-modal'), payload { events[], flexible, contactMethod, page, estimator, ua }`. If the insert fails the row is queued in `localStorage['dp:leadQueue']` and retried on the next visit.
+Lead row written to Supabase `leads` (insert only, no select): `name, phone, email, event_type (events joined by ", "), event_date (YYYY-MM-DD or null), guests, services[], budget, message, source ('website-inline' | 'website-modal'), payload { events[], flexible, contactMethod, page, estimator, printing, ua }`. If the insert fails the row is queued in `localStorage['dp:leadQueue']` and retried on the next visit.
 
 ### `footer`
 `note` · `copyright` (year is appended automatically) · `links[]` `{label, href}`.

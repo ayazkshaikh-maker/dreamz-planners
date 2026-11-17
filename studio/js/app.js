@@ -157,6 +157,7 @@
     return B.loadContentRows().then(function (rows) {
       var base = rows.draft || rows.published || {};
       state.content = u.merge(u.clone(state.defaults), base);
+      if (window.DP && DP.upgradeContent) DP.upgradeContent(state.content, base, state.defaults); // adds chapters introduced after this content was saved
       state.savedJSON = JSON.stringify(state.content);
       state.rows = rows;
       buildLayout();
@@ -379,6 +380,7 @@
   }
   S.previewVersion = function (data, label, onRestore) {
     state.previewOverride = u.merge(u.clone(state.defaults), data);
+    if (window.DP && DP.upgradeContent) DP.upgradeContent(state.previewOverride, data, state.defaults);
     u.clear(els.pbanner);
     u.append(els.pbanner, [h('span', { text: 'Previewing the version from ' + label }),
       u.btn('Restore this', { small: true, kind: 'gold', onclick: function () { onRestore(); back(); } }),

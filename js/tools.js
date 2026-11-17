@@ -131,11 +131,20 @@
     }
   };
 
+  /* After any programmatic jump (back to top, nav links) let every scrubbed / pinned scene catch up with the
+     final scroll position, so no transform is left half-way. */
+  T.settle = function () {
+    if (!window.ScrollTrigger) return;
+    try { ScrollTrigger.update(); } catch (e) {}
+    clearTimeout(T._settleT);
+    T._settleT = setTimeout(function () { try { ScrollTrigger.update(); } catch (e) {} }, 900);
+  };
+
   /* ---------------- back to top ---------------- */
   T.toTop = function () {
     var focusEl = u.$('#header-logo') || u.$('#main');
-    if (DP.lenis) DP.lenis.scrollTo(0, { duration: 1.8 });
-    else window.scrollTo({ top: 0, behavior: u.reduced() ? 'auto' : 'smooth' });
+    if (DP.lenis) DP.lenis.scrollTo(0, { duration: 1.8, onComplete: T.settle });
+    else { window.scrollTo({ top: 0, behavior: u.reduced() ? 'auto' : 'smooth' }); setTimeout(T.settle, u.reduced() ? 50 : 1200); }
     setTimeout(function () { try { focusEl.focus({ preventScroll: true }); } catch (e) {} }, u.reduced() ? 0 : 1200);
   };
 
@@ -210,7 +219,7 @@
   /* ---------------- wizard ---------------- */
   function Wizard(root, opts) {
     this.root = root; this.opts = opts || {};
-    this.state = { events: [], date: '', flexible: false, guests: '', services: [], budget: '', name: '', phone: '', email: '', method: '', message: '', company: '' };
+    this.state = { events: [], date: '', flexible: false, guests: '', services: [], budget: '', name: '', phone: '', email: '', method: '', message: '', company: '', printing: null };
     this.step = 0; this.done = false; this.uid = 'wz' + Math.random().toString(36).slice(2, 7);
     this.render();
   }
@@ -382,7 +391,7 @@
       event_type: s.events.join(', '), event_date: s.flexible ? null : s.date, guests: s.guests,
       services: s.services, budget: s.budget, message: s.message,
       source: this.opts.source || 'website',
-      payload: { events: s.events, flexible: s.flexible, contactMethod: s.method, page: location.pathname, estimator: s.estimator || null, ua: navigator.userAgent.slice(0, 160) }
+      payload: { events: s.events, flexible: s.flexible, contactMethod: s.method, page: location.pathname, estimator: s.estimator || null, printing: s.printing || null, ua: navigator.userAgent.slice(0, 160) }
     }).then(function (res) {
       if (!res.ok) { self.root.querySelector('.wiz__error').textContent = wcopy().errSubmit; btn.disabled = false; btn.textContent = C().labels.submit; return; }
       self.mode = res.mode; self.done = true; self.render();
@@ -400,7 +409,7 @@
       (this.mode === 'local' ? '<p class="wiz__note">' + u.esc(wcopy().localNote) + '</p>' : '') + '</div>';
     var self = this;
     this.root.querySelector('[data-restart]').addEventListener('click', function () {
-      self.state = { events: [], date: '', flexible: false, guests: '', services: [], budget: '', name: '', phone: '', email: '', method: '', message: '', company: '' };
+      self.state = { events: [], date: '', flexible: false, guests: '', services: [], budget: '', name: '', phone: '', email: '', method: '', message: '', company: '', printing: null };
       self.done = false; self.step = 0; self.render();
     });
   };
@@ -675,8 +684,8 @@
         var target = document.getElementById(link.getAttribute('href').slice(1));
         if (target) {
           e.preventDefault();
-          if (DP.lenis) DP.lenis.scrollTo(target, { offset: -60, duration: 1.6 });
-          else target.scrollIntoView({ behavior: u.reduced() ? 'auto' : 'smooth' });
+          if (DP.lenis) DP.lenis.scrollTo(target, { offset: -60, duration: 1.6, onComplete: T.settle });
+          else { target.scrollIntoView({ behavior: u.reduced() ? 'auto' : 'smooth' }); setTimeout(T.settle, u.reduced() ? 50 : 1200); }
           if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
           setTimeout(function () { target.focus({ preventScroll: true }); }, u.reduced() ? 0 : 900);
         }
@@ -709,14 +718,49 @@
     var gsap = window.gsap;
     gsap.set(prev, { xPercent: -50, yPercent: -50, scale: 0.8 });
     var xTo = gsap.quickTo(prev, 'x', { duration: 0.6, ease: 'power3' }), yTo = gsap.quickTo(prev, 'y', { duration: 0.6, ease: 'power3' });
+    /* The preview is position:fixed. Scrolling (wheel, back-to-top, nav links) moves the list away from a pointer
+       that does not move, and browsers fire no pointerleave for that — so the preview used to stay "frozen" over
+       other chapters (e.g. the pergola photo over "The celebrations"). Every scroll now re-checks what is under
+       the pointer, and the preview also hides when the list leaves the screen, the tab is hidden or a jump starts. */
+    var px = -1, py = -1, shown = false;
+    function hide(fast) {
+      if (!shown) return;
+      shown = false;
+      gsap.to(prev, { opacity: 0, scale: 0.8, rotate: 0, duration: fast ? 0.15 : 0.35, overwrite: 'auto' });
+    }
+    function rowAt(x, y) {
+      if (x < 0) return null;
+      var el = document.elementFromPoint(x, y), row = el && el.closest ? el.closest('.svc') : null;
+      return row && list.contains(row) && !row.classList.contains('is-open') ? row : null;
+    }
     list.addEventListener('pointermove', function (e) {
+      if (e.pointerType && e.pointerType !== 'mouse') return;
+      px = e.clientX; py = e.clientY;
       var row = e.target.closest('.svc');
       xTo(e.clientX + 40); yTo(e.clientY);
-      if (!row || row.classList.contains('is-open')) { gsap.to(prev, { opacity: 0, scale: 0.8, duration: 0.35 }); return; }
+      if (!row || row.classList.contains('is-open')) { hide(); return; }
       var key = row.dataset.media;
       u.$$('img', prev).forEach(function (im) { im.classList.toggle('is-on', im.dataset.key === key); });
-      gsap.to(prev, { opacity: 1, scale: 1, rotate: (e.movementX || 0) * 0.4, duration: 0.5, ease: 'power3' });
+      shown = true;
+      gsap.to(prev, { opacity: 1, scale: 1, rotate: (e.movementX || 0) * 0.4, duration: 0.5, ease: 'power3', overwrite: 'auto' });
     });
-    list.addEventListener('pointerleave', function () { gsap.to(prev, { opacity: 0, scale: 0.8, duration: 0.4 }); });
+    list.addEventListener('pointerleave', function () { px = -1; hide(); });
+    if (T._svcOff) T._svcOff();
+    var onScroll = function () { if (shown && !rowAt(px, py)) hide(true); };
+    var onAway = function () { hide(true); };
+    var onJump = function (e) { if (e.target.closest && e.target.closest('[data-action], a[href^="#"]')) hide(true); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    var lenisOff = DP.lenis && DP.lenis.on ? DP.lenis.on('scroll', onScroll) : null;
+    window.addEventListener('blur', onAway);
+    document.addEventListener('visibilitychange', onAway);
+    document.addEventListener('click', onJump, true);
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { if (!es[0].isIntersecting) hide(true); }) : null;
+    if (io) io.observe(list);
+    T._svcOff = function () {
+      window.removeEventListener('scroll', onScroll); window.removeEventListener('blur', onAway);
+      if (typeof lenisOff === 'function') lenisOff();
+      document.removeEventListener('visibilitychange', onAway); document.removeEventListener('click', onJump, true);
+      if (io) io.disconnect();
+    };
   };
 })();

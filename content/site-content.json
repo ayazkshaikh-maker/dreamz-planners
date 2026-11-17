@@ -1,5 +1,8 @@
 {
   "schemaVersion": 1,
+  "features": [
+    "printing"
+  ],
   "meta": {
     "updated": "2026-11-17",
     "note": "Default content. The Studio publishes overrides to Supabase site_content id='published'; missing keys fall back to this file."
@@ -153,6 +156,11 @@
       "visible": true
     },
     {
+      "id": "printing",
+      "label": "6c · Printing & stationery",
+      "visible": true
+    },
+    {
       "id": "process",
       "label": "7 · The process",
       "visible": true
@@ -195,6 +203,10 @@
     {
       "label": "Services",
       "href": "#services"
+    },
+    {
+      "label": "Printing",
+      "href": "#printing"
     },
     {
       "label": "Process",
@@ -806,6 +818,7 @@
       "Day-of coordination",
       "Vendor management",
       "Decor & design direction",
+      "Printing & stationery",
       "Not sure yet"
     ],
     "budgets": [
@@ -893,5 +906,500 @@
     "backToTop": "Back to top",
     "lightTheme": "Switch to light theme",
     "darkTheme": "Switch to dark theme"
+  },
+  "printing": {
+    "eyebrow": "Printing & stationery",
+    "title": "Paper that sets the *tone*",
+    "intro": "Invitations, programs, menus, signage and favours, printed and finished to match the look of your celebration, so every piece a guest holds feels part of one story.",
+    "wallHint": "Hover a card to lift it · click to turn it over",
+    "mobileHint": "Swipe the deck · tap a card for details",
+    "filterAll": "All",
+    "sampleNote": "Sample designs. Your pieces are designed around your names, colours and events.",
+    "items": [
+      {
+        "id": "suite-plum",
+        "name": "The *Plum & Ivory* suite",
+        "category": "Invitations",
+        "description": "A layered suite: letterpress invitation, vellum overlay, RSVP card and a lined envelope closed with a wax seal.",
+        "images": [
+          {
+            "src": "print-suite-plum-a",
+            "focus": "50% 45%",
+            "zoom": 1
+          },
+          {
+            "src": "print-suite-plum-b",
+            "focus": "50% 50%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Gold foil",
+          "Letterpress",
+          "Vellum overlay",
+          "Wax seal",
+          "Foil-lined envelope"
+        ],
+        "paper": "Heavy cotton card",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": true,
+        "sample": true
+      },
+      {
+        "id": "velvet-box",
+        "name": "Velvet box invitation",
+        "category": "Invitations",
+        "description": "A hinged velvet box with a foiled lid, satin lining and the invitation card resting inside, made to be kept.",
+        "images": [
+          {
+            "src": "print-velvet-box-a",
+            "focus": "50% 45%",
+            "zoom": 1
+          },
+          {
+            "src": "print-velvet-box-b",
+            "focus": "50% 55%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Velvet box",
+          "Gold foil",
+          "Satin lining",
+          "Silk tassel"
+        ],
+        "paper": "Cotton card in velvet",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": true,
+        "sample": true
+      },
+      {
+        "id": "jali-lasercut",
+        "name": "Jali laser-cut pocket",
+        "category": "Invitations",
+        "description": "A Mughal-arch lattice sleeve, laser-cut, sliding over a blush card with foiled names.",
+        "images": [
+          {
+            "src": "print-lasercut-a",
+            "focus": "50% 55%",
+            "zoom": 1
+          },
+          {
+            "src": "print-lasercut-b",
+            "focus": "50% 50%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Laser-cut",
+          "Gold foil",
+          "Pocket sleeve"
+        ],
+        "paper": "Pearl shimmer card",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": true,
+        "sample": true
+      },
+      {
+        "id": "mehndi-card",
+        "name": "Mehndi night card",
+        "category": "Ceremony & events",
+        "description": "Marigold and emerald with henna-style foil linework, a mirror-work tassel and a wax seal.",
+        "images": [
+          {
+            "src": "print-mehndi-a",
+            "focus": "45% 45%",
+            "zoom": 1
+          },
+          {
+            "src": "print-mehndi-b",
+            "focus": "50% 50%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Gold foil",
+          "Wax seal",
+          "Mirror-work tassel"
+        ],
+        "paper": "Coloured card stock",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "nikah-program",
+        "name": "Nikah / Pheras program",
+        "category": "Ceremony & events",
+        "description": "A ceremony booklet with a vellum cover and silk ribbon, so every guest can follow the rituals.",
+        "images": [
+          {
+            "src": "print-nikah-program",
+            "focus": "62% 74%",
+            "zoom": 1.9
+          },
+          {
+            "src": "print-menu-card",
+            "focus": "45% 60%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Vellum cover",
+          "Silk ribbon",
+          "Gold foil"
+        ],
+        "paper": "Text-weight paper booklet",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "menu-card",
+        "name": "Menu card",
+        "category": "Reception",
+        "description": "A tall foil-bordered menu that sits in the napkin fold on every charger.",
+        "images": [
+          {
+            "src": "print-menu-card",
+            "focus": "44% 52%",
+            "zoom": 1.45
+          },
+          {
+            "src": "print-nikah-program",
+            "focus": "45% 55%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Gold foil",
+          "Deckle or straight edge"
+        ],
+        "paper": "Cotton card",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "place-cards",
+        "name": "Place cards",
+        "category": "Reception",
+        "description": "Tented, gold-edged place cards with calligraphy names for every seat.",
+        "images": [
+          {
+            "src": "print-place-cards",
+            "focus": "45% 62%",
+            "zoom": 1.35
+          }
+        ],
+        "finishes": [
+          "Gold edge painting",
+          "Calligraphy"
+        ],
+        "paper": "Heavy card",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "favour-tags",
+        "name": "Favour tags",
+        "category": "Favours & packaging",
+        "description": "Round foil tags for mithai boxes and favours, tied on with silk ribbon.",
+        "images": [
+          {
+            "src": "print-favour-tags",
+            "focus": "72% 72%",
+            "zoom": 1.9
+          }
+        ],
+        "finishes": [
+          "Gold foil",
+          "Silk ribbon"
+        ],
+        "paper": "Heavy card",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "welcome-sign",
+        "name": "Acrylic welcome sign",
+        "category": "Signage",
+        "description": "A clear acrylic sign with gold mirror lettering, framed in florals at the entrance.",
+        "images": [
+          {
+            "src": "print-welcome-sign-a",
+            "focus": "50% 40%",
+            "zoom": 1
+          },
+          {
+            "src": "print-welcome-sign-b",
+            "focus": "50% 40%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Acrylic",
+          "Gold mirror lettering",
+          "Easel"
+        ],
+        "paper": "Clear acrylic",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": true,
+        "sample": true
+      },
+      {
+        "id": "save-the-date",
+        "name": "Save the date",
+        "category": "Invitations",
+        "description": "Deckle-edged blush cards with foiled names, posted in gold-lined envelopes.",
+        "images": [
+          {
+            "src": "print-save-the-date",
+            "focus": "55% 45%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Gold foil",
+          "Deckle edge",
+          "Foil-lined envelope"
+        ],
+        "paper": "Handmade cotton paper",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "thank-you",
+        "name": "Thank-you cards",
+        "category": "Finishing touches",
+        "description": "Emerald cards with a foiled \"Thank you\", ready for your notes after the wedding.",
+        "images": [
+          {
+            "src": "print-thank-you",
+            "focus": "74% 30%",
+            "zoom": 1.7
+          }
+        ],
+        "finishes": [
+          "Gold foil",
+          "Wax seal"
+        ],
+        "paper": "Coloured card stock",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "envelope-seal",
+        "name": "Envelopes, liners & wax seals",
+        "category": "Finishing touches",
+        "description": "Patterned foil liners and hand-pressed wax seals that finish every envelope.",
+        "images": [
+          {
+            "src": "print-suite-plum-b",
+            "focus": "28% 22%",
+            "zoom": 1.8
+          },
+          {
+            "src": "print-save-the-date",
+            "focus": "80% 75%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Foil liner",
+          "Wax seal",
+          "Calligraphy addressing"
+        ],
+        "paper": "Envelope stock",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": false,
+        "sample": true
+      },
+      {
+        "id": "favour-boxes",
+        "name": "Favour boxes",
+        "category": "Favours & packaging",
+        "description": "Rigid boxes wrapped in textured paper, hot-stamped and tied with silk for sweets and favours.",
+        "images": [
+          {
+            "src": "print-favour-boxes-a",
+            "focus": "50% 50%",
+            "zoom": 1
+          },
+          {
+            "src": "print-favour-boxes-b",
+            "focus": "50% 50%",
+            "zoom": 1
+          }
+        ],
+        "finishes": [
+          "Hot-stamped foil",
+          "Silk ribbon",
+          "Rigid box"
+        ],
+        "paper": "Textured wrap paper",
+        "price": "",
+        "unit": "",
+        "minQty": "",
+        "leadTime": "",
+        "featured": true,
+        "sample": true
+      }
+    ],
+    "optionsTitle": "Paper, finishes & *methods*",
+    "optionsIntro": "Mix and match. Tell us what you love and we will suggest what suits your design and timeline.",
+    "options": {
+      "papers": {
+        "label": "Paper stocks",
+        "items": [
+          "Heavy cotton card",
+          "Handmade deckle-edge paper",
+          "Pearl shimmer card",
+          "Translucent vellum",
+          "Coloured card stock",
+          "Clear acrylic"
+        ]
+      },
+      "finishes": {
+        "label": "Finishes",
+        "items": [
+          "Gold or rose-gold foil",
+          "Letterpress",
+          "Blind embossing",
+          "Laser-cut lattice",
+          "Edge painting",
+          "Wax seal",
+          "Velvet box"
+        ]
+      },
+      "methods": {
+        "label": "Printing methods",
+        "items": [
+          "Digital print",
+          "Foil stamping",
+          "Letterpress",
+          "Laser cutting",
+          "Hand calligraphy"
+        ]
+      },
+      "addons": {
+        "label": "Add-ons",
+        "items": [
+          "Envelope liners",
+          "Calligraphy addressing",
+          "Silk ribbons & tassels",
+          "Custom monogram or crest",
+          "Matching day-of signage"
+        ]
+      }
+    },
+    "packagesTitle": "Stationery *packages*",
+    "packagesIntro": "A starting point. Every package is tailored to your guest list and events.",
+    "packages": [
+      {
+        "name": "Essentials",
+        "includes": [
+          "Invitation card & envelope",
+          "RSVP card",
+          "Menu cards",
+          "Place cards"
+        ],
+        "price": "",
+        "note": "",
+        "highlight": false
+      },
+      {
+        "name": "Signature suite",
+        "includes": [
+          "Layered invitation suite with foil",
+          "Save the date",
+          "Ceremony program",
+          "Menus & place cards",
+          "Welcome sign"
+        ],
+        "price": "",
+        "note": "",
+        "highlight": true
+      },
+      {
+        "name": "Royal keepsake",
+        "includes": [
+          "Velvet box or laser-cut invitations",
+          "A card for every event, Mehndi to Walima",
+          "Wax seals & foil-lined envelopes",
+          "Day-of signage",
+          "Favour boxes & tags",
+          "Thank-you cards"
+        ],
+        "price": "",
+        "note": "",
+        "highlight": false
+      }
+    ],
+    "copy": {
+      "priceOnRequest": "Price on request",
+      "paperLabel": "Paper",
+      "finishesLabel": "Finishes",
+      "unitLabel": "Per",
+      "minQtyLabel": "Minimum",
+      "leadTimeLabel": "Lead time",
+      "addToQuote": "Add to quote",
+      "inQuote": "In your quote",
+      "removeFromQuote": "Remove",
+      "quoteTitle": "Your printing quote",
+      "quoteEmpty": "Add pieces from the wall to build a quote list.",
+      "requestQuote": "Request a printing quote",
+      "flipFront": "See the design",
+      "flipBack": "See the details",
+      "choosePackage": "Ask about this package",
+      "featured": "Featured",
+      "sample": "Sample design",
+      "close": "Close",
+      "prev": "Previous piece",
+      "next": "Next piece",
+      "highlight": "Popular",
+      "wizardService": "Printing & stationery",
+      "wizardNote": "Printing quote"
+    }
   }
 }

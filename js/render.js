@@ -166,6 +166,8 @@
     return s;
   };
 
+  R.printing = function (c, C) { return DP.printing.section(c, C); };
+
   R.estimator = function (c) {
     var s = section('estimator', 'estimator', c.eyebrow);
     s.innerHTML = head(c);

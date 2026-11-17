@@ -76,13 +76,15 @@
       .catch(function (e) { log('site_content unavailable', e.message); return null; });
   }
 
+  function upgrade(merged, saved, defaults) { return DP.upgradeContent ? DP.upgradeContent(merged, saved, defaults) : merged; }
+
   function getContent() {
     var mode = previewMode();
     return fetchDefaults().then(function (defaults) {
       if (mode === 'local') {
         try {
           var local = JSON.parse(localStorage.getItem('dp:preview-content') || 'null');
-          if (isObj(local)) return deepMerge(defaults, local);
+          if (isObj(local)) return upgrade(deepMerge(defaults, local), local, defaults);
         } catch (e) {}
         return defaults;
       }
@@ -92,7 +94,7 @@
         return remote;
       }).then(function (remote) {
         DP.contentSource = remote ? 'supabase:' + id : 'local';
-        return remote ? deepMerge(defaults, remote) : defaults;
+        return remote ? upgrade(deepMerge(defaults, remote), remote, defaults) : defaults;
       });
     });
   }

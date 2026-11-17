@@ -111,6 +111,13 @@
     </div>
   </dialog>
 
+  <dialog class="modal pdetail" id="pdetail" aria-label="Printing piece">
+    <div class="modal__box">
+      <button type="button" class="modal__close" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="pd"></div>
+    </div>
+  </dialog>
+
   <dialog class="lightbox" id="lightbox" aria-label="Gallery">
     <div class="lb__top"><span class="lb__title"></span><button type="button" class="modal__close" style="position:static" data-close aria-label="Close gallery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div class="lb__stage">
@@ -144,9 +151,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" defer></script>
   <script src="js/config.js" defer></script>
   <script src="js/util.js" defer></script>
+  <script src="js/upgrade.js" defer></script>
   <script src="js/data.js" defer></script>
   <script src="js/render.js" defer></script>
   <script src="js/tools.js" defer></script>
+  <script src="js/printing.js" defer></script>
   <script src="js/fx.js" defer></script>
   <script src="js/motion.js" defer></script>
   <script src="js/main.js" defer></script>
