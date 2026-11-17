@@ -44,6 +44,7 @@
     var search = h('input', { class: 'input', type: 'search', placeholder: 'Search name, phone, email, message…', 'aria-label': 'Search leads', value: L.q });
     search.addEventListener('input', u.debounce(function () { L.q = search.value.toLowerCase(); draw(); }, 150));
     root.appendChild(head('Leads inbox', 'Every inquiry from the website, newest first.', [
+      S.push ? S.push.button({ kind: 'outline' }) : null,
       u.btn('Refresh', { small: true, kind: 'ghost', icon: 'reload', onclick: function () { P.loadLeads().then(draw); } }),
       u.btn('Export CSV', { small: true, kind: 'outline', icon: 'download', onclick: function () { exportCsv(visible()); } })
     ]));
@@ -129,9 +130,16 @@
       } }));
       m.foot.appendChild(u.btn('Close', { kind: 'ghost', small: true, onclick: function () { m.close(); } }));
     }
+    function openPending() {
+      if (!L.pending) return;
+      var r = L.rows.filter(function (x) { return String(x.id) === String(L.pending); })[0];
+      if (r) { L.pending = null; drawer(r); }
+    }
     draw();
-    P.loadLeads().then(draw);
+    P.loadLeads().then(function () { draw(); openPending(); if (L.pending) { u.toast('That inquiry is no longer in the inbox.', 'info'); L.pending = null; } });
   };
+  /* Opened from a notification tap: show the inbox and that lead's details. */
+  P.openLead = function (id) { L.pending = id || null; L.filter = 'all'; S.go('leads'); };
 
   /* =============== AVAILABILITY =============== */
   var cal = { month: null, days: {}, selected: null };

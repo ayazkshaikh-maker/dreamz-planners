@@ -53,7 +53,8 @@
     upload: 'M12 16V4M6 10l6-6 6 6M4 20h16', download: 'M12 4v12M6 10l6 6 6-6M4 20h16', menu: 'M4 7h16M4 12h16M4 17h16',
     wa: 'M4 20l1.5-4A8 8 0 1 1 8 18.5zM9 9c0 3 3 6 6 6l1-1.5-2-1-1 1c-1-.5-2-1.5-2.5-2.5l1-1-1-2z', call: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z',
     star: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z', back: 'M15 6l-6 6 6 6', check: 'M5 12l5 5 9-10',
-    mail: 'M3 6h18v12H3zM3 6l9 7 9-7', external: 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6'
+    mail: 'M3 6h18v12H3zM3 6l9 7 9-7', external: 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6',
+    bell: 'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0'
   };
   u.icon = function (name, size) {
     var ns = 'http://www.w3.org/2000/svg';

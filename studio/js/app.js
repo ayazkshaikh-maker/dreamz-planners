@@ -20,6 +20,7 @@
 
   function boot() {
     loading();
+    if (S.push) S.push.register();
     var hashErr = /error_description=([^&]+)/.exec(location.hash);
     Promise.all([
       fetch('../content/site-content.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error('Could not load the default content (' + r.status + ').'); return r.json(); }),
@@ -162,7 +163,7 @@
       state.rows = rows;
       buildLayout();
       var last = null; try { last = sessionStorage.getItem('dp:studio:view'); } catch (e) {}
-      go(last && (S.editorById(last) || panelById(last)) ? last : 'brand');
+      if (!(S.push && S.push.handleHash())) go(last && (S.editorById(last) || panelById(last)) ? last : 'brand');
       if (S.panels.loadLeads) S.panels.loadLeads();
     }).catch(function (e) {
       u.toast('Could not load content: ' + e.message + ' — switching to local mode.', 'err', 9000);
@@ -183,6 +184,7 @@
     function userMenuEl(cls) {
       return h('div', { class: cls }, [
         B.mode === 'supabase' ? h('span', { class: 'user__email', text: (B.user && B.user.email) || '' }) : null,
+        S.push ? S.push.button() : null,
         B.mode === 'supabase'
           ? u.btn('Sign out', { small: true, kind: 'ghost', onclick: function () { guardLeave().then(function (ok) { if (ok) B.signOut(); }); } })
           : (B.reason === 'practice' ? u.btn('Exit practice', { small: true, kind: 'ghost', onclick: function () { guardLeave().then(function (ok) { if (ok) { B.forceLocal(false); location.href = location.pathname; } }); } }) : null)

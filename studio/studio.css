@@ -443,3 +443,17 @@ body.is-wide .editor { padding: 22px 30px 80px; }
 
 /* nested option list (Printing: paper / finishes / methods / add-ons) */
 .subgroup { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--line, rgba(212,168,83,.25)); border-radius: 14px; }
+
+/* ---------- push notifications ---------- */
+.pushbtn__state { font-size: .7rem; opacity: .75; margin-left: 2px; }
+.pushbtn[data-state="on"] .pushbtn__state { color: var(--ok); opacity: 1; }
+.pushbtn[data-state="blocked"] .pushbtn__state { color: var(--err); opacity: 1; }
+.pushcard { display: flex; flex-direction: column; gap: 10px; }
+.pushcard p { margin: 0; }
+.pushcard.is-disabled .field { opacity: .5; }
+.pushcard__state { display: flex; align-items: center; gap: 8px; }
+.pushcard__msg:empty { display: none; }
+.pushcard__devices { display: flex; flex-direction: column; gap: 6px; }
+.pushdev { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 12px; border: 1px solid var(--line-soft); border-radius: var(--r); }
+.pushdev small { display: block; margin-top: 2px; }
+.user--nav .pushbtn { align-self: flex-start; }
