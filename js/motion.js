@@ -30,28 +30,37 @@
     var count = pre.querySelector('.preloader__count'), bar = pre.querySelector('.preloader__line i'), mark = pre.querySelector('.preloader__mark');
     var prog = { v: 0 };
     var lightMode = document.documentElement.getAttribute('data-mode') === 'light';
-    var markUrl = lightMode ? 'assets/brand/logo-mark-dark.svg' : 'assets/brand/logo-mark.svg';
-    var drawn = fetch(markUrl).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (txt) {
+    // Royal Seal crest (parts grouped by id) — the dome and canopy settle in, the jharokha opens,
+    // the peacocks shine in on either side, then a gold sheen sweeps across the whole seal.
+    var crestUrl = lightMode ? 'assets/brand/logo-crest-dark.svg' : 'assets/brand/logo-crest.svg';
+    var drawn = fetch(crestUrl).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (txt) {
       mark.innerHTML = txt.replace(/<\?xml[^>]*>/, '');
       var svg = mark.querySelector('svg'); if (!svg) return;
       svg.removeAttribute('width'); svg.removeAttribute('height'); svg.setAttribute('aria-hidden', 'true');
-      var paths = u.$$('path', svg);
-      paths.forEach(function (p) {
-        var L = 400; try { L = p.getTotalLength(); } catch (e) {}
-        p.style.strokeDasharray = L; p.style.strokeDashoffset = L;
-      });
-      gsap.to(paths, { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut', stagger: 0.02 });
-      gsap.to(paths, { fillOpacity: 1, strokeOpacity: 0, duration: 0.8, delay: 1.1, ease: 'power2.out' });
-      var m3d = new Image();
-      m3d.className = 'preloader__3d'; m3d.alt = ''; m3d.src = 'assets/brand/logo-mark-3d.webp';
-      m3d.onload = function () { mark.appendChild(m3d); gsap.fromTo(m3d, { opacity: 0, scale: 0.92, filter: 'blur(6px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 0.9, delay: 0.25, ease: 'power3.out' }); gsap.to(svg, { opacity: 0, duration: 0.6, delay: 0.5 }); };
+      var t = svg.querySelector('title'); if (t) t.remove();
+      var sheen = document.createElement('i');
+      sheen.className = 'preloader__sheen';
+      sheen.style.webkitMaskImage = sheen.style.maskImage = 'url("' + crestUrl + '")';
+      mark.appendChild(sheen);
+      function part(id) { return svg.querySelector('#dp-' + id); }
+      var all = ['jharokha', 'canopy', 'crown', 'dome', 'peacocks', 'ribbon'].map(part).filter(Boolean);
+      all.forEach(function (g) { g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 50%'; });
+      var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tl.set(all, { opacity: 0 })
+        .fromTo(part('jharokha'), { opacity: 0, scale: 0.86 }, { opacity: 1, scale: 1, duration: 0.7 })
+        .fromTo([part('canopy'), part('crown')], { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06 }, '-=0.35')
+        .fromTo(part('dome'), { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out' }, '-=0.35')
+        .fromTo(part('peacocks'), { opacity: 0, scaleX: 0.82 }, { opacity: 1, scaleX: 1, duration: 0.8, ease: 'expo.out' }, '-=0.5')
+        .fromTo(part('ribbon'), { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1, duration: 0.6, ease: 'expo.out' }, '-=0.6')
+        .fromTo(sheen, { backgroundPosition: '-120% 0' }, { backgroundPosition: '220% 0', duration: 1.0, ease: 'power2.inOut' }, '-=0.3');
+      return new Promise(function (res) { tl.eventCallback('onComplete', res); });
     }).catch(function () {
-      mark.innerHTML = '<span class="display gold-text" style="font-size:5rem">DP</span>';
+      mark.innerHTML = '<span class="display gold-text" style="font-size:3rem">Dreamz</span>';
     });
     function paint() { count.textContent = String(Math.round(prog.v)).padStart(3, '0'); bar.style.transform = 'scaleX(' + prog.v / 100 + ')'; }
     var pre1 = gsap.to(prog, { v: 82, duration: 1.4, ease: 'power2.out', onUpdate: paint });
     var cap = new Promise(function (r) { setTimeout(r, 4500); });
-    return Promise.race([Promise.all([ready, new Promise(function (r) { setTimeout(r, 1500); })]), cap]).then(function () {
+    return Promise.race([Promise.all([ready, drawn, new Promise(function (r) { setTimeout(r, 1500); })]), cap]).then(function () {
       return new Promise(function (resolve) {
         pre1.kill();
         var tl = gsap.timeline({ onComplete: function () { pre.remove(); } });

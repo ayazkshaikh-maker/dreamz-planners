@@ -172,10 +172,11 @@ button { font: inherit; color: inherit; }
 .preloader__panel--top { top: 0; border-bottom: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); }
 .preloader__panel--bottom { bottom: 0; }
 .preloader__inner { position: relative; z-index: 2; display: grid; justify-items: center; gap: 22px; }
-.preloader__mark { position: relative; width: clamp(120px, 18vw, 190px); height: auto; aspect-ratio: 1; }
+.preloader__mark { position: relative; width: clamp(220px, 30vw, 380px); height: auto; aspect-ratio: 1.2; }
+.preloader__sheen { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 38%, rgba(255,246,214,.0) 42%, rgba(255,246,214,.85) 50%, rgba(255,246,214,0) 58%, transparent 62%) no-repeat; background-size: 60% 100%; background-position: -120% 0; -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; mix-blend-mode: screen; }
+html[data-mode=light] .preloader__sheen { mix-blend-mode: soft-light; }
 .preloader__3d { position: absolute; inset: -6%; width: 112%; max-width: none; height: 112%; object-fit: contain; filter: drop-shadow(0 20px 40px color-mix(in srgb, var(--gold) 25%, transparent)); }
 .preloader__mark svg { width: 100%; height: 100%; overflow: visible; }
-.preloader__mark path { fill-opacity: 0; stroke: var(--gold); stroke-width: 2.2; }
 .preloader__count { font-family: var(--f-label); color: var(--gold); letter-spacing: .4em; font-size: .78rem; font-variant-numeric: tabular-nums; }
 .preloader__line { width: 160px; height: 1px; background: color-mix(in srgb, var(--gold) 20%, transparent); overflow: hidden; }
 .preloader__line i { display: block; height: 100%; width: 100%; background: var(--gold); transform: scaleX(0); transform-origin: left; }
@@ -610,7 +611,7 @@ dialog::backdrop { background: rgb(var(--backdrop) / var(--backdrop-a)); backdro
 /* ---------- footer ---------- */
 .footer { position: relative; z-index: 2; padding: clamp(70px, 10vw, 130px) var(--gutter) 130px; border-top: 1px solid var(--line); background: linear-gradient(180deg, var(--ink), color-mix(in srgb, var(--plum) 60%, var(--ink))); }
 .footer__grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 40px; }
-.footer__logo { height: clamp(56px, 7vw, 86px); width: auto; }
+.footer__logo { height: clamp(150px, 15vw, 200px); width: auto; max-width: 100%; }
 .footer__tag { font-family: var(--f-display); font-style: italic; font-size: clamp(1.5rem, 2.6vw, 2.2rem); line-height: 1.15; margin: 20px 0 10px; color: var(--champagne); }
 .footer h3 { font-family: var(--f-label); text-transform: uppercase; letter-spacing: .25em; font-size: .72rem; color: var(--gold); font-weight: 400; margin: 0 0 16px; }
 .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }

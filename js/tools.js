@@ -39,7 +39,7 @@
     var logo = u.$('#header-logo'), lg = c.brand.logo || {};
     logo.innerHTML = '';
     [['logo-for-dark', lg.horizontal], ['logo-for-light', lg.horizontalDark || lg.horizontal]].forEach(function (pair, k) {
-      var img = u.h('img', { class: pair[0], src: pair[1], alt: k ? '' : c.brand.name, width: 220, height: 44 });
+      var img = u.h('img', { class: pair[0], src: pair[1], alt: k ? '' : c.brand.name, width: 196, height: 44 });
       img.addEventListener('error', function () { logo.innerHTML = '<span class="wordmark">' + u.esc(c.brand.name) + '</span>'; });
       logo.appendChild(img);
     });
