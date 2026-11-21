@@ -108,13 +108,14 @@
       document.getElementById('main').innerHTML = '<section class="section"><div class="wrap"><h1 class="display">Dreamz Planners</h1><p class="lede">Call us at <a href="tel:+14044887643">404-488-7643</a> or <a href="tel:+14045433444">404-543-3444</a>.</p></div></section>';
     });
     DP.motion.preloader(mounted).then(function () {
+      // count the visit on load, not after "Tap to enter", so visitors who leave on the intro still count
+      setTimeout(function () { try { DP.data.logView(); } catch (e) {} }, 1500);
       // intro film overlay (theme.intro) — resolves as it hands over to the hero
       return DP.intro ? DP.intro.run().catch(function (e) { console.error('[dp] intro failed', e); }) : null;
     }).then(function () {
       DP.motion.heroIntro();
       if (window.ScrollTrigger) ScrollTrigger.refresh();
       setTimeout(function () { DP.data.flushQueue(); }, 3000);
-      setTimeout(function () { try { DP.data.logView(); } catch (e) {} }, 1500);
     });
 
     // Studio live preview: parent window posts { type: 'dp:preview', content }
