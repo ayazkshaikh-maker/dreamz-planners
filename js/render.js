@@ -261,7 +261,8 @@
     }).join('');
     s.insertAdjacentHTML('beforeend', '<div class="begin__grid">' +
       '<div class="panel" data-wizard-inline></div>' +
-      '<div class="begin__side"><div class="panel"><h3 class="field-label">' + u.esc(c.dateCheckTitle) + '</h3><p class="hint" style="margin:0 0 14px">' + u.esc(c.dateCheckIntro) + '</p><div data-datecheck></div></div>' +
+      '<div class="begin__side">' + (C.booking && C.booking.enabled !== false ? '<div class="panel bk-entry" data-booking-entry hidden><h3 class="field-label">' + u.esc(C.booking.beginTitle) + '</h3><p class="hint" style="margin:0 0 14px">' + u.rich(C.booking.beginBody) + '</p><button type="button" class="btn btn--gold" data-action="booking">' + u.esc(C.booking.cta) + ' ' + I.arrow + '</button></div>' : '') +
+      '<div class="panel"><h3 class="field-label">' + u.esc(c.dateCheckTitle) + '</h3><p class="hint" style="margin:0 0 14px">' + u.esc(c.dateCheckIntro) + '</p><div data-datecheck></div></div>' +
       '<div class="panel direct"><h3 class="field-label">' + u.esc(c.directTitle) + '</h3>' + phones +
       '<a class="btn btn--ghost" href="' + u.waHref(C.contact.whatsapp.number, C.contact.whatsapp.defaultMessage) + '" target="_blank" rel="noopener">' + I.chat + ' ' + u.esc(C.labels.whatsapp) + '</a>' +
       '<a class="btn btn--ghost" href="' + u.esc(C.contact.instagram.url) + '" target="_blank" rel="noopener">' + I.ig + ' @' + u.esc(C.contact.instagram.handle) + '</a>' +

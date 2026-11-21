@@ -406,11 +406,18 @@
     var text = w.whatsappIntro + '\n\n' + this.summary();
     this.root.innerHTML = '<div class="wiz__success">' + I().seal.replace('<svg', '<svg class="seal"') +
       '<h3 class="wiz__q">' + u.rich(w.successTitle) + '</h3><p style="color:var(--muted);margin:0 auto;max-width:30rem">' + u.rich(w.successBody) + '</p>' +
+      (DP.booking && DP.booking.available() ? '<div class="bk__offer"><p>' + u.rich((c.booking || {}).wizardPrompt || '') + '</p><button type="button" class="btn btn--gold" data-book>' + u.esc((c.booking || {}).cta || 'Book a free consultation') + ' ' + I().arrow + '</button></div>' : '') +
       '<div class="actions"><a class="btn btn--gold" href="' + u.waHref(c.contact.whatsapp.number, text) + '" target="_blank" rel="noopener">' + I().chat + ' ' + u.esc(wcopy().sendWhatsapp) + '</a>' +
       (c.contact.phones || []).map(function (ph) { return '<a class="btn btn--ghost" href="' + u.telHref(ph) + '">' + I().phone + ' ' + u.esc(c.labels.call) + ' ' + u.esc(ph.number) + '</a>'; }).join('') +
       '<button type="button" class="linkbtn" data-restart>' + u.esc(wcopy().restart) + '</button></div>' +
       (this.mode === 'local' ? '<p class="wiz__note">' + u.esc(wcopy().localNote) + '</p>' : '') + '</div>';
     var self = this;
+    var book = this.root.querySelector('[data-book]');
+    if (book) book.addEventListener('click', function () {
+      var wd = u.$('#wizard');
+      if (wd && wd.open && wd.contains(book)) T.close(wd);
+      DP.booking.openDialog({ name: self.state.name, email: self.state.email, phone: self.state.phone });
+    });
     this.root.querySelector('[data-restart]').addEventListener('click', function () {
       self.state = { events: [], date: '', flexible: false, guests: '', services: [], budget: '', name: '', phone: '', email: '', method: '', message: '', company: '', printing: null };
       self.done = false; self.step = 0; self.render();
@@ -678,6 +685,7 @@
         var act = a.dataset.action;
         if (act === 'wizard') { e.preventDefault(); T.openWizard(); }
         if (act === 'film') { e.preventDefault(); T.openFilm(); }
+        if (act === 'booking' && DP.booking) { e.preventDefault(); DP.booking.openDialog(); }
         if (act === 'top') { e.preventDefault(); T.toTop(); }
         return;
       }

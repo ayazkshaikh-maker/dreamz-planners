@@ -42,6 +42,7 @@ Fields marked **rich** accept `*word*`, which renders as the gold italic accent 
 | `dateCheck` | object | Labels for the date-check widget. |
 | `availability` | array | Local fallback dates (Supabase `availability` table wins). |
 | `wizard` | object | Inquiry wizard options + copy. |
+| `booking` | object | Free consultation booking: on/off switch and every label (Phase 1). |
 | `footer` | object | Footer note, copyright, links. |
 | `labels` | object | Small UI strings. |
 
@@ -207,7 +208,7 @@ Rendered by `js/printing.js` (anchor `#printing`, nav link "Printing"). Desktop:
 `eyebrow` · `title` rich · `items[]` `{ q, a (rich) }`.
 
 ### `begin` — chapter 12
-`eyebrow` · `title` rich · `body` rich · `dateCheckTitle` · `dateCheckIntro` · `directTitle`. The inline wizard, date check and direct-contact buttons are generated.
+`eyebrow` · `title` rich · `body` rich · `dateCheckTitle` · `dateCheckIntro` · `directTitle`. The inline wizard, date check and direct-contact buttons are generated. When consultation booking is open, a "Book a free consultation" panel (copy from `booking.beginTitle` / `beginBody` / `cta`) is added above the date check.
 
 ### `dateCheck`
 `labels.open` `limited` `booked` `unknown` `past` (status messages) · `copy.prompt`, `copy.ask`, `copy.legendOpen`, `copy.legendLimited`, `copy.legendBooked`.
@@ -228,6 +229,26 @@ Rendered by `js/printing.js` (anchor `#printing`, nav link "Printing"). Desktop:
 | `copy` | object | Every question, label and error message of the wizard (`eventQ`, `eventHint`, `dateQ`, `dateLabel`, `guestsLabel`, `flexibleLabel`, `servicesQ`, `servicesHint`, `budgetQ`, `budgetHint`, `contactQ`, `nameLabel`, `phoneLabel`, `emailLabel`, `methodLabel`, `messageLabel`, `reviewQ`, `sending`, `sendWhatsapp`, `restart`, `errEvent`, `errDate`, `errGuests`, `errName`, `errContact`, `errPhone`, `errEmail`, `errSubmit`, `localNote`). |
 
 Lead row written to Supabase `leads` (insert only, no select): `name, phone, email, event_type (events joined by ", "), event_date (YYYY-MM-DD or null), guests, services[], budget, message, source ('website-inline' | 'website-modal'), payload { events[], flexible, contactMethod, page, estimator, printing, ua }`. If the insert fails the row is queued in `localStorage['dp:leadQueue']` and retried on the next visit.
+
+### `booking` (Phase 1: free consultation booking)
+The booking dialog (`#booking`, `js/booking.js`). The times, hours and on/off state come from the database, not from this file: owners set them in the Studio → **Consultations** (tables `consult_settings`, `consult_blocks`, `consultations`; migration `2026112102_phase1_booking.sql`). The site only ever sees free start times (rpc `consult_slots`) and books with rpc `consult_book`, which re-checks the slot atomically, creates or links a lead on stage Consult and queues the `booking_confirm` email.
+Every entry point (`[data-booking-entry]` panel in chapter 12, the offer on the wizard's thank-you screen, any button with `data-action="booking"`, e.g. `hero.ctaSecondary.action`) stays hidden until the owners switch booking on and at least one slot is free.
+
+| Key | Type | Notes |
+|---|---|---|
+| `enabled` | boolean | Site-side switch. `false` hides every booking button even when the Studio has booking on. Default `true`. |
+| `cta` | string | Button label ("Book a free consultation"). |
+| `title` | string rich | Dialog title. |
+| `intro` | string rich | Under the title. `{minutes}` = slot length. |
+| `beginTitle`, `beginBody` (rich) | string | The panel in chapter 12. |
+| `wizardPrompt` | string rich | Line above the button on the wizard's thank-you screen (name, email and phone are carried over). |
+| `dayLabel`, `timeLabel`, `tzNote`, `yourTime`, `next` | string | Pick step. `tzNote` takes `{tz}` (e.g. "Eastern Standard Time"); `yourTime` takes `{time}` and is shown only when the visitor's own time zone gives a different clock time. |
+| `chosenLabel`, `change`, `detailsTitle`, `nameLabel`, `emailLabel`, `phoneLabel`, `noteLabel`, `confirm`, `sending` | string | Details step. Name, email and phone are required. The privacy line reuses `wizard.consent`. |
+| `loading`, `noSlots`, `closed` | string | Status lines (no free time / booking switched off), followed by call + WhatsApp buttons. |
+| `successTitle` (rich), `successBody` (rich, `{minutes}`) | string | Confirmation screen. |
+| `addToCalendar`, `googleCalendar` | string | Buttons: download a one-event `.ics` file, or open Google Calendar with the event filled in. |
+| `eventTitle`, `eventDetails` | string | Title and description of that calendar event. |
+| `errSlot`, `errName`, `errEmail`, `errPhone`, `errGeneric` | string | Validation and network errors. Database messages (slot just taken, too many bookings) are shown as sent. |
 
 ### `footer`
 `note` · `copyright` (year is appended automatically) · `links[]` `{label, href}`.
