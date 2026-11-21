@@ -111,7 +111,7 @@
       var r = q.row || {}, id = 'local-' + (q.queuedAt || '') + '-' + u.slug(r.name);
       var m = meta[id] || {};
       if (m.deleted) return null;
-      return Object.assign({}, r, { id: id, created_at: q.queuedAt, status: m.status || 'new', notes: m.notes || '', updated_at: m.updated_at || q.queuedAt });
+      return Object.assign({}, r, { id: id, created_at: q.queuedAt, status: m.status || 'new', stage: m.stage || null, tags: m.tags || [], follow_up: m.follow_up || null, note_log: m.note_log || [], notes: m.notes || '', updated_at: m.updated_at || q.queuedAt });
     }).filter(Boolean).sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); });
   }
   B.leads = function () {
@@ -124,6 +124,25 @@
       return Promise.resolve();
     }
     return timeout(B.client.from('leads').update(Object.assign({}, patch, { updated_at: new Date().toISOString() })).eq('id', id)).then(ok);
+  };
+  /* Timestamped notes (rpcs lead_add_note / lead_delete_note append atomically). Resolve to the new list. */
+  B.addLeadNote = function (id, text) {
+    if (B.mode === 'local') {
+      var meta = u.ls.get(K.leadMeta, {}), m = meta[id] = meta[id] || {};
+      m.note_log = (m.note_log || []).concat([{ id: u.uid('note'), at: new Date().toISOString(), by: 'this device', text: String(text).slice(0, 2000) }]);
+      u.ls.set(K.leadMeta, meta);
+      return Promise.resolve(m.note_log);
+    }
+    return timeout(B.client.rpc('lead_add_note', { p_id: id, p_text: text })).then(ok);
+  };
+  B.deleteLeadNote = function (id, noteId) {
+    if (B.mode === 'local') {
+      var meta = u.ls.get(K.leadMeta, {}), m = meta[id] = meta[id] || {};
+      m.note_log = (m.note_log || []).filter(function (n) { return n.id !== noteId; });
+      u.ls.set(K.leadMeta, meta);
+      return Promise.resolve(m.note_log);
+    }
+    return timeout(B.client.rpc('lead_delete_note', { p_id: id, p_note: noteId })).then(ok);
   };
   B.deleteLead = function (id) {
     if (B.mode === 'local') return B.updateLead(id, { deleted: true });
