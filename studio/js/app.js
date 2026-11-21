@@ -11,6 +11,9 @@
     { id: 'leads', label: 'Leads inbox', wide: true, badge: true, render: function (el) { S.panels.leads(el); } },
     { id: 'availability', label: 'Availability', wide: true, render: function (el) { S.panels.calendar(el); } },
     { id: 'reviews-mgr', label: 'Reviews', wide: true, render: function (el) { S.panels.reviews(el); } },
+    // optional: shown only once their database parts exist (S.ops.probe)
+    { id: 'analytics', label: 'Analytics', wide: true, optional: true, render: function (el) { S.ops.analytics(el); } },
+    { id: 'email', label: 'Email', wide: true, optional: true, render: function (el) { S.ops.email(el); } },
     { id: 'publish', label: 'Publish & history', render: function (el) { S.panels.publish(el); } }
   ];
 
@@ -37,7 +40,7 @@
       });
       return B.session().then(function (s) { if (/type=recovery/.test(location.hash)) return; if (s) return checkAdmin(); showAuth(); });
     }).catch(function (e) {
-      screen(h('div', { class: 'auth' }, [h('div', { class: 'auth__card' }, [h('h1', { class: 'display', text: 'Something went wrong' }), h('p', { text: e.message }), u.btn('Try again', { kind: 'gold', onclick: function () { location.reload(); } })])]));
+      screen(h('main', { class: 'auth' }, [h('div', { class: 'auth__card' }, [h('h1', { class: 'display', text: 'Something went wrong' }), h('p', { text: e.message }), u.btn('Try again', { kind: 'gold', onclick: function () { location.reload(); } })])]));
     });
   }
 
@@ -49,8 +52,8 @@
   }
 
   /* ---------------- auth screens ---------------- */
-  function brandHead(sub) {
-    return h('div', { class: 'auth__brand' }, [h('img', { src: '../assets/brand/logo-horizontal.svg', alt: 'Dreamz Planners', class: 'auth__logo' }), h('p', { class: 'eyebrow', text: sub || 'Studio' })]);
+  function brandHead(sub, noH1) {
+    return h('div', { class: 'auth__brand' }, [h('img', { src: '../assets/brand/logo-horizontal.svg', alt: 'Dreamz Planners', class: 'auth__logo' }), h('p', { class: 'eyebrow', text: sub || 'Studio' }), noH1 ? null : h('h1', { class: 'sr-only', text: 'Dreamz Studio — ' + (sub || 'Studio') })]);
   }
   function showAuth(tab) {
     tab = tab || 'signin';
@@ -114,7 +117,7 @@
         h('a', { class: 'linkish', href: '../index.html', text: '← Back to the website' })
       ])
     ]);
-    screen(h('div', { class: 'auth' }, [card]));
+    screen(h('main', { class: 'auth' }, [card]));
     setTimeout(function () { (email.value ? (pw.parentNode ? pw : email) : email).focus(); }, 50);
   }
 
@@ -131,13 +134,13 @@
       submit.disabled = true;
       B.updatePassword(pw.value).then(function () { u.toast('Password updated', 'ok'); history.replaceState(null, '', location.pathname); checkAdmin(); }).catch(function (err) { submit.disabled = false; msg.textContent = err.message; });
     });
-    screen(h('div', { class: 'auth' }, [h('div', { class: 'auth__card' }, [brandHead('New password'), form])]));
+    screen(h('main', { class: 'auth' }, [h('div', { class: 'auth__card' }, [brandHead('New password'), form])]));
   }
 
   function showDenied(extra) {
     var email = (B.user && B.user.email) || 'this account';
-    screen(h('div', { class: 'auth' }, [h('div', { class: 'auth__card auth__card--denied' }, [
-      brandHead('Studio'),
+    screen(h('main', { class: 'auth' }, [h('div', { class: 'auth__card auth__card--denied' }, [
+      brandHead('Studio', true),
       h('h1', { class: 'display', text: 'This login is not on the owner list' }),
       h('p', {}, ['You are signed in as ', h('strong', { text: email }), ', but the Studio only opens for the Dreamz Planners owners.']),
       h('ul', { class: 'muted list' }, [
@@ -165,6 +168,7 @@
       var last = null; try { last = sessionStorage.getItem('dp:studio:view'); } catch (e) {}
       if (!(S.push && S.push.handleHash())) go(last && (S.editorById(last) || panelById(last)) ? last : 'brand');
       if (S.panels.loadLeads) S.panels.loadLeads();
+      if (S.ops) S.ops.probe();
     }).catch(function (e) {
       u.toast('Could not load content: ' + e.message + ' — switching to local mode.', 'err', 9000);
       B.mode = 'local'; B.reason = 'offline';
@@ -206,7 +210,7 @@
       groups[g].forEach(function (e) { els.nav.appendChild(navItem(e.id, e.label)); });
     });
     els.nav.appendChild(h('p', { class: 'nav__group', text: 'Manage' }));
-    PANELS.forEach(function (p) { els.nav.appendChild(navItem(p.id, p.label, p.badge)); });
+    PANELS.forEach(function (p) { var b = navItem(p.id, p.label, p.badge); if (p.optional && !(S.ops && S.ops.available[p.id])) b.hidden = true; els.nav.appendChild(b); });
     els.nav.appendChild(h('p', { class: 'nav__keys muted', text: 'Ctrl+S saves the draft' }));
     els.nav.appendChild(userMenuEl('user user--nav'));
 
@@ -227,6 +231,8 @@
     var n = S.panels.leadsCount ? S.panels.leadsCount() : 0;
     u.$$('.nav__item[data-id="leads"] .badge').forEach(function (b) { b.textContent = n; b.hidden = !n; b.setAttribute('aria-label', n + ' new leads'); });
   };
+
+  S.showPanel = function (id, on) { u.$$('.nav__item[data-id="' + id + '"]').forEach(function (b) { b.hidden = !on; }); };
 
   function go(id) {
     state.current = id;

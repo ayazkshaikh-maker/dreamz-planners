@@ -9,5 +9,8 @@ window.DP_CONFIG = {
   MEDIA_BASE: 'assets/media/',
   MEDIA_MANIFEST: 'assets/media/manifest.json',
   TIMEOUT_MS: 6000,
-  CONTENT_TIMEOUT_MS: 3000
+  CONTENT_TIMEOUT_MS: 3000,
+  // Own privacy-friendly page-view count (rpc public.log_view). Needs migration 2026112101_phase0_analytics.sql;
+  // until it is applied, the call 404s quietly (one browser network line). Set false to switch counting off.
+  ANALYTICS: true
 };

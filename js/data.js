@@ -213,7 +213,33 @@
       }).catch(function (e) { log('reviews fallback', e.message); return fallback(); });
   }
 
+  /* ---------- privacy-friendly page view (no cookies, no IP, no ids) ----------
+     One call per page load to the SECURITY DEFINER rpc public.log_view. Skipped for Do Not Track,
+     Studio previews (?preview=, ?theme=), framed pages and local development (unless ?analytics=1).
+     Fails silently when the rpc does not exist yet. */
+  var viewLogged = false;
+  function logView() {
+    if (viewLogged) return;
+    viewLogged = true;
+    try {
+      var q = location.search;
+      if (CFG.ANALYTICS === false || navigator.doNotTrack === '1' || window.doNotTrack === '1') return;
+      if (/[?&](preview|theme|motion)=/.test(q) || window.top !== window.self) return;
+      if (/\/studio(\/|$)/.test(location.pathname)) return;
+      if (!/^https:$/.test(location.protocol) && !/[?&]analytics=1\b/.test(q)) return;
+      if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && !/[?&]analytics=1\b/.test(q)) return;
+      var c = getClient();
+      if (!c) return;
+      var ref = '';
+      try { if (document.referrer) { var r = new URL(document.referrer); if (r.host !== location.host) ref = r.hostname.slice(0, 100); } } catch (e) {}
+      var mobile = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || /Mobi|Android/i.test(navigator.userAgent || '');
+      c.rpc('log_view', { p_path: location.pathname.slice(0, 200) || '/', p_referrer_host: ref || null, p_device: mobile ? 'mobile' : 'desktop' })
+        .then(function (res) { if (res && res.error) log('analytics off', res.error.code || ''); }, function () {});
+    } catch (e) {}
+  }
+
   DP.data = {
+    logView: logView,
     getContent: getContent,
     submitLead: submitLead,
     getAvailability: getAvailability,

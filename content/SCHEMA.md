@@ -234,3 +234,11 @@ Lead row written to Supabase `leads` (insert only, no select): `name, phone, ema
 
 ### `labels`
 `planCta`, `call`, `whatsapp`, `instagram`, `plan`, `close`, `next`, `back`, `submit`, `skip`, `viewGallery`, `credit`, `callUs`, `news`, `photos`, `nextClip`, `contactOptions`, `backToTop` (footer button + floating button that appears after scrolling far), `lightTheme` / `darkTheme` (visitor toggle labels).
+
+## Outside the content model (Phase 0)
+
+No content keys were added in Phase 0. These live in the database and in `js/config.js`:
+
+- **Analytics** — `DP_CONFIG.ANALYTICS` (default `true`) turns the own page-view count on/off. One call per page load to the rpc `public.log_view(path, referrer_host, device)`; skipped for Do Not Track, `?preview=` / `?theme=` / `?motion=`, framed pages (the Studio preview) and localhost (add `?analytics=1` to test locally). No cookies, no IP, no visitor ids. Owners read `public.analytics_summary(days)` in the Studio → Manage → **Analytics**.
+- **Email** — templates in `public.email_templates` (`lead_ack`, `lead_owner`, `booking_confirm`, `booking_reminder`), edited in the Studio → Manage → **Email**. Template syntax: `{{name}}` inserts a value (HTML-escaped), `{{#event_date}}…{{/event_date}}` keeps the text only when that value is not empty. Variables for lead emails: `name, first_name, email, phone, event_type, event_date, guests, services, budget, message, studio_url, brand_name, year`.
+- Both Studio panels stay hidden until their migrations exist (see `../supabase/migrations/2026112101_phase0_*.sql` and `../OPS.md`).

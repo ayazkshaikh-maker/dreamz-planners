@@ -114,6 +114,7 @@
       DP.motion.heroIntro();
       if (window.ScrollTrigger) ScrollTrigger.refresh();
       setTimeout(function () { DP.data.flushQueue(); }, 3000);
+      setTimeout(function () { try { DP.data.logView(); } catch (e) {} }, 1500);
     });
 
     // Studio live preview: parent window posts { type: 'dp:preview', content }
