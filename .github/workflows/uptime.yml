@@ -1,0 +1,41 @@
+# Uptime check: every 30 minutes. A failed run makes GitHub email the repository owner.
+# No third-party accounts. The Supabase key used here is the public publishable key (also in js/config.js).
+name: Uptime
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uptime
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: https://ayazkshaikh-maker.github.io/dreamz-planners/
+      SUPABASE_URL: https://mbmmnswxuuegbloouuti.supabase.co
+      SUPABASE_KEY: sb_publishable_plO_blhkXeSbPN_pWKd0YA_bcD2ZfZt
+    steps:
+      - name: Check the website, the Studio and Supabase
+        shell: bash
+        run: |
+          fail=0
+          check() {
+            local name="$1" url="$2"; shift 2
+            local code
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 10 --retry-all-errors --max-time 20 "$@" "$url" || echo 000)
+            if [ "$code" = "200" ]; then echo "OK   $code  $name"; else echo "::error::$name returned $code ($url)"; fail=1; fi
+          }
+          check "Website home"   "$SITE"
+          check "Studio"         "${SITE}studio/"
+          # /rest/v1/ itself needs a secret key since 2025, so check auth health + one public row instead.
+          check "Supabase auth"  "$SUPABASE_URL/auth/v1/health" -H "apikey: $SUPABASE_KEY"
+          check "Supabase REST"  "$SUPABASE_URL/rest/v1/site_content?select=id&limit=1" -H "apikey: $SUPABASE_KEY"
+          exit $fail

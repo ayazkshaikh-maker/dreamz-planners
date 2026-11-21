@@ -1,0 +1,75 @@
+# Nightly database backup, ENCRYPTED before it leaves the runner (this repository is public).
+# Needs two repository secrets (see OPS.md): SUPABASE_DB_URL and BACKUP_PASSPHRASE.
+# Without them the job ends cleanly with a notice. The artifact is kept 30 days.
+name: DB backup
+
+on:
+  schedule:
+    - cron: "17 7 * * *"   # 07:17 UTC = about 2-3 AM in Atlanta
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+    steps:
+      - name: Check secrets
+        id: gate
+        shell: bash
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ] || [ -z "$BACKUP_PASSPHRASE" ]; then
+            echo "::notice::Backup skipped: set the SUPABASE_DB_URL and BACKUP_PASSPHRASE repository secrets (see OPS.md)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install pg_dump 17
+        if: steps.gate.outputs.ready == 'true'
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-common gnupg >/dev/null
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y >/dev/null
+          sudo apt-get install -y -qq postgresql-client-17 >/dev/null
+          /usr/lib/postgresql/17/bin/pg_dump --version
+
+      - name: Dump, compress and encrypt (never written unencrypted)
+        if: steps.gate.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p out
+          stamp=$(date -u +%Y%m%d-%H%M)
+          file="out/dreamz-db-$stamp.sql.gz.gpg"
+          /usr/lib/postgresql/17/bin/pg_dump "$SUPABASE_DB_URL" \
+              --schema=public --schema=private \
+              --no-owner --no-privileges --quote-all-identifiers \
+            | gzip -9 \
+            | gpg --batch --yes --pinentry-mode loopback --symmetric --cipher-algo AES256 \
+                  --passphrase "$BACKUP_PASSPHRASE" -o "$file"
+          # sanity: the file must be a GPG message, not plain SQL
+          head -c 2 "$file" | od -An -tx1 | grep -qv '2d 2d'
+          ls -l "$file"
+          echo "FILE=$file" >> "$GITHUB_ENV"
+
+      - name: Upload encrypted backup
+        if: steps.gate.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dreamz-db-backup-${{ github.run_number }}
+          path: out/*.gpg
+          retention-days: 30
+          if-no-files-found: error
+          compression-level: 0
