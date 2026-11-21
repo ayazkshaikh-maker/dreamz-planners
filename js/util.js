@@ -41,7 +41,7 @@
 
   /* Split text into word > char spans, keeping *accent* words as <em>. */
   function splitChars(el, text) {
-    el.setAttribute('aria-label', plain(text));
+    el.removeAttribute('aria-label'); // named by the sr-only copy below (aria-label is not allowed on a plain <p>)
     var parts = String(text).split(/(\*[^*]+\*)/g).filter(Boolean);
     var html = '';
     parts.forEach(function (part) {
@@ -55,11 +55,11 @@
         html += '<span class="word' + (accent ? ' word--accent' : '') + '" aria-hidden="true">' + (accent ? '<em>' + chars + '</em>' : chars) + '</span>';
       });
     });
-    el.innerHTML = html;
+    el.innerHTML = '<span class="sr-only">' + esc(plain(text)) + '</span>' + html;
     return el;
   }
   function splitWords(el, text) {
-    el.setAttribute('aria-label', plain(text));
+    el.removeAttribute('aria-label'); // named by the sr-only copy below (aria-label is not allowed on a plain <p>)
     var parts = String(text).split(/(\*[^*]+\*)/g).filter(Boolean);
     var html = '';
     parts.forEach(function (part) {
@@ -71,7 +71,7 @@
         html += '<span class="w' + (accent ? ' w--accent' : '') + '" aria-hidden="true">' + esc(w) + '</span> ';
       });
     });
-    el.innerHTML = html;
+    el.innerHTML = '<span class="sr-only">' + esc(plain(text)) + '</span>' + html;
     return el;
   }
 

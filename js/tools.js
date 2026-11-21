@@ -510,7 +510,7 @@
       var dowFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       var html = '<div class="cal__head"><button type="button" class="cal__nav" data-m="-1" aria-label="Previous month"' + (y === now.getFullYear() && m === now.getMonth() ? ' disabled' : '') + '>' + I().left + '</button>' +
         '<span class="cal__month" aria-live="polite">' + u.esc(title) + '</span><button type="button" class="cal__nav" data-m="1" aria-label="Next month">' + I().right + '</button></div>' +
-        '<div class="cal__grid" role="grid" aria-label="' + u.esc(title) + '">' + dows.map(function (d, i) { return '<span class="cal__dow" aria-hidden="true" title="' + dowFull[i] + '">' + d + '</span>'; }).join('');
+        '<div class="cal__grid" role="group" aria-label="' + u.esc(title) + '">' + dows.map(function (d, i) { return '<span class="cal__dow" aria-hidden="true" title="' + dowFull[i] + '">' + d + '</span>'; }).join('');
       for (var i = 0; i < first; i++) html += '<span aria-hidden="true"></span>';
       for (var d = 1; d <= days; d++) {
         var dt = new Date(y, m, d), key = u.ymd(dt), mk = marks[key];

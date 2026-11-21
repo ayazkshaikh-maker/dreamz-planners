@@ -459,7 +459,8 @@ html .chip[aria-pressed=true], html .chip[aria-checked=true] { background: var(-
 .founders__grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(26px, 5vw, 80px); align-items: center; }
 .founders__photo { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/5; background: var(--plum); }
 .founders__photo .media { width: 100%; height: 115%; object-fit: cover; will-change: transform; }
-.founders__photo figcaption { position: absolute; left: 18px; bottom: 18px; right: 18px; display: flex; justify-content: space-between; align-items: end; gap: 10px; font-family: var(--f-display); font-style: italic; font-size: 1.3rem; }
+.founders__photo figcaption { position: absolute; left: 0; bottom: 0; right: 0; padding: 56px 18px 18px; display: flex; justify-content: space-between; align-items: end; gap: 10px; font-family: var(--f-display); font-style: italic; font-size: 1.3rem; text-shadow: 0 1px 8px rgb(var(--scrim) / .8);
+  background: linear-gradient(180deg, transparent, rgb(var(--scrim) / .72)); } /* a11y: shade keeps the caption legible over any photo */
 .founders__cards { display: grid; gap: 18px; }
 .fcard {
   position: relative; padding: clamp(22px, 3vw, 34px); border-radius: var(--radius); border: 1px solid var(--line);
