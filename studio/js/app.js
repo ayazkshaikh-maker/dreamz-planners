@@ -8,7 +8,8 @@
 
   var PANELS = [
     { id: 'media', label: 'Media library', wide: true, render: function (el) { S.media.panel(el); } },
-    { id: 'leads', label: 'Leads inbox', wide: true, badge: true, render: function (el) { S.panels.leads(el); } },
+    { id: 'leads', label: 'Leads pipeline', wide: true, badge: true, render: function (el) { S.panels.leads(el); } },
+    { id: 'consult', label: 'Consultations', wide: true, optional: true, render: function (el) { S.consult.panel(el); } },
     { id: 'availability', label: 'Availability', wide: true, render: function (el) { S.panels.calendar(el); } },
     { id: 'reviews-mgr', label: 'Reviews', wide: true, render: function (el) { S.panels.reviews(el); } },
     // optional: shown only once their database parts exist (S.ops.probe)
@@ -169,6 +170,7 @@
       if (!(S.push && S.push.handleHash())) go(last && (S.editorById(last) || panelById(last)) ? last : 'brand');
       if (S.panels.loadLeads) S.panels.loadLeads();
       if (S.ops) S.ops.probe();
+      if (S.consult) S.consult.probe();
     }).catch(function (e) {
       u.toast('Could not load content: ' + e.message + ' — switching to local mode.', 'err', 9000);
       B.mode = 'local'; B.reason = 'offline';
@@ -210,7 +212,7 @@
       groups[g].forEach(function (e) { els.nav.appendChild(navItem(e.id, e.label)); });
     });
     els.nav.appendChild(h('p', { class: 'nav__group', text: 'Manage' }));
-    PANELS.forEach(function (p) { var b = navItem(p.id, p.label, p.badge); if (p.optional && !(S.ops && S.ops.available[p.id])) b.hidden = true; els.nav.appendChild(b); });
+    PANELS.forEach(function (p) { var b = navItem(p.id, p.label, p.badge); if (p.optional && !optionalOn(p.id)) b.hidden = true; els.nav.appendChild(b); });
     els.nav.appendChild(h('p', { class: 'nav__keys muted', text: 'Ctrl+S saves the draft' }));
     els.nav.appendChild(userMenuEl('user user--nav'));
 
@@ -223,6 +225,7 @@
     screen(h('div', { class: 'shell' }, [top, localNote, h('div', { class: 'body' }, [els.nav, scrim, els.editor, els.preview])]));
     refreshDirty();
   }
+  function optionalOn(id) { return !!((S.ops && S.ops.available[id]) || (S.consult && S.consult.available[id])); }
   function navItem(id, label, badge) {
     var b = h('button', { type: 'button', class: 'nav__item', dataset: { id: id }, onclick: function () { go(id); } }, [h('span', { text: label }), badge ? h('span', { class: 'badge', hidden: true }) : null]);
     return b;
@@ -230,6 +233,8 @@
   S.updateBadges = function () {
     var n = S.panels.leadsCount ? S.panels.leadsCount() : 0;
     u.$$('.nav__item[data-id="leads"] .badge').forEach(function (b) { b.textContent = n; b.hidden = !n; b.setAttribute('aria-label', n + ' new leads'); });
+    var due = S.panels.dueCount ? S.panels.dueCount() : 0;
+    u.$$('.nav__item[data-id="leads"]').forEach(function (b) { b.classList.toggle('has-due', due > 0); b.title = due ? due + ' follow-up' + (due === 1 ? '' : 's') + ' due' : ''; });
   };
 
   S.showPanel = function (id, on) { u.$$('.nav__item[data-id="' + id + '"]').forEach(function (b) { b.hidden = !on; }); };

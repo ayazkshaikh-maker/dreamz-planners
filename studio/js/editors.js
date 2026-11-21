@@ -318,7 +318,7 @@
 
     /* ---------------- Chapters ---------------- */
     { id: 'hero', group: 'Chapters', label: '1 · The Dream (hero)', render: function () {
-      var actions = [{ value: 'wizard', label: 'Open the inquiry wizard' }, { value: 'film', label: 'Play the film' }];
+      var actions = [{ value: 'wizard', label: 'Open the inquiry wizard' }, { value: 'film', label: 'Play the film' }, { value: 'booking', label: 'Book a free consultation' }];
       return [
         F.group('Text', [F.text('hero.eyebrow', 'Eyebrow'), F.text('hero.headline', 'Headline', { rich: true, hint: 'Animated letter by letter. Keep it short.' }), F.area('hero.sub', 'Sub-line', { rich: true })]),
         F.group('Background video', [F.media('hero.video', 'Hero video loop', { kind: 'video', hint: 'Pick a loop from the library, or Upload your own MP4/WebM (up to 10 MB). Click the picture to set the focal point.' }), F.media('hero.poster', 'Poster photo (optional)', { kind: 'image', hint: 'Shown while the video loads. Leave empty to use the first frame of the video (uploaded videos have none, so add one here).' })]),
@@ -522,6 +522,12 @@
         F.group('Guests', [F.number('wizard.guests.min', 'Minimum'), F.number('wizard.guests.max', 'Maximum'), F.number('wizard.guests.default', 'Starts at')], { cols: 3 }),
         F.group('After sending', [F.text('wizard.successTitle', 'Thank-you title', { rich: true }), F.area('wizard.successBody', 'Thank-you text', { rich: true }), F.text('wizard.whatsappIntro', 'First line of the WhatsApp summary'), F.text('wizard.consent', 'Privacy note')]),
         F.group('Questions & messages', F.auto('wizard.copy'), { cols: 2 })
+      ];
+    } },
+    { id: 'booking', group: 'Chapters', label: 'Consultation booking', render: function () {
+      return [
+        F.group('Show on the website', [F.toggle('booking.enabled', 'Show the booking buttons', { big: true, hint: 'The buttons appear only while booking is also switched on in "Consultations" and a time is free. Hours, blocked dates and bookings are managed there.' })]),
+        F.group('Wording', F.auto('booking', { rich: ['title', 'intro', 'beginBody', 'wizardPrompt', 'successTitle', 'successBody'] }), { cols: 2, intro: '{minutes} is replaced by the length of a consultation, {tz} by the time zone name and {time} by the visitor\'s own clock time.' })
       ];
     } },
     { id: 'footer', group: 'Chapters', label: 'Footer', render: function () {

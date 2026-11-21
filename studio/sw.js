@@ -1,10 +1,10 @@
 /* Dreamz Studio service worker — Web Push for new inquiries + a tiny offline shell.
    Never caches Supabase / API responses: only same-origin Studio shell files are cached. */
 'use strict';
-var CACHE = 'dp-studio-shell-v2';
+var CACHE = 'dp-studio-shell-v3';
 var SHELL = [
   './', './index.html', './studio.css', './manifest.webmanifest',
-  './js/ui.js', './js/backend.js', './js/fields.js', './js/media.js', './js/editors.js', './js/panels.js', './js/push.js', './js/ops.js', './js/app.js',
+  './js/ui.js', './js/backend.js', './js/fields.js', './js/media.js', './js/editors.js', './js/panels.js', './js/push.js', './js/ops.js', './js/consult.js', './js/app.js',
   '../js/config.js', '../js/themes.js', '../js/upgrade.js',
   '../assets/brand/logo-mark.svg', '../assets/brand/logo-horizontal.svg', '../assets/brand/favicon.svg',
   '../assets/brand/icon-192.png', '../assets/brand/favicon-32.png'

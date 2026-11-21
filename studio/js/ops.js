@@ -115,10 +115,10 @@
   var SAMPLE = {
     name: 'Ayesha Khan', first_name: 'Ayesha', email: 'ayesha@example.com', phone: '404-555-0142', event_type: 'Mehndi & Sangeet',
     event_date: 'Saturday, May 16, 2027', guests: '250', services: 'Full planning, Decor', budget: '', message: 'We would love a garden mehndi with lots of marigolds.',
-    studio_url: '#', brand_name: 'Dreamz Planners', slot: 'Tuesday, March 2 at 6:00 PM', year: String(new Date().getFullYear())
+    studio_url: '#', brand_name: 'Dreamz Planners', slot: 'Tuesday, March 2, 2027 at 6:00 PM EST', minutes: '30', year: String(new Date().getFullYear())
   };
-  var VARS = ['name', 'first_name', 'email', 'phone', 'event_type', 'event_date', 'guests', 'services', 'budget', 'message', 'studio_url', 'brand_name', 'year'];
-  var TPL_LABEL = { lead_ack: 'Thank-you to the couple', lead_owner: 'New inquiry to owners', booking_confirm: 'Booking confirmed (Phase 1)', booking_reminder: 'Booking reminder (Phase 1)' };
+  var VARS = ['name', 'first_name', 'email', 'phone', 'event_type', 'event_date', 'guests', 'services', 'budget', 'message', 'studio_url', 'brand_name', 'year', 'slot', 'minutes'];
+  var TPL_LABEL = { lead_ack: 'Thank-you to the couple', lead_owner: 'New inquiry to owners', booking_confirm: 'Consultation booked', booking_reminder: 'Consultation reminder' };
   var STATUS_TEXT = { queued: 'Waiting', sending: 'Sending', sent: 'Sent', failed: 'Failed', skipped: 'Skipped' };
   var E = { tpl: 'lead_ack' };
 
